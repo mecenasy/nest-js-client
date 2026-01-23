@@ -7,23 +7,25 @@ import { CounterState } from "../counter/constants";
 import { MenuState } from "../menu/constants";
 import { Person } from "../person/constants";
 import { MenuPanelState } from "../panelMenu/constants";
+import { StudentDataState } from "../student/constants";
 
 export interface ApplicationState {
-   auth: AuthState;
-   counter: CounterState;
-   person: Person;
-   router: RouterState;
-   menu: MenuState;
-   panelMenu: MenuPanelState;
+  auth: AuthState;
+  counter: CounterState;
+  person: Person;
+  router: RouterState;
+  menu: MenuState;
+  panelMenu: MenuPanelState;
+  studentData: StudentDataState;
 }
 
 export type ConfigureStore = (
-   initialState: ApplicationState | undefined,
-   history: History,
-   rootReducerFactory: (history: History) => Reducer<ApplicationState>,
-   rootSaga: () => Iterator<any>,
+  initialState: ApplicationState | undefined,
+  history: History,
+  rootReducerFactory: (history: History) => Reducer<ApplicationState>,
+  rootSaga: () => Iterator<any>,
 ) => Promise<{
-   store: Store<ApplicationState, AnyAction>,
-   rootSagaTask: Task;
+  store: Store<ApplicationState, AnyAction>,
+  rootSagaTask: Task;
 }>;
 

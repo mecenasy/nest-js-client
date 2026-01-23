@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { ApplicationState } from "../configuration/constants";
-import { RoleType } from "../panelMenu/role/constants";
+import { RoleType } from "../role/constants";
 import { LoggedStatus, User } from "./constants";
 
 export const userSelector = ({ auth }: ApplicationState): User => auth.user;
@@ -10,11 +10,11 @@ export const tokenExpiredInSelector = ({ auth }: ApplicationState): number => au
 export const userRoleSelector = ({ auth }: ApplicationState): RoleType | undefined => auth.user.role;
 
 export const getPersonId = createSelector<ApplicationState, User, string | undefined>(
-   userSelector,
-   ({ personId }) => personId,
+  userSelector,
+  ({ personId }) => personId,
 );
 
 export const getIsDefaultPassword = createSelector<ApplicationState, User, boolean | undefined>(
-   userSelector,
-   ({ isDefaultPassword }) => isDefaultPassword,
+  userSelector,
+  ({ isDefaultPassword }) => isDefaultPassword,
 );

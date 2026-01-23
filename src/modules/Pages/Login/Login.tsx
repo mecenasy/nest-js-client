@@ -15,87 +15,87 @@ import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
 
 const Login: FC = () => {
-   const isLoggedIn = useSelector(loggedInStatusSelector);
-   const isDefaultPassword = useSelector(getIsDefaultPassword)
-   const formRef = useRef<FormApi>();
+  const isLoggedIn = useSelector(loggedInStatusSelector);
+  const isDefaultPassword = useSelector(getIsDefaultPassword)
+  const formRef = useRef<FormApi>();
 
-   const onSubmit = (action: AuthAction, { password, user }: LoginData) => {
-      return loginRequest(user, password);
-   };
+  const onSubmit = (action: AuthAction, { password, user }: LoginData) => {
+    return loginRequest(user, password);
+  };
 
-   const getPayload = (action: AuthAction): Record<string, string> | undefined => {
-      if (formRef.current) {
-         formRef.current.batch(() => {
-            if (formRef.current) {
+  const getPayload = (action: AuthAction): Record<string, string> | undefined => {
+    if (formRef.current) {
+      formRef.current.batch(() => {
+        if (formRef.current) {
 
-               formRef.current.change('password', '');
-               formRef.current.change('user', '');
-            }
-         });
-      }
+          formRef.current.change('password', '');
+          formRef.current.change('user', '');
+        }
+      });
+    }
 
-      if (action.type === AuthActionType.LoginSuccess) {
-         return action.errorMessage;
-      }
-   };
+    if (action.type === AuthActionType.LoginSuccess) {
+      return action.errorMessage;
+    }
+  };
 
-   if (isLoggedIn === LoggedStatus.LoggedIn) {
-      const redirectPath = isDefaultPassword ? '/change_password' : '/';
+  if (isLoggedIn === LoggedStatus.LoggedIn) {
+    const redirectPath = isDefaultPassword ? '/change_password' : '/';
 
-      return <Redirect to={redirectPath} />
-   }
+    return <Redirect to={redirectPath} />
+  }
 
-   return (
-      <P.Wrapper>
-         <Helmet>
-            <title>Logowanie</title>
-            <meta name="description" content={'Logowanie do systemu zarządzania uczelnianego'} />
-         </Helmet>
-         <P.BoxWithShadow>
-            <P.Title>Witaj w systemie uczelnianym</P.Title>
-            <P.SubTitle>Aby wejśc do systemy należy podać login i hasło</P.SubTitle>
+  return (
+    <P.Wrapper>
+      <Helmet>
+        <title>Logowanie</title>
+        <meta name="description" content={'Logowanie do systemu zarządzania uczelnianego'} />
+      </Helmet>
+      <P.BoxWithShadow>
+        <P.Title>Witaj w systemie uczelnianym</P.Title>
+        <P.SubTitle>Aby wejśc do systemy należy podać login i hasło</P.SubTitle>
 
-            <FormWrapper<AuthAction, LoginData>
-               start={AuthActionType.LoginRequest}
-               resolve={AuthActionType.LoginSuccess}
-               reject={AuthActionType.LoginFail}
-               setPayload={onSubmit}
-               getPayload={getPayload}
-               validate={validateLoginForm}
-            >
-               {({ form }) => {
-                  formRef.current = form;
-                  return (
-                     <>
-                        <Field name={LoginField.Error} >
-                           {({ meta }) => (
-                              <>
-                                 {meta.submitError &&
-                                    <P.Alert message={meta.submitError} type={AlertType.error} />
-                                 }
-                              </>
-                           )}
-                        </Field>
-                        <Field
-                           name={LoginField.User}
-                           component={InputFormWrapper}
-                           type={'text'}
-                           placeholder={'Login'}
-                        />
-                        <Field
-                           name={LoginField.Password}
-                           component={InputFormWrapper}
-                           type={'password'}
-                           placeholder={'Hasło'}
-                        />
-                        <P.SubmitButton type={'submit'}>Zaloguj</P.SubmitButton>
-                     </>
-                  )
-               }}
-            </FormWrapper>
-         </P.BoxWithShadow>
-      </P.Wrapper>
-   );
+        <FormWrapper<AuthAction, LoginData>
+          start={AuthActionType.LoginRequest}
+          resolve={AuthActionType.LoginSuccess}
+          reject={AuthActionType.LoginFail}
+          setPayload={onSubmit}
+          getPayload={getPayload}
+          validate={validateLoginForm}
+        >
+          {({ form }) => {
+            formRef.current = form;
+            return (
+              <>
+                <Field name={LoginField.Error} >
+                  {({ meta }) => (
+                    <>
+                      {meta.submitError &&
+                        <P.Alert message={meta.submitError} type={AlertType.error} />
+                      }
+                    </>
+                  )}
+                </Field>
+                <Field
+                  name={LoginField.User}
+                  component={InputFormWrapper}
+                  type={'text'}
+                  placeholder={'Login'}
+                />
+                <Field
+                  name={LoginField.Password}
+                  component={InputFormWrapper}
+                  type={'password'}
+                  placeholder={'Hasło'}
+                />
+                <P.SubmitButton type={'submit'}>Zaloguj</P.SubmitButton>
+              </>
+            )
+          }}
+        </FormWrapper>
+      </P.BoxWithShadow>
+    </P.Wrapper>
+  );
 };
 
 export default Login;

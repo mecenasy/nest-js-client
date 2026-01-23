@@ -11,10 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(
-   '/build',
-   express.static(
-      path.resolve(__dirname, '../build/public/')
-   ));
+  '/build',
+  express.static(
+    path.resolve(__dirname, '../build/public/')
+  ));
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,17 +25,28 @@ app.use('/', router);
 
 const keyPath = path.resolve(__dirname, '../build/cert');
 const pubKeyPath = path.join(keyPath, 'key.pem');
+const pubCertPath = path.join(keyPath, 'cert.pem');
 
-const key = fs.readFileSync(pubKeyPath);
+const startServer = () => {
+  preloadAll().then(() => {
+    console.log(`Server Client SSR started on port ${PORT}`);
+  });
+};
 
-const certPath = path.resolve(__dirname, '../build/cert');
-const pubCertPath = path.join(certPath, 'cert.pem');
-
-const cert = fs.readFileSync(pubCertPath);
-const server = https.createServer({ key: key, cert: cert }, app)
-
-preloadAll().then(() => {
-   server.listen(PORT, () => {
-      console.log(`Server Client SSR started on port ${PORT}`);
-   });
-})
+if (fs.existsSync(pubKeyPath) && fs.existsSync(pubCertPath)) {
+  const key = fs.readFileSync(pubKeyPath);
+  const cert = fs.readFileSync(pubCertPath);
+  const server = https.createServer({ key, cert }, app);
+  preloadAll().then(() => {
+    server.listen(PORT, () => {
+      console.log(`HTTPS Server Client SSR started on port ${PORT}`);
+    });
+  });
+} else {
+  console.warn('[server] TLS key or certificate not found, starting HTTP server instead');
+  // start HTTP server if TLS files are missing
+  startServer();
+  app.listen(PORT, () => {
+    console.log(`HTTP Server Client SSR started on port ${PORT}`);
+  });
+}

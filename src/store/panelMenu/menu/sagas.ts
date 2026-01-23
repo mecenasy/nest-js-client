@@ -6,52 +6,50 @@ import { getMenuItemsSuccess, getMenuItemsFail, setMenuItemsSuccess, removeMenuI
 import { MenuItemActionType, MenuItemAction } from './constants';
 
 export function* menuItemsWatcher() {
-   yield takeLatest(MenuItemActionType.GetMenuItemsRequest, getMenuWorker);
-   yield takeLatest(MenuItemActionType.SetMenuItemsRequest, setMenuWorker);
-   yield takeLatest(MenuItemActionType.RemoveMenuItemsRequest, removeMenuWorker);
+  yield takeLatest(MenuItemActionType.GetMenuItemsRequest, getMenuWorker);
+  yield takeLatest(MenuItemActionType.SetMenuItemsRequest, setMenuWorker);
+  yield takeLatest(MenuItemActionType.RemoveMenuItemsRequest, removeMenuWorker);
 }
 
 export function* getMenuWorker() {
-   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
-   if (authStatus === LoggedStatus.LoggedIn) {
-      try {
-         const { data } = yield call(getMenu);
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const { data } = yield call(getMenu);
 
-         yield put(getMenuItemsSuccess(data));
+      yield put(getMenuItemsSuccess(data));
 
-      } catch (error) {
-         yield put(getMenuItemsFail(error));
-      }
-   }
+    } catch (error: any) {
+      yield put(getMenuItemsFail(error));
+    }
+  }
 }
 
 export function* setMenuWorker(action: MenuItemAction) {
-   if (action.type === MenuItemActionType.SetMenuItemsRequest) {
-      try {
-         const { data } = yield call(addMenuItem, action.item);
-         console.log("🚀 ~ file: sagas.ts ~ line 33 ~ function*setMenuWorker ~ data", data)
+  if (action.type === MenuItemActionType.SetMenuItemsRequest) {
+    try {
+      const { data } = yield call(addMenuItem, action.item);
 
-         yield put(setMenuItemsSuccess());
+      yield put(setMenuItemsSuccess());
 
-      } catch (error) {
-         yield put(setMenuItemsFail(error));
-      }
-   }
+    } catch (error: any) {
+      yield put(setMenuItemsFail(error));
+    }
+  }
 
 }
 
 export function* removeMenuWorker(action: MenuItemAction) {
-   if (action.type === MenuItemActionType.RemoveMenuItemsRequest) {
-      try {
-         const { data } = yield call(removeMenuItem, action.id);
-         console.log("🚀 ~ file: sagas.ts ~ line 33 ~ function*setMenuWorker ~ data", data)
+  if (action.type === MenuItemActionType.RemoveMenuItemsRequest) {
+    try {
+      const { data } = yield call(removeMenuItem, action.id);
 
-         yield put(removeMenuItemsSuccess());
+      yield put(removeMenuItemsSuccess());
 
-      } catch (error) {
-         yield put(removeMenuItemsFail(error));
-      }
-   }
+    } catch (error: any) {
+      yield put(removeMenuItemsFail(error));
+    }
+  }
 
 }
