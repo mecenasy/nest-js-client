@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
    justify-content: center;
    flex-direction: column;
    align-items: center;
-   width: 670px;
+   width: 800px;
    margin: auto;
    padding-top: 48px;
    margin-top: 48px;

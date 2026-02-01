@@ -6,16 +6,16 @@ import { Option } from "~/src/modules/Components/Input/types";
 
 const getId = (_: ApplicationState, id: Option<string>): string => id?.value;
 
-export const getDirection = (state: ApplicationState): Direction[] => state.studentData.direction;
-export const getSpecialty = (state: ApplicationState): Specialty[] => state.studentData.specialty;
-export const getYear = (state: ApplicationState): Year[] => state.studentData.year;
-export const getGroup = (state: ApplicationState): Group[] => state.studentData.group;
+export const getDirection = (state: ApplicationState): Direction[] => state.university.directions;
+export const getSpecialty = (state: ApplicationState): Specialty[] => state.university.specialties;
+export const getYear = (state: ApplicationState): Year[] => state.university.years;
+export const getGroup = (state: ApplicationState): Group[] => state.university.group;
 
 export const getDirectionSelector = createSelector<ApplicationState, Option<string>, Direction[], string, Direction[]>(getDirection, getId, (direction, id) => {
   if (!id) {
     return direction;
   }
-  return direction.filter(({ specialtyIds }) => specialtyIds.includes(id));
+  return direction.filter(({ specialties }) => specialties.includes(id));
 });
 
 interface SpecialtyIds {
@@ -34,12 +34,12 @@ export const getSpecialtySelector = createSelector<ApplicationState, SpecialtyId
       return specialty
     }
     if (yearId && directionId) {
-      return specialty.filter((spec) => spec.yearIds.includes(yearId) && spec.directionId === directionId);
+      return specialty.filter((spec) => spec.direction.includes(yearId) && spec.direction === directionId);
     }
     if (directionId) {
-      return specialty.filter((spec) => spec.directionId === directionId);
+      return specialty.filter((spec) => spec.direction === directionId);
     }
-    return specialty.filter((spec) => spec.yearIds.includes(yearId));
+    return specialty.filter((spec) => spec.years.includes(yearId));
   });
 
 interface YearIds {
@@ -54,14 +54,14 @@ const getYearIds = (_: ApplicationState, ids: YearIds): Record<keyof YearIds, st
 
 export const getYearSelector = createSelector<ApplicationState, YearIds, Year[], Record<keyof YearIds, string>, Year[]>(getYear, getYearIds, (year, { specialtyId, groupId }) => {
   if (specialtyId && groupId) {
-    return year.filter((y) => y.specialtyIds.includes(specialtyId)
-      && y.groupIds.includes(groupId));
+    return year.filter((y) => y.specialties.includes(specialtyId)
+      && y.groups.includes(groupId));
   }
   if (specialtyId && !groupId) {
-    return year.filter((y) => y.specialtyIds.includes(specialtyId));
+    return year.filter((y) => y.specialties.includes(specialtyId));
   }
   if (!specialtyId && groupId) {
-    return year.filter((y) => y.groupIds.includes(groupId));
+    return year.filter((y) => y.groups.includes(groupId));
   }
 
   return year;
@@ -81,10 +81,10 @@ export const getGroupSelector = createSelector<ApplicationState, GroupIds, Group
     return group
   }
   if (yearId && specialtyId) {
-    return group.filter((gr) => gr.yearIds.includes(yearId) && gr.specialtyId === specialtyId);
+    return group.filter((gr) => gr.years.includes(yearId) && gr.specialty === specialtyId);
   }
   if (specialtyId) {
-    return group.filter((gr) => gr.specialtyId === specialtyId);
+    return group.filter((gr) => gr.specialty === specialtyId);
   }
-  return group.filter((gr) => gr.yearIds.includes(yearId));
+  return group.filter((gr) => gr.years.includes(yearId));
 });

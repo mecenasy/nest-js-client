@@ -15,7 +15,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isSer
 ];
 
 export const addUserConfig: PageConfig = {
-  url: '/add_user',
+  url: '/user_list',
   Component: AddUserPage,
   exact: true,
 }

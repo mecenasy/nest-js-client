@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { RoleType } from '../role/constants';
+import { RoleType } from '../person/constants';
 
 export enum AuthActionType {
   LoginRequest = 'auth/LOGIN_REQUEST',
@@ -17,7 +17,7 @@ export enum AuthActionType {
 }
 export interface User {
   name: string;
-  personId: string;
+  userId: string;
   role?: RoleType;
   isDefaultPassword?: boolean;
 }
@@ -25,7 +25,7 @@ export interface User {
 export interface Auth {
   loggedIn: LoggedStatus;
   token: string;
-  expiresIn: number;
+  expireAt: string;
 }
 
 export type AuthAction = {
@@ -79,12 +79,12 @@ export enum LoggedStatus {
 
 export const userInitialState: User = {
   name: '',
-  personId: '',
+  userId: '',
 };
 
 export const authInitialState: Auth = {
   loggedIn: LoggedStatus.Unknown,
-  expiresIn: 0,
+  expireAt: '0',
   token: '',
 };
 

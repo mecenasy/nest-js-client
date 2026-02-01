@@ -1,16 +1,16 @@
 import { MenuItemData, MenuItemField } from '~/src/store/panelMenu/menu/constants';
 import api from '../api';
-import { role, menu, student } from './paths';
+import { role, menu, universityMap, allMenu } from './paths';
 
 export const getRole = async () => {
   return await api.get(role);
 };
 
 export const getStudentData = async () => {
-  return await api.get(student)
+  return await api.get(universityMap)
 };
 export const getMenu = async () => {
-  return await api.get(menu)
+  return await api.get(allMenu)
 };
 
 export const removeMenuItem = async (id: string) => {
@@ -20,10 +20,11 @@ export const removeMenuItem = async (id: string) => {
 export const addMenuItem = (form: MenuItemData) => {
   const data: FormData = new FormData();
 
+  const roles = form.role.map(({ value }) => value).join(',');
   data.append(MenuItemField.Name, form.name);
   data.append(MenuItemField.Link, form.link);
   data.append(MenuItemField.Side, form.menuSide);
-  data.append(MenuItemField.Role, JSON.stringify(form.role.map(({ value }) => value)));
+  data.append(MenuItemField.Role, roles);
   data.append(MenuItemField.Position, form.position.toString());
 
   if (form._id) {

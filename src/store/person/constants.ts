@@ -1,5 +1,10 @@
-import { RoleType } from "../role/constants";
 
+export enum RoleType {
+  Student = 'student',
+  Teacher = 'teacher',
+  Admin = 'admin',
+  User = 'user',
+}
 export enum Direction {
   Informatics = 'Informatyka',
   Management = 'Zarządzanie',
@@ -21,16 +26,8 @@ export type Person = {
   phone: number;
   photo?: string;
   address?: Address;
-} & ({
-  album: number;
-  direction: string;
-  specialty: string;
-  year: string;
-  group: string;
-  role: RoleType.Student;
-} | {
-  role: RoleType.Teacher | RoleType.Admin;
-});
+  student?: Student;
+}
 
 export interface Address {
   street: string;
@@ -38,6 +35,14 @@ export interface Address {
   country: string;
   number: string;
   zipCode: string;
+}
+
+interface Student {
+  album: string;
+  direction: string;
+  specialty: string;
+  group: string;
+  year: string;
 }
 
 export enum PersonActionType {
@@ -72,12 +77,6 @@ export type PersonAction = {
 
 export const initialState: Person = {
   id: '',
-  album: 0,
-  role: RoleType.Student,
-  direction: Direction.None,
-  specialty: Specialty.None,
-  year: '',
-  group: '',
   name: '',
   surname: '',
   phone: 0,
@@ -98,6 +97,8 @@ export enum PersonField {
   Group = 'group',
   Role = 'role',
   Address = 'address',
+  Person = 'person',
+  Student = 'student',
   Step = 'stap',
 }
 

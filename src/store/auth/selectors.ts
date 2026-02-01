@@ -6,12 +6,12 @@ import { LoggedStatus, User } from "./constants";
 export const userSelector = ({ auth }: ApplicationState): User => auth.user;
 
 export const loggedInStatusSelector = ({ auth }: ApplicationState): LoggedStatus => auth.auth.loggedIn;
-export const tokenExpiredInSelector = ({ auth }: ApplicationState): number => auth.auth.expiresIn;
+export const tokenExpiredInSelector = ({ auth }: ApplicationState): number => +auth.auth.expireAt;
 export const userRoleSelector = ({ auth }: ApplicationState): RoleType | undefined => auth.user.role;
 
-export const getPersonId = createSelector<ApplicationState, User, string | undefined>(
+export const getUserId = createSelector<ApplicationState, User, string | undefined>(
   userSelector,
-  ({ personId }) => personId,
+  ({ userId }) => userId,
 );
 
 export const getIsDefaultPassword = createSelector<ApplicationState, User, boolean | undefined>(

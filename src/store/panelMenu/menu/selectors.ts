@@ -9,11 +9,11 @@ export const getMenuItems = (state: ApplicationState): MenuItem[] => state.panel
 export const getMenuItemById = createSelector<ApplicationState, string, MenuItem[], string, MenuItemData | undefined>(
   getMenuItems,
   (_: ApplicationState, id: string) => id,
-  (menu: MenuItem[], id: string) => {
-    const item = menu.find(({ _id }) => _id === id);
+  (menus: MenuItem[], id: string) => {
+    const item = menus.find((menu: MenuItem) => menu.id === id);
     if (item) {
       const data: MenuItemData = {
-        [MenuItemField.Id]: item._id,
+        [MenuItemField.Id]: item.id,
         [MenuItemField.Name]: item.name,
         [MenuItemField.ShortName]: item.shortName || '',
         [MenuItemField.Position]: item.position,

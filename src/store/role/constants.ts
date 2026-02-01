@@ -2,14 +2,10 @@ export enum RoleType {
   Student = 'student',
   Teacher = 'teacher',
   Admin = 'admin',
+  User = 'user',
 }
 
-export interface Role {
-  role: RoleType;
-  _id: string;
-}
-
-export type RoleState = Role[]
+export type RoleState = string[]
 
 export enum RoleActionType {
   GetRoleRequest = 'role/GET_ROLE_REQUEST',
@@ -21,10 +17,10 @@ export type RoleAction = {
   type: RoleActionType.GetRoleRequest;
 } | {
   type: RoleActionType.GetRoleSuccess;
-  roles: Role[];
+  roles: string[];
 } | {
   type: RoleActionType.GetRoleFail;
   message: string,
 };
 
-export const initialState: Role[] = [];
+export const initialState: string[] = [];

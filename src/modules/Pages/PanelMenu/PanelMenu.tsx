@@ -104,10 +104,10 @@ const PanelMenu: FC = () => {
                   </P.BoxInnerColumn>
                 </P.BoxColumn>
                 <P.BoxColumn columWidth={30} direction={'column'}>
-                  <P.Button onClick={onEditMenuItem(item._id)}>
+                  <P.Button onClick={onEditMenuItem(item.id)}>
                     <P.Pen src={edit} />
                   </P.Button>
-                  <P.Button onClick={onRemoveMenuItem(item._id)}>
+                  <P.Button onClick={onRemoveMenuItem(item.id)}>
                     <P.Pen src={minus} />
                   </P.Button>
                 </P.BoxColumn>

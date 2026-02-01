@@ -1,3 +1,2 @@
-export const person = '/person';
-
-export const personWithId = (id: string) => `${person}/${id}`
+export const person = '/user/profile';
+export const registerPerson = '/user/register';

@@ -3,10 +3,10 @@ import { Field, useField } from 'react-final-form';
 import { PersonField } from '~/src/store/person/constants';
 import StepButton from './StepButton';
 import * as P from '../parts';
-import { getDirectionSelector, getGroupSelector, getSpecialtySelector, getYearSelector } from '~/src/store/student/selectors';
+import { getDirectionSelector, getGroupSelector, getSpecialtySelector, getYearSelector } from '~/src/store/university/selectors';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
-import { Direction, Group, Specialty, Year } from '~/src/store/student/constants';
+import { Direction, Group, Specialty, Year } from '~/src/store/university/constants';
 
 
 const StudentFields: FC = () => {
@@ -15,6 +15,7 @@ const StudentFields: FC = () => {
   const { input: directionInput } = useField(PersonField.Direction, { subscription: { value: true } });
   const { input: yearInput } = useField(PersonField.Year, { subscription: { value: true } });
   const { input: groupInput } = useField(PersonField.Group, { subscription: { value: true } });
+  console.log(specialtyInput.value, directionInput.value, yearInput.value, groupInput.value)
 
   const direction = useSelector<ApplicationState, Direction[]>(
     (state => getDirectionSelector(state, specialtyInput.value)));
@@ -25,9 +26,9 @@ const StudentFields: FC = () => {
   const group = useSelector<ApplicationState, Group[]>(
     (state) => getGroupSelector(state, { specialtyId: specialtyInput.value, yearId: yearInput.value }));
 
-  const getOption = (data: any[], labelKey: string) => data?.map((item: any) => ({
-    label: item[labelKey],
-    value: item._id,
+  const getOption = (data: any[]) => data?.map((item: any) => ({
+    label: item.name,
+    value: item.name,
   })) || [];
 
 
@@ -41,27 +42,27 @@ const StudentFields: FC = () => {
       <Field
         name={PersonField.Direction}
         component={P.Dropdown}
-        options={getOption(direction, 'direction')}
+        options={getOption(direction)}
         placeholder={'Wydział'}
       />
       <Field
         name={PersonField.Specialty}
         component={P.Dropdown}
-        options={getOption(specialty, 'specialty')}
+        options={getOption(specialty)}
         placeholder={'Specjalność'}
       />
       <Field
         name={PersonField.Year}
         component={P.Dropdown}
         placeholder={'Rok'}
-        options={getOption(year, 'year')}
+        options={getOption(year)}
       />
 
       <Field
         name={PersonField.Group}
         component={P.Dropdown}
         placeholder={'Grupa'}
-        options={getOption(group, 'name')}
+        options={getOption(group)}
       />
       <StepButton />
     </P.FieldWrapper>

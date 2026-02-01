@@ -1,7 +1,7 @@
 import { AuthAction, AuthActionType } from "../auth/constants";
-import { RoleAction, Role, RoleActionType, initialState } from "./constants";
+import { RoleAction, RoleActionType, initialState } from "./constants";
 
-export const roleReducer = (state: Role[] = initialState, action: RoleAction | AuthAction): Role[] => {
+export const roleReducer = (state: string[] = initialState, action: RoleAction | AuthAction): string[] => {
   switch (action.type) {
     case RoleActionType.GetRoleSuccess: {
       return action.roles;

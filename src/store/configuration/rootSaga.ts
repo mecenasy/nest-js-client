@@ -5,7 +5,8 @@ import { getMenuWatcher } from "../menu/sagas";
 import { addPersonWatcher, getPersonWatcher } from "../person/sagas";
 import { getRoleWatcher } from "../role/sagas";
 import { menuItemsWatcher } from "../panelMenu/menu/sagas";
-import { getStudentWatcher } from "../student/sagas";
+import { getUniversityWatcher } from "../university/sagas";
+import { getUserListWatcher } from '../userList/sagas';
 
 export function* rootSaga() {
   yield all([
@@ -16,6 +17,7 @@ export function* rootSaga() {
     fork(addPersonWatcher),
     fork(getRoleWatcher),
     fork(menuItemsWatcher),
-    fork(getStudentWatcher),
+    fork(getUniversityWatcher),
+    fork(getUserListWatcher),
   ]);
 }

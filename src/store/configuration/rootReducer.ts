@@ -7,7 +7,8 @@ import { menuReducer } from "../menu/reducers";
 import { personReducer } from "../person/reducer";
 import { panelMenuReducer } from "../panelMenu/reducer";
 import { ApplicationState } from "./constants";
-import { studentReducer } from "../student/reducer";
+import { universityReducer } from "../university/reducer";
+import { userListReducer } from '../userList/reducer';
 
 export const rootReducerFactory = (history: History) => (
   combineReducers<ApplicationState>({
@@ -17,6 +18,7 @@ export const rootReducerFactory = (history: History) => (
     menu: menuReducer,
     person: personReducer,
     panelMenu: panelMenuReducer,
-    studentData: studentReducer
+    university: universityReducer,
+    userList: userListReducer
   })
 );

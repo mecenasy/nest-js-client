@@ -1,3 +1,4 @@
-export const role = '/role';
+export const role = '/university/roles';
 export const menu = '/menu';
-export const student = '/student';
+export const allMenu = '/menu/all';
+export const universityMap = '/university';

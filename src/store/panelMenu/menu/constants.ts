@@ -1,19 +1,18 @@
 import { DroppedFile, Option } from "~/src/modules/Components/Input/types"
-import { Role, } from "../../role/constants"
 import { MenuSide, Menu } from "../../menu/constants"
 import { AxiosError, } from "axios";
 
 export enum MenuItemActionType {
-  GetMenuItemsRequest = 'GET_MENU_ITEMS_REQUEST',
-  GetMenuItemsSuccess = 'GET_MENU_ITEMS_SUCCESS',
-  GetMenuItemsFail = 'GET_MENU_ITEMS_FAIL',
-  UpdateMenuItemsRequest = 'UPDATE_MENU_ITEM_REQUEST',
-  SetMenuItemsRequest = 'SET_MENU_ITEM_REQUEST',
-  SetMenuItemsSuccess = 'SET_MENU_ITEM_SUCCESS',
-  SetMenuItemsFail = 'SET_MENU_ITEM_FAIL',
-  RemoveMenuItemsRequest = 'REMOVE_MENU_ITEM_REQUEST',
-  RemoveMenuItemsSuccess = 'REMOVE_MENU_ITEM_SUCCESS',
-  RemoveMenuItemsFail = 'REMOVE_MENU_ITEM_FAIL',
+  GetMenuItemsRequest = 'menu/GET_MENU_ITEMS_REQUEST',
+  GetMenuItemsSuccess = 'menu/GET_MENU_ITEMS_SUCCESS',
+  GetMenuItemsFail = 'menu/GET_MENU_ITEMS_FAIL',
+  UpdateMenuItemsRequest = 'menu/UPDATE_MENU_ITEM_REQUEST',
+  SetMenuItemsRequest = 'menu/SET_MENU_ITEM_REQUEST',
+  SetMenuItemsSuccess = 'menu/SET_MENU_ITEM_SUCCESS',
+  SetMenuItemsFail = 'menu/SET_MENU_ITEM_FAIL',
+  RemoveMenuItemsRequest = 'menu/REMOVE_MENU_ITEM_REQUEST',
+  RemoveMenuItemsSuccess = 'menu/REMOVE_MENU_ITEM_SUCCESS',
+  RemoveMenuItemsFail = 'menu/REMOVE_MENU_ITEM_FAIL',
 }
 
 export type MenuItemAction = {
@@ -43,7 +42,7 @@ export type MenuItemAction = {
 }
 
 
-export type MenuItem = Menu & { _id: string, role: Role[] };
+export type MenuItem = Menu & { id: string, role: string[] };
 
 export type MenuItemsState = MenuItem[];
 

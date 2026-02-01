@@ -1,15 +1,15 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getStudentData } from '~/src/api/panelMenu/requests';
 import { getStudentFail, getStudentSuccess } from './actions';
-import { StudentAction, StudentActionType } from './constants';
+import { UniversityAction, UniversityActionType } from './constants';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 
-export function* getStudentWatcher() {
-  yield takeLatest<StudentAction>(StudentActionType.GetStudentRequest, getStudentWorker);
+export function* getUniversityWatcher() {
+  yield takeLatest<UniversityAction>(UniversityActionType.GetUniversityRequest, getUniversityWorker);
 }
 
-export function* getStudentWorker() {
+export function* getUniversityWorker() {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {

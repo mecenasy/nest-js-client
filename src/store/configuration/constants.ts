@@ -7,7 +7,8 @@ import { CounterState } from "../counter/constants";
 import { MenuState } from "../menu/constants";
 import { Person } from "../person/constants";
 import { MenuPanelState } from "../panelMenu/constants";
-import { StudentDataState } from "../student/constants";
+import { UniversityState } from "../university/constants";
+import { UserList } from '../userList/constants';
 
 export interface ApplicationState {
   auth: AuthState;
@@ -16,7 +17,8 @@ export interface ApplicationState {
   router: RouterState;
   menu: MenuState;
   panelMenu: MenuPanelState;
-  studentData: StudentDataState;
+  university: UniversityState;
+  userList: UserList;
 }
 
 export type ConfigureStore = (

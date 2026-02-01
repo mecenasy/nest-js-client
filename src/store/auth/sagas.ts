@@ -28,7 +28,7 @@ export function* initialAuth() {
     const { auth, user } = data
 
     if (user) {
-      yield apply(cookie, 'set', ['jwt', auth.token, { expires: auth.expiresIn }]);
+      yield apply(cookie, 'set', ['jwt', auth.token, { expires: +auth.expireAt }]);
       yield put(A.loginSuccess(user, { ...auth, loggedIn: LoggedStatus.LoggedIn }));
     } else {
       yield put(A.logoutSuccess());
@@ -50,7 +50,7 @@ export function* loginWorker(action: AuthAction) {
     try {
       const { data: { auth, user } }: { data: AuthState } = yield call(loginUser, action.user, action.password);
 
-      yield apply(cookie, 'set', ['jwt', auth.token, { expires: auth.expiresIn }]);
+      yield apply(cookie, 'set', ['jwt', auth.token, { expires: +auth.expireAt }]);
       yield put(A.loginSuccess(user, auth));
 
       refreshTask = yield fork(refreshTokenWorker);
@@ -89,7 +89,8 @@ export function* refreshTokenWorker() {
     try {
       const initialTime = +new Date();
       const expiresIn: number = yield select(tokenExpiredInSelector);
-      const expiresTime = expiresIn - 5000
+      const expiresTime = +expiresIn - 5000
+      console.log("🚀 ~ refreshTokenWorker ~ expiresIn:", expiresIn)
 
       const { winner } = yield race({
         winner: take(LOCATION_CHANGE),

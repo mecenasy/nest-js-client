@@ -59,7 +59,7 @@ export const Wrapper = styled.div`
    display: flex;
    justify-content: space-between;
    flex-wrap: wrap;
-   width: 670px;
+   width: 800px;
    margin: auto;
 `;
 

@@ -4,7 +4,7 @@ export const CounterWrapper = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
-   width: 670px;
+   width: 800px;
    margin: auto;
    flex: 100%;
    overflow: visible;
