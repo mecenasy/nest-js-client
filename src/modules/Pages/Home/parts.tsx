@@ -37,7 +37,6 @@ export const Col = styled.div`
 `;
 
 export const BoxUser = styled(BoxBase)`
-   width: 100%;
    height: 120px;
    justify-content: flex-start;
    background-color: #c9e4ff;

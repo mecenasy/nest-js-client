@@ -28,7 +28,7 @@ const PanelMenu: FC = () => {
   const roles = useSelector<ApplicationState, Option<string>[]>(roleSelector)
   const [id, setId] = useState('');
 
-  const [activeRole, setRule] = useState<string>(roles[0]?.value);
+  const [activeRole, setRule] = useState<string>('');
   const [isOpenModal, setOpenModal] = useState(false);
 
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const PanelMenu: FC = () => {
             <P.AddItemText>Dodaj nowe menu</P.AddItemText>
           </P.AddItemButton>
           {menus
-            .filter(({ role }) => true) //TODO
+            .filter(({ role }) => !activeRole || role.includes(activeRole))
             .map((item, index) => (
               <P.Box key={index}>
                 <P.BoxColumn columWidth={50} >

@@ -1,21 +1,23 @@
 import api from '../api';
 import { AxiosResponse } from 'axios';
-import { userList } from './paths';
-import { SelectedFilters, UserList } from '~/src/store/userList/constants';
+import { userListStudents, userListAll, userListTeacher } from './paths';
+import { UserList } from '~/src/store/userList/constants';
+import { RoleType } from '~/src/store/person/constants';
 
-export const getUsers = async (params: SelectedFilters): Promise<AxiosResponse<UserList>> => {
-  const convertedParams: Record<string, string> = {};
-  const keys = Object.keys(params);
-  keys.forEach((key) => {
-    if (Array.isArray(params[key])) {
-      convertedParams[key] = (params[key] as string[]).join(',');
-    } else {
-      convertedParams[key] = params[key] as string;
-    }
-  })
+export const getUsers = async (query: string, type: RoleType): Promise<AxiosResponse<UserList>> => {
 
-  const searchParam = new URLSearchParams(convertedParams);
-
-  return await api.get(userList + '?' + searchParam.toString());
+  let path
+  switch (type) {
+    case RoleType.Student:
+      path = userListTeacher;
+      break;
+    case RoleType.Teacher:
+      path = userListStudents;
+      break;
+    default:
+      path = userListAll;
+      break;
+  }
+  return await api.get(path + query);
 };
 

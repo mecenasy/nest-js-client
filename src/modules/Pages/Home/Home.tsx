@@ -16,8 +16,6 @@ export const Home: FC = () => {
   const { leftSide, rightSide } = useSelector(getMenuSelector);
   const person = useSelector(getPerson);
 
-
-  console.log("🚀 ~ Home ~ person:", person)
   return (
     <PageWrapper pickUp >
       <Helmet>
@@ -27,7 +25,7 @@ export const Home: FC = () => {
       {isLoggedIn === LoggedStatus.LoggedIn && (
         <P.Wrapper >
           <P.Row >
-            <PersonBox />
+            <PersonBox person={person} />
           </P.Row>
           <P.Row  >
             {leftSide.filter(({ hidden }) => !hidden).map((item) => (

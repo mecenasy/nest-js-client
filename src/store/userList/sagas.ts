@@ -1,36 +1,54 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
-import { SelectedFilters, UserList, UserListAction, UserListActionType } from './constants';
+import { ExtractByType, PaginationFilter, SelectedFilters, UserList, UserListAction, UserListActionType } from './constants';
 import { getUserListFail, getUserListSuccess } from './actions';
-import { getParamsList } from './selectors';
+import { getSelectedFiltersList } from './selectors';
 import { getUsers } from '~/src/api/userlist/requests';
+import { replace } from 'connected-react-router';
 
 export function* getUserListWatcher() {
-  yield takeLatest<UserListAction>(UserListActionType.GetUserListRequest, getUserListWorker);
+  yield takeLatest<
+    ExtractByType<UserListAction, UserListActionType.GetUserListRequest>
+  >(UserListActionType.GetUserListRequest, getUserListWorker);
+  yield fork(getUserListParamsWatcher)
 }
 
-export function* getUserListWorker() {
+export function* getUserListParamsWatcher() {
+  yield takeLatest<UserListAction>(UserListActionType.SetFilter, getUserListParamsWorker);
+  yield takeLatest<UserListAction>(UserListActionType.SetPage, getUserListParamsWorker);
+}
+export function* getUserListParamsWorker() {
+  const params: SelectedFilters & PaginationFilter = yield select(getSelectedFiltersList);
+
+  const convertedParams: Record<string, string> = {};
+  const keys = Object.keys(params);
+  keys.forEach((key) => {
+    if (Array.isArray(params[key])) {
+      convertedParams[key] = (params[key] as string[]).join(',');
+    } else if (params[key]) {
+      convertedParams[key] = params[key] as string;
+    }
+  })
+
+  const searchParam = new URLSearchParams(convertedParams).toString();
+  yield put(replace({ search: searchParam }))
+}
+
+export function* getUserListWorker({
+  searchParam,
+  listType
+}: ExtractByType<UserListAction, UserListActionType.GetUserListRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
 
     try {
+      const { data }: { data: UserList } = yield call(getUsers, searchParam ?? '', listType);
 
-      const params: SelectedFilters = yield select(getParamsList);
-      try {
-        if (params) {
-
-          const { data }: { data: UserList } = yield call(getUsers, params);
-
-          yield put(getUserListSuccess(data));
-        }
-      } catch (error) {
-        yield put(getUserListFail(''));
-      }
-
+      yield put(getUserListSuccess(data));
     } catch (error) {
-
+      yield put(getUserListFail(''));
     }
   }
 }

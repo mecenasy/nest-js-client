@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 import * as P from './parts';
 import PersonDataRow from '../../PersonDataRow/PersonDataRow';
-import { useSelector } from 'react-redux';
-import { getPerson } from '~/src/store/person/selectors';
 
-const PersonBox: FC = ({
+interface PersonBoxProps {
+  person: any;
+}
 
+const PersonBox: FC<PersonBoxProps> = ({
+  person
 }) => {
-  const person = useSelector(getPerson);
-
-
   return (
     <P.BoxUser >
       <P.Photo src={person?.photo || ''} />
@@ -28,10 +27,10 @@ const PersonBox: FC = ({
         </div>
         <div>
           <PersonDataRow title={'Adress'} data='' />
-          <PersonDataRow title={'Wydział'} data={`${person.address?.street} ${person.address?.number}`} />
-          <PersonDataRow title={'Specjalność'} data={person.address?.city || ''} />
-          <PersonDataRow title={'Numer albumu'} data={person.address?.country || ''} />
-          <PersonDataRow title={'Rok'} data={person.address?.zipCode || ''} />
+          <PersonDataRow title={'Ulica'} data={`${person.address?.street} ${person.address?.number}`} />
+          <PersonDataRow title={'Niasto'} data={person.address?.city || ''} />
+          <PersonDataRow title={'Państworstwo'} data={person.address?.country || ''} />
+          <PersonDataRow title={'Kod pocztowy'} data={person.address?.zipCode || ''} />
         </div>
       </P.ContentWrapper>
     </P.BoxUser>

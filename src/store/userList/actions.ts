@@ -1,8 +1,10 @@
-import { SelectedFilters, UserList, UserListAction, UserListActionType } from '../userList/constants';
+import { RoleType } from '../role/constants';
+import { UserList, UserListAction, UserListActionType } from '../userList/constants';
 
-export const getUserListRequest = (params: SelectedFilters): UserListAction => ({
+export const getUserListRequest = (searchParam: string, listType: RoleType): UserListAction => ({
   type: UserListActionType.GetUserListRequest,
-  params
+  searchParam,
+  listType
 });
 
 export const getUserListSuccess = (userList: UserList): UserListAction => ({
@@ -15,8 +17,14 @@ export const getUserListFail = (message: string): UserListAction => ({
   type: UserListActionType.GetUserListFail,
 });
 
-export const setFilter = (name: string, value: string | string[]): UserListAction => ({
+export const setFilterUserFilter = (name: string, value: string | string[] | undefined): UserListAction => ({
   name,
   value,
   type: UserListActionType.SetFilter,
+});
+
+export const setUserListPage = (page?: number, pageSize?: number): UserListAction => ({
+  page,
+  pageSize,
+  type: UserListActionType.SetPage,
 });

@@ -90,7 +90,6 @@ export function* refreshTokenWorker() {
       const initialTime = +new Date();
       const expiresIn: number = yield select(tokenExpiredInSelector);
       const expiresTime = +expiresIn - 5000
-      console.log("🚀 ~ refreshTokenWorker ~ expiresIn:", expiresIn)
 
       const { winner } = yield race({
         winner: take(LOCATION_CHANGE),

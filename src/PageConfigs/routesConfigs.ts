@@ -9,6 +9,9 @@ import { settingsConfig } from './settingsConfig';
 import { messagesConfig } from './messagesConfig';
 import { timetableConfig } from './timetableConfig';
 import { addUserConfig } from './addUserConfig';
+import { userListConfig } from './userListConfig';
+import { teachersListConfig } from './teachersListConfig';
+import { studentsListConfig } from './studentsListConfig';
 
 export const configs = [
   homeConfig,
@@ -22,4 +25,8 @@ export const configs = [
   messagesConfig,
   timetableConfig,
   addUserConfig,
+  userListConfig,
+  teachersListConfig,
+  studentsListConfig,
+
 ]
