@@ -37,6 +37,7 @@ export interface UniversityState {
   specialties: Specialty[];
   years: Year[];
   group: Group[];
+  roles: string[];
 }
 
 export enum UniversityActionType {
@@ -59,5 +60,6 @@ export const initialState: UniversityState = {
   directions: [],
   specialties: [],
   years: [],
-  group: []
+  group: [],
+  roles: []
 }

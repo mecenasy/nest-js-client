@@ -15,7 +15,6 @@ const StudentFields: FC = () => {
   const { input: directionInput } = useField(PersonField.Direction, { subscription: { value: true } });
   const { input: yearInput } = useField(PersonField.Year, { subscription: { value: true } });
   const { input: groupInput } = useField(PersonField.Group, { subscription: { value: true } });
-  console.log(specialtyInput.value, directionInput.value, yearInput.value, groupInput.value)
 
   const direction = useSelector<ApplicationState, Direction[]>(
     (state => getDirectionSelector(state, specialtyInput.value)));

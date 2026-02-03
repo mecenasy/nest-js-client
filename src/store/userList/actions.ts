@@ -1,5 +1,5 @@
 import { RoleType } from '../role/constants';
-import { UserList, UserListAction, UserListActionType } from '../userList/constants';
+import { UserListState, UserListAction, UserListActionType } from '../userList/constants';
 
 export const getUserListRequest = (searchParam: string, listType: RoleType): UserListAction => ({
   type: UserListActionType.GetUserListRequest,
@@ -7,7 +7,7 @@ export const getUserListRequest = (searchParam: string, listType: RoleType): Use
   listType
 });
 
-export const getUserListSuccess = (userList: UserList): UserListAction => ({
+export const getUserListSuccess = (userList: UserListState): UserListAction => ({
   userList,
   type: UserListActionType.GetUserListSuccess,
 });

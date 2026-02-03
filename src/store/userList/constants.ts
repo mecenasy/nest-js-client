@@ -1,10 +1,12 @@
 import { Person } from '../person/constants';
 import { RoleType } from '../role/constants';
+import { University } from '../university/constants';
 
-export interface UserList {
+export interface UserListState {
   users: Person[];
   pagination: Pagination;
   filters: Filters;
+  filtersMap: University;
   selectedFilters: SelectedFilters & PaginationFilter;
   isFetching?: boolean;
 }
@@ -23,9 +25,9 @@ export interface Pagination {
 export type Filters = Record<string, string[]>
 export type SelectedFilters = Record<string, string | string[] | undefined>
 export enum UserListActionType {
-  GetUserListRequest = 'userList/GET_UES_LIST_REQUEST',
-  GetUserListSuccess = 'userList/GET_UES_LIST_SUCCESS',
-  GetUserListFail = 'userList/GET_UES_LIST_FAIL',
+  GetUserListRequest = 'userList/GET_USER_LIST_REQUEST',
+  GetUserListSuccess = 'userList/GET_USER_LIST_SUCCESS',
+  GetUserListFail = 'userList/GET_USER_LIST_FAIL',
   SetFilter = 'userList/SET_FILTER',
   SetPage = 'userList/SET_PAGE',
 }
@@ -36,7 +38,7 @@ export type UserListAction = {
   listType: RoleType
 } | {
   type: UserListActionType.GetUserListSuccess;
-  userList: UserList;
+  userList: UserListState;
 } | {
   type: UserListActionType.SetFilter;
   name: string;
@@ -50,9 +52,8 @@ export type UserListAction = {
   message: string,
 };
 
-export type ExtractByType<T extends { type: any }, K extends T['type']> = Extract<T, { type: K }>;
 
-export const initialState: UserList = {
+export const initialState: UserListState = {
   pagination: {
     currentPage: 1,
     pageSize: 10,
@@ -61,5 +62,12 @@ export const initialState: UserList = {
   },
   users: [],
   filters: {},
+  filtersMap: {
+    directions: [],
+    group: [],
+    roles: [],
+    specialties: [],
+    years: []
+  },
   selectedFilters: {}
 };

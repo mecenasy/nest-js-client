@@ -43,3 +43,4 @@ declare module 'redux-promise-listener' {
 }
 
 declare type OmitStrict<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+declare type ExtractByType<T extends { type: any }, K extends T['type']> = Extract<T, { type: K }>;

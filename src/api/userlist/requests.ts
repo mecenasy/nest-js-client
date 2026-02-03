@@ -1,23 +1,23 @@
 import api from '../api';
 import { AxiosResponse } from 'axios';
 import { userListStudents, userListAll, userListTeacher } from './paths';
-import { UserList } from '~/src/store/userList/constants';
+import { UserListState } from '~/src/store/userList/constants';
 import { RoleType } from '~/src/store/person/constants';
 
-export const getUsers = async (query: string, type: RoleType): Promise<AxiosResponse<UserList>> => {
+export const getUsers = async (query: string, type: RoleType): Promise<AxiosResponse<UserListState>> => {
 
   let path
   switch (type) {
     case RoleType.Student:
-      path = userListTeacher;
+      path = userListStudents;
       break;
     case RoleType.Teacher:
-      path = userListStudents;
+      path = userListTeacher;
       break;
     default:
       path = userListAll;
       break;
   }
-  return await api.get(path + query);
+  return await api.get(`${path}${query}`);
 };
 

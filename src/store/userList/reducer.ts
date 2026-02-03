@@ -1,7 +1,7 @@
 import { convertFieldsToArray } from '~/src/PageConfigs/helpers/concert-fields-to-array';
-import { UserList, UserListAction, UserListActionType, initialState } from "./constants";
+import { UserListState, UserListAction, UserListActionType, initialState } from "./constants";
 
-export const userListReducer = (state: UserList = initialState, action: UserListAction): UserList => {
+export const userListReducer = (state: UserListState = initialState, action: UserListAction): UserListState => {
   switch (action.type) {
     case UserListActionType.GetUserListRequest: {
       const { searchParam } = action

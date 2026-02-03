@@ -6,16 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { loggedInStatusSelector } from "~/src/store/auth/selectors";
 import { LoggedStatus } from "~/src/store/auth/constants";
 import { getMenuItems } from '~/src/store/panelMenu/menu/selectors';
-import edit from '~/assets/pencil.svg';
-import minus from '~/assets/minus.svg';
-import plus from '~/assets/plus.svg';
-import { MenuSide } from '~/src/store/menu/constants';
 import Loadable from '@react-loadable/revised';
 import PanelMenuForm from '../../Menu/PanelMenuForm/PanelMenuForm';
 import { removeMenuItemsRequest } from '~/src/store/panelMenu/menu/actions';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { roleSelector } from '~/src/store/role/selectors';
 import { Option } from '../../Components/Input/types';
+import MenuControl from './MenuControl';
+import Item from './MenuItem/MenuItem';
 
 const Modal = Loadable({
   loader: async () => import('../../Components/Modal/Modal'),
@@ -67,51 +65,20 @@ const PanelMenu: FC = () => {
       {isLoggedIn === LoggedStatus.LoggedIn && (
         <P.MenuPanelWrapper >
           <h1>Konfiguracja Menu</h1>
-          <P.SortButtonWrapper>
-            {roles.map((role, index) => (
-              <P.SortButton key={index} onClick={onSetRole(role.value)}>
-                <span>{role.label}</span>
-              </P.SortButton>
-            ))}
-          </P.SortButtonWrapper>
-          <P.AddItemButton onClick={onAddMenuItem}>
-            <P.Pen src={plus} />
-            <P.AddItemText>Dodaj nowe menu</P.AddItemText>
-          </P.AddItemButton>
+          <MenuControl
+            onAddMenuItem={onAddMenuItem}
+            onSetRole={onSetRole}
+            roles={roles}
+          />
           {menus
             .filter(({ role }) => !activeRole || role.includes(activeRole))
             .map((item, index) => (
-              <P.Box key={index}>
-                <P.BoxColumn columWidth={50} >
-                  <P.Photo src={item.image || ''} />
-                </P.BoxColumn>
-                <P.BoxColumn columWidth={250} direction={'row'}>
-                  <P.BoxInnerColumn  >
-                    <div>nazwa : </div>
-                    <div>krutka nazwa :</div>
-                    <div>pozycja :</div>
-                    <div>uryte menu :</div>
-                    <div>link :</div>
-                    <div>strona nemu :</div>
-                  </P.BoxInnerColumn>
-                  <P.BoxInnerColumn>
-                    <div>{item.name}</div>
-                    <div>{item.shortName || 'brak krótkiej nazwy'}</div>
-                    <div>{item.position}</div>
-                    <div>{item.hidden ? 'menu ukryte' : 'menu widocznne'}</div>
-                    <div>{item.link}</div>
-                    <div>{item.menuSide === MenuSide.Left ? 'strona lewa' : 'strona prawa'}</div>
-                  </P.BoxInnerColumn>
-                </P.BoxColumn>
-                <P.BoxColumn columWidth={30} direction={'column'}>
-                  <P.Button onClick={onEditMenuItem(item.id)}>
-                    <P.Pen src={edit} />
-                  </P.Button>
-                  <P.Button onClick={onRemoveMenuItem(item.id)}>
-                    <P.Pen src={minus} />
-                  </P.Button>
-                </P.BoxColumn>
-              </P.Box>
+              <Item
+                key={index}
+                menu={item}
+                onEditMenuItem={onEditMenuItem(item.id)}
+                onRemoveMenuItem={onRemoveMenuItem(item.id)}
+              />
             ))}
           {!SERVER_BUILD && (
             <Modal
