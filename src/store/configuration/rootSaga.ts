@@ -7,6 +7,7 @@ import { getRoleWatcher } from "../role/sagas";
 import { menuItemsWatcher } from "../panelMenu/menu/sagas";
 import { getUniversityWatcher } from "../university/sagas";
 import { getUserListWatcher } from '../userList/sagas';
+import messageWatcher from '../messages/sagas';
 
 export function* rootSaga() {
   yield all([
@@ -19,5 +20,6 @@ export function* rootSaga() {
     fork(menuItemsWatcher),
     fork(getUniversityWatcher),
     fork(getUserListWatcher),
+    fork(messageWatcher),
   ]);
 }

@@ -31,7 +31,7 @@ export interface Option<T> {
   label: string;
 }
 
-export type DropzoneProps = FieldRenderProps<DroppedFile> & { label: string }
+export type DropzoneProps = FieldRenderProps<DroppedFile> & { label: string; multiple: boolean }
 
 export type DropdownProps<T> = FieldRenderProps<Option<T>> & {
   options: Array<Option<T>>;

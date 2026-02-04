@@ -22,9 +22,16 @@ export const Input = styled.input`
   border-radius: 6px;
   text-align: center;
 `;
+export const TextArea = styled.textarea`
+  width: 100%;
+  height: 200px;
+  border: 1px solid gray;
+  border-radius: 6px;
+  text-align: center;
+`;
 
 export const ValidationAlert = styled.div`
-  height: 24px;
+  height: 12px;
   width: 100%;
   display: flex;
   justify-content: center;

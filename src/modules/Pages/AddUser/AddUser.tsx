@@ -13,6 +13,7 @@ import DefaultFields from "./Fields/Default";
 import { RoleType } from "~/src/store/role/constants";
 import { addPersonRequest } from "~/src/store/person/actions";
 import { FormApi } from "final-form";
+import Box from '../../Components/Box/Box';
 
 export const AddUser: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
@@ -55,11 +56,11 @@ export const AddUser: FC = () => {
               formRef.current = form;
               return (
                 <>
-                  <P.PersonBox>
+                  <Box>
                     <DefaultFields />
                     <StudentFields />
                     <AddressFields />
-                  </P.PersonBox>
+                  </Box>
                 </>
               )
             }}

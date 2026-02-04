@@ -59,8 +59,8 @@ const PanelMenu: FC = () => {
   return (
     <PageWrapper >
       <Helmet>
-        <title>System zarządzania uczelnianego</title>
-        <meta name="description" content={'to jest system zzarządzania uczelnianego'} />
+        <title>Konfiguracja manu</title>
+        <meta name="description" content={'to jest system zarządzania uczelnianego'} />
       </Helmet>
       {isLoggedIn === LoggedStatus.LoggedIn && (
         <P.MenuPanelWrapper >

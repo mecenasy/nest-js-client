@@ -4,17 +4,17 @@ import { InputFormWrapperProps } from './types';
 import * as P from './parts';
 
 interface InputWithLabelProps<T> extends InputFormWrapperProps<T> {
-   label: string;
+  label: string;
 }
 
 const InputWithLabel = <T extends any>({
-   label,
-   ...rest
+  label,
+  ...rest
 }: InputWithLabelProps<T>) => (
-   <div>
-      <P.Label>{label}</P.Label>
-      <InputFormWrapper {...rest} label={label} />
-   </div>
+  <div>
+    <P.Label>{label}</P.Label>
+    <InputFormWrapper {...rest} label={label} />
+  </div>
 );
 
 export default InputWithLabel;

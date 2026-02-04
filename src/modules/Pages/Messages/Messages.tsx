@@ -1,59 +1,70 @@
-import React, { FC } from "react";
-import { Helmet } from "react-helmet";
+import React, { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMessageListRequest } from '~/src/store/messages/actions';
+import { getMessagesList } from '~/src/store/messages/selectors';
+import { ApplicationState } from '~/src/store/configuration/constants';
 import * as P from './parts';
-import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
-import { useSelector } from "react-redux";
-import { getMenuSelector } from "~/src/store/menu/selectors";
-import MenuItem from "../../MenuItem/MenuItem";
-import { getPerson } from "~/src/store/person/selectors";
-import PersonDataRow from "../../PersonDataRow/PersonDataRow";
-import { loggedInStatusSelector } from "~/src/store/auth/selectors";
-import { LoggedStatus } from "~/src/store/auth/constants";
+import PageWrapper from '../../Components/Containers/PageWrapper/PageWrapper';
+import { Helmet } from 'react-helmet';
+import plus from '~/assets/plus.svg';
+import { replace } from 'connected-react-router';
+import MessageModal from './Modal/MessageModal';
 
-export const Messages: FC = () => {
-  const isLoggedIn = useSelector(loggedInStatusSelector);
-  const { leftSide, rightSide } = useSelector(getMenuSelector);
-  const person = useSelector(getPerson);
+const Messages: FC = () => {
+  const dispatch = useDispatch();
+  const messages = useSelector((state: ApplicationState) => getMessagesList(state));
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(getMessageListRequest(''));
+  }, [dispatch]);
+
+  const handleClick = (id?: string) => {
+    setModalOpen(true)
+    if (id) {
+      dispatch(replace({ search: `?messageId=${id}` }))
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setTimeout(() => {
+      dispatch(replace({ search: undefined }))
+    }, 200)
+  };
+
+
   return (
-    <PageWrapper pickUp >
+    <PageWrapper>
       <Helmet>
-        <title>System zarządzania uczelnianego</title>
+        <title>Wiadomości</title>
         <meta name="description" content={'to jest system zzarządzania uczelnianego'} />
       </Helmet>
-      {isLoggedIn === LoggedStatus.LoggedIn && (
-        <P.Wrapper >
-          <P.Row >
-            <P.BoxUser >
-              <P.Photo src={person?.photo || ''} />
-              <div>
-                {/* <PersonDataRow title={'Imie Nazwisko'} data={`${person.name} ${person.surname}`} />
-                <PersonDataRow title={'Wydział'} data={person?.direction} />
-                <PersonDataRow title={'Specjalność'} data={person?.specialty} />
-                <PersonDataRow title={'Numer albumu'} data={person?.album?.toString()} />
-                <PersonDataRow title={'Rok'} data={person.year} />
-                <PersonDataRow title={'Semestr'} data={person?.semester} />
-                <PersonDataRow title={'Grupa'} data={person?.group} /> */}
-              </div>
-            </P.BoxUser>
-          </P.Row>
-          <P.Row  >
-            {leftSide.filter(({ hidden }) => !hidden).map((item) => (
-              <P.Col key={item.link}>
-                <MenuItem {...item} />
-              </P.Col>
-            ))}
-          </P.Row>
-          <P.Row >
-            {rightSide.map((item) => (
-              <P.Col key={item.link}>
-                <MenuItem {...item} />
-              </P.Col>
-            ))}
-          </P.Row>
-        </P.Wrapper>
-      )}
-    </PageWrapper >
-  )
+
+      <P.PageWrapper>
+        <P.Header>Lista wiadomości</P.Header>
+        <P.AddButton
+          title="Nowa wiadomość"
+          onClick={() => handleClick()}
+          icon={plus}
+        />
+        <P.MessageList>
+          {messages.map((message) => (
+            <P.MessageRow
+              key={message.id}
+              title={message.title}
+              isReaded={message.isReaded}
+              onClick={() => handleClick(message.id)}
+            />
+          ))}
+        </P.MessageList>
+        <MessageModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      </P.PageWrapper>
+    </PageWrapper>
+  );
 };
 
-export default Messages
+export default Messages;

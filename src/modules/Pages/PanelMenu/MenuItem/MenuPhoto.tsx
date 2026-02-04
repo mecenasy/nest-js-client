@@ -8,7 +8,7 @@ interface MenuPhotoProps {
 const MenuPhoto: FC<MenuPhotoProps> = ({
   image
 }) => (
-  <P.BoxColumn columWidth={50} >
+  <P.BoxColumn columnWidth={50} >
     <P.Photo src={image || ''} />
   </P.BoxColumn>
 );

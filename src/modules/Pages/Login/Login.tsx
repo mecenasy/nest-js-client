@@ -13,6 +13,7 @@ import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { AlertType } from '../../Components/Alert/types';
 import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
+import { Button } from '../../Components/Buttons/Button';
 
 const Login: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
@@ -88,7 +89,7 @@ const Login: FC = () => {
                   type={'password'}
                   placeholder={'Hasło'}
                 />
-                <P.SubmitButton type={'submit'}>Zaloguj</P.SubmitButton>
+                <Button type={'submit'}>Zaloguj</Button>
               </>
             )
           }}

@@ -8,7 +8,8 @@ import { MenuState } from "../menu/constants";
 import { Person } from "../person/constants";
 import { MenuPanelState } from "../panelMenu/constants";
 import { UniversityState } from "../university/constants";
-import { UserList } from '../userList/constants';
+import { UserListState } from '../userList/constants';
+import { MessageState } from '../messages/constants';
 
 export interface ApplicationState {
   auth: AuthState;
@@ -18,7 +19,8 @@ export interface ApplicationState {
   menu: MenuState;
   panelMenu: MenuPanelState;
   university: UniversityState;
-  userList: UserList;
+  userList: UserListState;
+  messageList: MessageState;
 }
 
 export type ConfigureStore = (

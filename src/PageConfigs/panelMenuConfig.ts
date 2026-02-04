@@ -9,12 +9,11 @@ const PanelMenu = Loadable({
   loading: Loader,
 });
 
-export const actionCreator: ActionCreatorFactory = ({ isMount, isServer, isHydrated }) => {
-  return [
-    Boolean((isMount && isHydrated) || isServer) && getRoleRequest(),
-    Boolean((isMount && isHydrated) || isServer) && getMenuItemsRequest(),
-  ]
-}
+export const actionCreator: ActionCreatorFactory = ({ isMount, isServer, isHydrated }) => [
+  Boolean((isMount && isHydrated) || isServer) && getRoleRequest(),
+  Boolean((isMount && isHydrated) || isServer) && getMenuItemsRequest(),
+]
+
 
 export const panelMenuConfig: PageConfig = {
   url: '/panel_menu',

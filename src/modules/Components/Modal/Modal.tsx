@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import getOrCreateReactPortalsDiv from '~/utils/portalContainer';
-import ModalBase, { } from 'react-modal';
+import ModalBase, {} from 'react-modal';
 import * as P from './parts';
 import close from '~/assets/cross.svg';
 
@@ -53,7 +53,7 @@ const Modal: FC<ModalProps> = ({
     >
       <P.TitleWrapper>
         <P.Title>{title}</P.Title>
-        <P.Button onClick={onClose}><P.CLoseIcon src={close} /></P.Button>
+        <P.Button onClick={onClose} icon={close} />
       </P.TitleWrapper>
       {children}
     </ModalBase>

@@ -5,19 +5,17 @@ import { getMenuRequest } from "../store/menu/actions";
 import { getPersonRequest } from '../store/person/actions';
 
 const Menu = Loadable({
-   loader: async () => import('../Pages/MenuPage'),
-   loading: Loader,
+  loader: async () => import('../Pages/MenuPage'),
+  loading: Loader,
 });
 
-export const actionCreator: ActionCreatorFactory = ({
-   isMount, isHydrated, isServer,
-}) => [
-      Boolean((isHydrated && isMount) || isServer) && getMenuRequest(),
-      Boolean((isHydrated && isMount) || isServer) && getPersonRequest(),
-   ];
+export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }) => [
+  Boolean((isHydrated && isMount) || isServer) && getMenuRequest(),
+  Boolean((isHydrated && isMount) || isServer) && getPersonRequest(),
+];
 
 export const menuConfig: PageConfig = {
-   extrudeUrl: ['/login', '/logout', '/change_password'],
-   url: '/',
-   Component: Menu,
+  extrudeUrl: ['/login', '/logout', '/change_password'],
+  url: '/',
+  Component: Menu,
 }

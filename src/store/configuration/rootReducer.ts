@@ -9,6 +9,7 @@ import { panelMenuReducer } from "../panelMenu/reducer";
 import { ApplicationState } from "./constants";
 import { universityReducer } from "../university/reducer";
 import { userListReducer } from '../userList/reducer';
+import { messageReducer } from '../messages/reducer';
 
 export const rootReducerFactory = (history: History) => (
   combineReducers<ApplicationState>({
@@ -19,6 +20,7 @@ export const rootReducerFactory = (history: History) => (
     person: personReducer,
     panelMenu: panelMenuReducer,
     university: universityReducer,
-    userList: userListReducer
+    userList: userListReducer,
+    messageList: messageReducer
   })
 );

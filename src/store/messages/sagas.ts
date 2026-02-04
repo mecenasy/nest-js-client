@@ -1,0 +1,79 @@
+import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { AxiosResponse } from 'axios';
+import {
+  MessageActionType,
+  MessageList,
+  Message,
+  MessageAction,
+} from './constants';
+import {
+  sendMessageSuccess,
+  sendMessageFail,
+  getMessageListSuccess,
+  getMessageListFail,
+  getMessageSuccess,
+  getMessageFail,
+  getFileSuccess,
+  getFileFail,
+} from './actions';
+import { getFile, getMessage, getMessages, sendMessage } from '~/src/api/messages/requests';
+
+function* sendMessageWorker(action: ExtractByType<MessageAction, MessageActionType.SendMessageRequest>) {
+  try {
+    yield call(sendMessage, action.payload);
+    yield put(sendMessageSuccess());
+  } catch (error) {
+    yield put(sendMessageFail());
+  }
+}
+
+function* getMessageListWorker(action: ExtractByType<MessageAction, MessageActionType.GetMessageListRequest>) {
+  try {
+    const { data }: AxiosResponse<MessageList> = yield call(getMessages, action.payload);
+    yield put(getMessageListSuccess(data));
+  } catch (error) {
+    yield put(getMessageListFail());
+  }
+}
+
+function* getMessageWorker(action: ExtractByType<MessageAction, MessageActionType.GetMessageRequest>) {
+  try {
+    const response: AxiosResponse<Message> = yield call(getMessage, action.payload);
+    yield put(getMessageSuccess(response.data));
+  } catch (error) {
+    yield put(getMessageFail());
+  }
+}
+
+function* getFileWorker(action: ExtractByType<MessageAction, MessageActionType.GetFileRequest>) {
+  console.log("🚀 ~ getFileWorker ~ action:", action)
+  try {
+
+    const fileName = action.file.name;
+    const response: AxiosResponse<Blob> = yield call(getFile, action.file.path);
+    const blob = new Blob([response.data]);
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    yield put(getFileSuccess());
+  } catch (error) {
+    console.log("🚀 ~ getFileWorker ~ error:", error)
+    yield put(getFileFail());
+  }
+}
+
+export default function* messageWatcher() {
+  yield all([
+    takeLatest(MessageActionType.SendMessageRequest, sendMessageWorker),
+    takeLatest(MessageActionType.GetMessageListRequest, getMessageListWorker),
+    takeLatest(MessageActionType.GetMessageRequest, getMessageWorker),
+    takeLatest(MessageActionType.GetFileRequest, getFileWorker),
+  ]);
+}

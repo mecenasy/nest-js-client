@@ -7,6 +7,7 @@ import { getDirectionSelector, getGroupSelector, getSpecialtySelector, getYearSe
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { Direction, Group, Specialty, Year } from '~/src/store/university/constants';
+import Dropdown from '~/src/modules/Components/Input/Dropdown';
 
 
 const StudentFields: FC = () => {
@@ -40,26 +41,26 @@ const StudentFields: FC = () => {
       <P.Title>Informacje studenckie</P.Title>
       <Field
         name={PersonField.Direction}
-        component={P.Dropdown}
+        component={Dropdown}
         options={getOption(direction)}
         placeholder={'Wydział'}
       />
       <Field
         name={PersonField.Specialty}
-        component={P.Dropdown}
+        component={Dropdown}
         options={getOption(specialty)}
         placeholder={'Specjalność'}
       />
       <Field
         name={PersonField.Year}
-        component={P.Dropdown}
+        component={Dropdown}
         placeholder={'Rok'}
         options={getOption(year)}
       />
 
       <Field
         name={PersonField.Group}
-        component={P.Dropdown}
+        component={Dropdown}
         placeholder={'Grupa'}
         options={getOption(group)}
       />
