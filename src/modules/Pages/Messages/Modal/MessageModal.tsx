@@ -5,7 +5,7 @@ import Modal from '../../../Components/Modal/Modal';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { getMessageById } from '~/src/store/messages/selectors';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 interface MessageModalProps {
   onClose: () => void;
@@ -13,7 +13,7 @@ interface MessageModalProps {
 }
 
 const MessageModal: FC<MessageModalProps> = ({ isOpen, onClose }) => {
-  const { location: { search } } = useHistory()
+  const { search } = useLocation()
 
   const message = useSelector(
     (state: ApplicationState) => getMessageById(state, new URLSearchParams(search).get('messageId'))

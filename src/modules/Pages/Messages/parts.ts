@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import Box from '../../Components/Box/Box';
-import WhiteButton, { WhiteButtonAsLink } from '../../Components/Buttons/IconButton';
-import { animated } from 'react-spring';
+import WhiteButton from '../../Components/Buttons/IconButton';
 import DropzoneBase from '../../Components/Input/Dropzone';
 import * as P from '../../Components/Input/parts';
 

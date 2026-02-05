@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
 import * as P from './parts';
-import { useSpring } from 'react-spring';
+import { useSpring } from '@react-spring/web'
 import close from '~/assets/cross.svg';
 import MessageForm from '../Form/MessageForm';
 import MessageItem, { MessageProps } from './MessageItem';
@@ -37,7 +37,7 @@ const MessageView: FC<Omit<MessageProps, 'setId'>> = ({ message }) => {
       <div>
         <MessageItem onScroll={onScroll} setId={setId} message={message} />
       </div>
-      <P.ReplyMessageWrapper style={{ ...style, }}>
+      <P.ReplyMessageWrapper style={style}>
         <P.ReplyMessage>
           <P.Button onClick={() => setId('')} icon={close} />
           <MessageForm messageId={id} onSuccess={onSuccess} />

@@ -3,7 +3,7 @@ import * as P from './parts';
 import { Field } from 'react-final-form';
 import createDecorator from 'final-form-calculate';
 import { MenuItemAction, MenuItemData, MenuItemActionType, MenuItemField } from '~/src/store/panelMenu/menu/constants';
-import { SetPayload } from '../../Components/FormWrapper/FormWrapper';
+import FormWrapper, { SetPayload, GetPayload } from '../../Components/FormWrapper/FormWrapper';
 import InputWithLabel from '../../Components/Input/InputWithLabel';
 import Toggle from '../../Components/Input/Toggle';
 import Dropzone from '../../Components/Input/Dropzone';
@@ -39,9 +39,9 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
   const setPayload: SetPayload<MenuItemAction, MenuItemData> = (action, value) => {
     return setMenuItemsRequest(value)
   }
-  const geyPayload: SetPayload<MenuItemAction, MenuItemData> = (action, value) => {
+  const getPayload: GetPayload<MenuItemAction> = () => {
     onClose();
-    return action
+    return undefined
   }
 
   const menuSideDecorator = useCallback(createDecorator({
@@ -53,18 +53,18 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
 
   return (
     <div>
-      <P.FromWrapper
+      <FormWrapper<MenuItemAction, MenuItemData>
         start={MenuItemActionType.SetMenuItemsRequest}
         resolve={MenuItemActionType.SetMenuItemsSuccess}
         reject={MenuItemActionType.SetMenuItemsFail}
         setPayload={setPayload}
-        getPayload={geyPayload}
+        getPayload={getPayload}
 
         initialValues={initialValues || defaultValues}
         decorators={[menuSideDecorator]}
         validate={validateMenuItem}
       >
-        {(() => (
+        {() => (
           <>
             <Field
               name={MenuItemField.Name}
@@ -131,8 +131,8 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
             />
             <P.SubmitButton type={'submit'}>zapisz</P.SubmitButton>
           </>
-        ))}
-      </P.FromWrapper>
+        )}
+      </FormWrapper>
     </div>
   )
 };

@@ -3,7 +3,7 @@ import * as P from './parts';
 import { DropdownProps, SelectProps } from './types';
 import Select from 'react-select';
 
-export const SelectComponent = <T extends any>({ onChange, value, label, className, options, ...rest }: SelectProps<T>) => (
+export const SelectComponent = <T extends string | number | boolean | null | undefined | object>({ onChange, value, label, className, options, ...rest }: SelectProps<T>) => (
   <P.DropdownWrapper className={className}>
     <P.Label>{label}</P.Label>
     <Select
@@ -16,7 +16,7 @@ export const SelectComponent = <T extends any>({ onChange, value, label, classNa
   </P.DropdownWrapper>
 );
 
-const Dropdown = <T extends any>({ input: { onChange, value }, label, options, className, ...rest }: DropdownProps<T>) => (
+const Dropdown = <T extends string | number | boolean | null | undefined | object>({ input: { onChange, value }, label, options, className, ...rest }: DropdownProps<T>) => (
   <P.DropdownWrapper className={className}>
     <P.Label>{label}</P.Label>
     <Select

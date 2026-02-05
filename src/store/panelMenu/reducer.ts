@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { roleReducer } from '../role/reducer';
 import { menuItemsReducer } from './menu/reducers';
-import { MenuPanelState } from './constants';
+import { MenuPanelReducer } from './constants';
 
-export const panelMenuReducer = combineReducers<MenuPanelState>({
+export const panelMenuReducer = combineReducers<MenuPanelReducer>({
   role: roleReducer,
   menu: menuItemsReducer,
 })

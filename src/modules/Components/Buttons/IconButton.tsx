@@ -46,11 +46,11 @@ const styles = css< { isCenter?: boolean }>`
 `;
 
 
-const Button = styled.button`
+const Button = styled.button<{ isCenter?: boolean }>`
   ${styles}
 `;
 
-const Link = styled.a`
+const Link = styled.a<{ isCenter?: boolean }>`
   ${styles}
 `;
 

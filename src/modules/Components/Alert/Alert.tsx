@@ -14,7 +14,7 @@ const Alert: FC<AlertProps> = ({
   type,
 }) => {
   return (
-    <P.AlertWrapper className={className} alertType={type}>
+    <P.AlertWrapper className={className} $alertType={type}>
       {message}
     </P.AlertWrapper>
   )

@@ -1,19 +1,20 @@
-import React, { FC } from 'react';
+import React from 'react';
 import * as P from './parts';
 
 interface PageWrapperProps {
-   pickUp?: boolean;
+  pickUp?: boolean;
+  children?: React.ReactNode;
 }
 
-const PageWrapper: FC<PageWrapperProps> = ({
-   children,
-   pickUp = false,
-}) => (
-   <P.Wrapper pickUp={pickUp}>
-      <P.InnerWrapper>
-         {children}
-      </P.InnerWrapper>
-   </P.Wrapper>
+const PageWrapper = ({
+  children,
+  pickUp = false,
+}: PageWrapperProps) => (
+  <P.Wrapper $pickUp={pickUp}>
+    <P.InnerWrapper>
+      {children}
+    </P.InnerWrapper>
+  </P.Wrapper>
 );
 
 export default PageWrapper;

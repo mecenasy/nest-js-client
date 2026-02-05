@@ -1,15 +1,16 @@
 
-import React, { FC } from 'react';
+import React from 'react';
 import { BoxWithShadow } from './parts';
 
 interface BoxWithShadowProps {
   className?: string;
+  children?: React.ReactNode;
 }
 
-const Box: FC<BoxWithShadowProps> = ({
+const Box = ({
   children,
   className,
-}) => (
+}: BoxWithShadowProps) => (
   <BoxWithShadow className={className}>
     {children}
   </BoxWithShadow>

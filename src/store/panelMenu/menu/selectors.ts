@@ -6,7 +6,7 @@ import { MenuItem, MenuItemData, MenuItemField } from "./constants";
 
 export const getMenuItems = (state: ApplicationState): MenuItem[] => state.panelMenu.menu;
 
-export const getMenuItemById = createSelector<ApplicationState, string, MenuItem[], string, MenuItemData | undefined>(
+export const getMenuItemById = createSelector(
   getMenuItems,
   (_: ApplicationState, id: string) => id,
   (menus: MenuItem[], id: string) => {

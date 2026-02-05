@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import getOrCreateReactPortalsDiv from '~/utils/portalContainer';
 import ModalBase, {} from 'react-modal';
 import * as P from './parts';
@@ -7,18 +7,18 @@ import close from '~/assets/cross.svg';
 interface ModalProps {
   onClose: () => void;
   isOpen: boolean;
-  children: JSX.Element;
+  children: React.ReactNode;
   title: string;
 }
 
 ModalBase.setAppElement('#app');
 
-const Modal: FC<ModalProps> = ({
+const Modal = ({
   onClose,
   isOpen,
   children,
   title,
-}) => {
+}: ModalProps) => {
   if (SERVER_BUILD) {
     throw new Error('Component must be rendered only client side');
   }

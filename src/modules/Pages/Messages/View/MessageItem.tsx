@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import * as P from './parts';
-import { animated, useSpring } from 'react-spring';
+import { animated, useSpring } from '@react-spring/web'
 import { File, Message } from '~/src/store/messages/constants';
 import fileIcon from '~/assets/document.svg';
 import replay from '~/assets/reply-all.svg';
@@ -80,7 +80,7 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   if (!message) {
     return null;
   }
-  const { content, from, title, createdAt, to, id, files, replies } = message
+  const { content, from, title, createdAt, to, files, replies } = message
 
   return (
     <>
@@ -99,7 +99,7 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
                 <P.Button key={file.name} icon={fileIcon} onClick={onDownload(file)} />
               )}
             </P.FileButtons>
-            <P.Time>Wysłano: {createdAt}</P.Time>
+            <P.Time>Wysłano: {new Date(createdAt).toLocaleDateString()}</P.Time>
           </P.FooterWrapper>
         </P.ContentWrapper>
       </animated.div>

@@ -7,8 +7,8 @@ import * as P from './parts';
 import PageWrapper from '../../Components/Containers/PageWrapper/PageWrapper';
 import { Helmet } from 'react-helmet';
 import plus from '~/assets/plus.svg';
-import { replace } from 'connected-react-router';
 import MessageModal from './Modal/MessageModal';
+import { replace } from 'redux-first-history';
 
 const Messages: FC = () => {
   const dispatch = useDispatch();
@@ -22,14 +22,14 @@ const Messages: FC = () => {
   const handleClick = (id?: string) => {
     setModalOpen(true)
     if (id) {
-      dispatch(replace({ search: `?messageId=${id}` }))
+      replace({ search: `?messageId=${id}` });
     }
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setTimeout(() => {
-      dispatch(replace({ search: undefined }))
+      replace({ search: undefined });
     }, 200)
   };
 

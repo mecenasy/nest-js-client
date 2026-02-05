@@ -1,17 +1,20 @@
 import { Task } from "@redux-saga/types";
-import { RouterState } from "connected-react-router";
+import { RouterState } from "redux-first-history";
 import { History } from "history";
-import { AnyAction, Reducer, Store } from "redux";
+import { UnknownAction, Reducer, Store } from "redux";
 import { AuthState } from "../auth/constants";
-import { CounterState } from "../counter/constants";
-import { MenuState } from "../menu/constants";
-import { Person } from "../person/constants";
-import { MenuPanelState } from "../panelMenu/constants";
-import { UniversityState } from "../university/constants";
-import { UserListState } from '../userList/constants';
-import { MessageState } from '../messages/constants';
+import { CounterState, CounterAction } from "../counter/constants";
+import { MenuState, MenuAction } from "../menu/constants";
+import { Person, PersonAction } from "../person/constants";
+import { MenuPanelState, } from "../panelMenu/constants";
+import { UniversityState, UniversityAction } from "../university/constants";
+import { UserListState, UserListAction } from '../userList/constants';
+import { MessageState, MessageAction } from '../messages/constants';
+import { panelMenuReducer } from '../panelMenu/reducer';
+import { authCombinedReducer } from '../auth/reducers';
 
 export interface ApplicationState {
+  didHydrated: boolean;
   auth: AuthState;
   counter: CounterState;
   person: Person;
@@ -23,13 +26,26 @@ export interface ApplicationState {
   messageList: MessageState;
 }
 
+export interface ApplicationReducer extends Record<keyof ApplicationState, any> {
+  didHydrated: Reducer<boolean>;
+  auth: typeof authCombinedReducer;
+  counter: Reducer<CounterState, CounterAction>;
+  person: Reducer<Person, PersonAction>;
+  router: Reducer<RouterState, UnknownAction>;
+  menu: Reducer<MenuState, MenuAction>;
+  panelMenu: typeof panelMenuReducer;
+  university: Reducer<UniversityState, UniversityAction>;
+  userList: Reducer<UserListState, UserListAction>;
+  messageList: Reducer<MessageState, MessageAction>;
+}
+
 export type ConfigureStore = (
   initialState: ApplicationState | undefined,
   history: History,
-  rootReducerFactory: (history: History) => Reducer<ApplicationState>,
+  rootReducerFactory: (routerReducer: Reducer<RouterState>) => any,
   rootSaga: () => Iterator<any>,
 ) => Promise<{
-  store: Store<ApplicationState, AnyAction>,
+  store: Store<ApplicationState, UnknownAction>,
   rootSagaTask: Task;
 }>;
 

@@ -17,7 +17,7 @@ export function* getRoleWorker() {
       const { data }: { data: string[] } = yield call(getRole);
 
       yield put(getRoleSuccess(data));
-    } catch (error) {
+    } catch {
       yield put(getRoleFail(''));
     }
   }

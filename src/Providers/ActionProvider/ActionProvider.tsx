@@ -1,21 +1,25 @@
-import React, { createContext, FC, useCallback } from "react";
-import { AnyAction } from "redux";
+import React, { createContext, useCallback } from "react";
+import { UnknownAction } from "redux";
+
+interface ActionProviderProps {
+  children?: React.ReactNode
+  actions: UnknownAction[]
+}
 
 export const ActionContext = createContext({})
+export const ActionProvider = (
+  { actions,
+    children
+  }: ActionProviderProps) => {
+  const setActions = useCallback((a: UnknownAction[]) => {
+    if (actions) {
+      actions.push(...a)
+    }
+  }, [actions])
 
-export const ActionProvider: FC<{ actions: AnyAction[] }> = (
-   { actions,
-      children
-   }) => {
-   const setActions = useCallback((a: AnyAction[]) => {
-      if (actions) {
-         actions.push(...a)
-      }
-   }, [actions])
-
-   return (
-      <ActionContext.Provider value={{ setActions }} >
-         {children}
-      </ActionContext.Provider>
-   )
+  return (
+    <ActionContext.Provider value={{ setActions }} >
+      {children}
+    </ActionContext.Provider>
+  )
 }

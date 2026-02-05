@@ -1,34 +1,33 @@
-import { ConnectedRouter } from 'connected-react-router';
+import React from 'react'
+import { HistoryRouter as RouterSelector } from "redux-first-history/rr6";
+import { StaticRouter } from "react-router-dom";
 import { History } from 'history';
-import React, { FC } from 'react';
-import { StaticRouter, StaticRouterContext } from "react-router";
 
 export interface RouterProps {
-   history: History;
-   url?: string;
-   routerContext?: StaticRouterContext;
+  history: History;
+  url?: string;
+  children: React.ReactNode
 }
 
 
-const Router: FC<RouterProps> = ({
-   children,
-   history,
-   routerContext,
-   url,
-}) => {
-   if (SERVER_BUILD) {
-      return (
-         <StaticRouter location={url} context={routerContext}>
-            {children}
-         </StaticRouter>
-      );
-   }
+const Router = ({
+  children,
+  history,
+  url,
+}: RouterProps) => {
+  if (SERVER_BUILD) {
+    return (
+      <StaticRouter location={url ?? ''}>
+        {children}
+      </StaticRouter>
+    );
+  }
 
-   return (
-      <ConnectedRouter history={history}>
-         {children}
-      </ConnectedRouter>
-   );
+  return (
+    <RouterSelector history={history}>
+      {children}
+    </RouterSelector>
+  );
 };
 
 export default Router;

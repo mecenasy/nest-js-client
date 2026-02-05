@@ -1,7 +1,7 @@
 
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useContext, useRef, useState } from 'react';
 import { Field } from 'react-final-form';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import * as P from './parts';
 import { validateLoginForm } from './helpers';
@@ -13,11 +13,13 @@ import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
 import { Button } from '../../Components/Buttons/Button';
+import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
 const Login: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
   const [isPasswordChanged, setChangedPassword] = useState(false);
-  const formRef = useRef<FormApi>();
+  const formRef = useRef<FormApi>(null);
+  const severContext = useContext(ServerStatusContext);
 
   const onSubmit = (action: AuthAction, { oldPassword, newPassword }: ChangePasswordData) => {
     return changePasswordRequest(newPassword, oldPassword);
@@ -36,7 +38,11 @@ const Login: FC = () => {
   };
 
   if (isLoggedIn === LoggedStatus.LoggedOut || isPasswordChanged) {
-    return <Redirect to={'/'} />
+    if (severContext) {
+      severContext.url = '/'
+      return null;
+    }
+    return <Navigate to={'/'} replace />
   }
 
   if (isLoggedIn === LoggedStatus.Unknown) {

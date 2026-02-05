@@ -1,7 +1,7 @@
 
-import React, { FC, useRef } from 'react';
+import React, { FC, useContext, useRef } from 'react';
 import { Field } from 'react-final-form';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import * as P from './parts';
 import { validateLoginForm } from './helpers';
@@ -14,11 +14,13 @@ import { AlertType } from '../../Components/Alert/types';
 import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
 import { Button } from '../../Components/Buttons/Button';
+import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
 const Login: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
   const isDefaultPassword = useSelector(getIsDefaultPassword)
-  const formRef = useRef<FormApi>();
+  const formRef = useRef<FormApi>(null);
+  const severContext = useContext(ServerStatusContext);
 
   const onSubmit = (action: AuthAction, { password, user }: LoginData) => {
     return loginRequest(user, password);
@@ -43,7 +45,13 @@ const Login: FC = () => {
   if (isLoggedIn === LoggedStatus.LoggedIn) {
     const redirectPath = isDefaultPassword ? '/change_password' : '/';
 
-    return <Redirect to={redirectPath} />
+    console.log("🚀 ~ Login ~ severContext:", severContext)
+    if (severContext) {
+      severContext.url = redirectPath
+      return null;
+    }
+
+    return <Navigate to={redirectPath} replace />
   }
 
   return (

@@ -22,7 +22,7 @@ function* sendMessageWorker(action: ExtractByType<MessageAction, MessageActionTy
   try {
     yield call(sendMessage, action.payload);
     yield put(sendMessageSuccess());
-  } catch (error) {
+  } catch {
     yield put(sendMessageFail());
   }
 }
@@ -31,7 +31,7 @@ function* getMessageListWorker(action: ExtractByType<MessageAction, MessageActio
   try {
     const { data }: AxiosResponse<MessageList> = yield call(getMessages, action.payload);
     yield put(getMessageListSuccess(data));
-  } catch (error) {
+  } catch {
     yield put(getMessageListFail());
   }
 }
@@ -40,13 +40,12 @@ function* getMessageWorker(action: ExtractByType<MessageAction, MessageActionTyp
   try {
     const response: AxiosResponse<Message> = yield call(getMessage, action.payload);
     yield put(getMessageSuccess(response.data));
-  } catch (error) {
+  } catch {
     yield put(getMessageFail());
   }
 }
 
 function* getFileWorker(action: ExtractByType<MessageAction, MessageActionType.GetFileRequest>) {
-  console.log("🚀 ~ getFileWorker ~ action:", action)
   try {
 
     const fileName = action.file.name;
@@ -63,8 +62,7 @@ function* getFileWorker(action: ExtractByType<MessageAction, MessageActionType.G
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
     yield put(getFileSuccess());
-  } catch (error) {
-    console.log("🚀 ~ getFileWorker ~ error:", error)
+  } catch {
     yield put(getFileFail());
   }
 }

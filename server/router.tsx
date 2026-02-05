@@ -2,7 +2,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import React from 'react';
 import ReactDomServer from 'react-dom/server';
 import { Helmet } from 'react-helmet';
-import { StaticRouterContext } from 'react-router';
 import { ServerStyleSheet } from 'styled-components';
 import { Capture } from '@react-loadable/revised';
 import { END } from '@redux-saga/core';
@@ -19,9 +18,10 @@ import { rootReducerFactory } from '../src/store/configuration/rootReducer';
 import { rootSaga } from '../src/store/configuration/rootSaga';
 import { history } from '../utils/history/history';
 import { ActionProvider } from '../src/Providers/ActionProvider/ActionProvider';
-import { AnyAction } from 'redux';
+import { UnknownAction } from 'redux';
 import { setAuthorizationProvider } from '~/src/api/api';
 import { logoutSuccess, refreshTokenRequest } from '~/src/store/auth/actions';
+import { ServerStatusContext, Status } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
 const router = express.Router();
 const DEV = process.env.NODE_ENV !== 'production';
@@ -37,26 +37,27 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
     setAuthorizationProvider(() => req.cookies['jwt'])
   }
 
-  const context: StaticRouterContext = {};
+  const context: Status = {};
   const modules: string[] = [];
   const sheet = new ServerStyleSheet();
 
   // pre render
   const { store, rootSagaTask } = await configureStore(undefined, history, rootReducerFactory, rootSaga);
 
-  const actions: AnyAction[] = [];
+  const actions: UnknownAction[] = [];
 
   ReactDomServer.renderToString(
-    <ActionProvider actions={actions}>
-      <AppProvider
-        store={store}
-        url={req.url}
-        history={history}
-        routerContext={context}
-      >
-        <App />
-      </AppProvider>
-    </ActionProvider >
+    <ServerStatusContext.Provider value={context}>
+      <ActionProvider actions={actions}>
+        <AppProvider
+          store={store}
+          url={req.url}
+          history={history}
+        >
+          <App />
+        </AppProvider>
+      </ActionProvider >
+    </ServerStatusContext.Provider>
   );
 
   if (req.cookies['jwt']) {
@@ -102,30 +103,33 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
   //final render
   const app = (
     <Capture report={getModules(modules)} >
-      <AppProvider
-        defaultResponsive={{
-          isMobile,
-          isTablet,
-          isDesktop,
-        }}
-        store={store}
-        url={req.url}
-        history={history}
-        routerContext={context}
-      >
-        <App />
-      </AppProvider>
+      <ServerStatusContext.Provider value={context}>
+        <AppProvider
+          defaultResponsive={{
+            defaultState: {
+              isMobile,
+              isTablet,
+              isDesktop,
+            }
+          }}
+          store={store}
+          url={req.url}
+          history={history}
+        >
+          <App />
+        </AppProvider>
+      </ServerStatusContext.Provider>
     </Capture >
   );
 
-  const { url: redirectUrl, statusCode } = context;
-
-  if (redirectUrl) {
-    res.redirect(statusCode || 301, redirectUrl);
-    return;
-  }
 
   const body = ReactDomServer.renderToString(sheet.collectStyles(app));
+  const { url: redirectUrl, status } = context;
+
+  if (redirectUrl) {
+    res.redirect(status || 301, redirectUrl);
+    return;
+  }
 
   const metaTags = Helmet.renderStatic();
   let bundlesScripts: ReturnType<typeof getBundles> = { assets: [], prefetch: [], preload: [] };

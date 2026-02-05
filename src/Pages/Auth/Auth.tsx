@@ -1,21 +1,29 @@
-import React, { FC } from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { LoggedStatus } from '../../store/auth/constants';
 import { loggedInStatusSelector } from '../../store/auth/selectors';
+import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
-const Auth: FC = () => {
-   const isLoggedIn = useSelector(loggedInStatusSelector);
-   const location = useLocation();
-   const loginPath = '/login';
+const Auth = () => {
+  const isLoggedIn = useSelector(loggedInStatusSelector);
+  const severContext = useContext(ServerStatusContext);
 
-   if (isLoggedIn === LoggedStatus.LoggedIn
-      || isLoggedIn === LoggedStatus.Unknown
-      || location.pathname === loginPath) {
-      return null;
-   }
+  const location = useLocation();
+  const loginPath = '/login';
 
-   return <Redirect to={loginPath} />;
+  if (isLoggedIn === LoggedStatus.LoggedIn
+    || isLoggedIn === LoggedStatus.Unknown
+    || location.pathname === loginPath) {
+    return null;
+  }
+
+  if (severContext) {
+    severContext.url = loginPath
+    return null;
+  }
+
+  return <Navigate to={loginPath} replace />;
 };
 
 export default Auth;

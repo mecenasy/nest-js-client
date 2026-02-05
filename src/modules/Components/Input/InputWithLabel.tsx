@@ -7,7 +7,7 @@ interface InputWithLabelProps<T> extends InputFormWrapperProps<T> {
   label: string;
 }
 
-const InputWithLabel = <T extends any>({
+const InputWithLabel = <T extends string | number | boolean | null | undefined | object>({
   label,
   ...rest
 }: InputWithLabelProps<T>) => (

@@ -1,5 +1,5 @@
 import { Task } from '@redux-saga/types';
-import { LOCATION_CHANGE } from 'connected-react-router';
+import { LOCATION_CHANGE } from 'redux-first-history';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest, apply } from 'redux-saga/effects';
 import cookie from 'js-cookie';
 import { loginUser, logoutUser, refreshUserToken, changePasswordUser } from '../../api/auth/requests';
@@ -33,7 +33,7 @@ export function* initialAuth() {
     } else {
       yield put(A.logoutSuccess());
     }
-  } catch (error) {
+  } catch {
     yield put(A.logoutSuccess());
 
   }

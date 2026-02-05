@@ -11,7 +11,7 @@ export const Textarea: FC<InputProps> = (props) => (
   <P.TextArea {...props} />
 );
 
-export const InputFormWrapper = <T extends any>({ input, meta, inputType = InputType.all, ...rest }: InputFormWrapperProps<T>) => (
+export const InputFormWrapper = <T extends string | number | boolean | null | undefined | object>({ input, meta, inputType = InputType.all, ...rest }: InputFormWrapperProps<T>) => (
   <>
     {inputType !== InputType.onlyError && (
       <>

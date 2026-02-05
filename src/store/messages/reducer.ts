@@ -1,4 +1,3 @@
-import { Reducer } from 'redux';
 import { MessageState, MessageAction, MessageActionType, initialState } from './constants';
 
 export const messageReducer = (state: MessageState = initialState, action: MessageAction): MessageState => {

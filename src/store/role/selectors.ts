@@ -38,7 +38,7 @@ export const roleOption = (role: string) => {
   }
 }
 
-export const roleSelector = createSelector<ApplicationState, string[], Option<string>[]>(
+export const roleSelector = createSelector(
   getRoles,
   rolesOptions,
 )

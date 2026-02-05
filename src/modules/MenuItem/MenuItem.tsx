@@ -4,40 +4,38 @@ import { Menu } from '../../store/menu/constants';
 import * as P from './parts';
 
 interface MenuItem extends Menu {
-   onClick?: () => void;
-   asButton?: boolean;
-   isSmall?: boolean;
-   forceShow?: boolean;
+  onClick?: () => void;
+  asButton?: boolean;
+  isSmall?: boolean;
+  forceShow?: boolean;
 }
 
 const MenuItem: FC<MenuItem> = ({
-   asButton,
-   image,
-   hidden,
-   link,
-   name,
-   onClick,
-   isSmall = false,
-   forceShow = false,
+  asButton,
+  image,
+  hidden,
+  link,
+  name,
+  onClick,
+  isSmall = false,
+  forceShow = false,
 }) => {
-   const { isMobile } = useContext(ResponsiveContext);
+  const { isMobile } = useContext(ResponsiveContext);
 
-   return (
-      <P.Link
-         {...(asButton
-            ? { as: 'button' }
-            : { to: link, }
-         )}
-         onClick={onClick}
-         isHidden={Boolean(hidden && !forceShow)}
-         isSmall={isSmall}
-      >
-         <P.Box >
-            <P.Image src={image} />
-            {!isSmall && !isMobile && <P.Text>{name}</P.Text>}
-         </P.Box>
-      </P.Link >
-   )
+  return (
+    <P.Link
+      to={link}
+      as={asButton ? 'button' : undefined}
+      onClick={onClick}
+      $isHidden={Boolean(hidden && !forceShow)}
+      $isSmall={isSmall}
+    >
+      <P.Box >
+        <P.Image src={image} />
+        {!isSmall && !isMobile && <P.Text>{name}</P.Text>}
+      </P.Box>
+    </P.Link >
+  )
 };
 
 export default MenuItem;

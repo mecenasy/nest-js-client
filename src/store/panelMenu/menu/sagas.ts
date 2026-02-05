@@ -29,7 +29,7 @@ export function* getMenuWorker() {
 export function* setMenuWorker(action: MenuItemAction) {
   if (action.type === MenuItemActionType.SetMenuItemsRequest) {
     try {
-      const { data } = yield call(addMenuItem, action.item);
+      yield call(addMenuItem, action.item);
 
       yield put(setMenuItemsSuccess());
 
@@ -43,7 +43,7 @@ export function* setMenuWorker(action: MenuItemAction) {
 export function* removeMenuWorker(action: MenuItemAction) {
   if (action.type === MenuItemActionType.RemoveMenuItemsRequest) {
     try {
-      const { data } = yield call(removeMenuItem, action.id);
+      yield call(removeMenuItem, action.id);
 
       yield put(removeMenuItemsSuccess());
 

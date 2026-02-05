@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { addPerson, getPersonByUserId } from '../../api/person/requests';
 import { getPersonSuccess, getPersonFail, addPersonSuccess } from './actions';
-import { PersonAction, Person, PersonActionType, PersonFormData } from './constants';
+import { PersonAction, Person, PersonActionType } from './constants';
 import { getUserId } from '../auth/selectors';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
@@ -15,9 +15,7 @@ export function* getPersonWorker() {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-
     try {
-
       const personId: string = yield select(getUserId);
       try {
         if (personId) {
@@ -26,11 +24,11 @@ export function* getPersonWorker() {
 
           yield put(getPersonSuccess(personId, data));
         }
-      } catch (error) {
+      } catch {
         yield put(getPersonFail(personId, ''));
       }
 
-    } catch (error) {
+    } catch {
 
     }
   }
@@ -48,7 +46,7 @@ export function* addPersonWorker(action: PersonAction) {
 
 
       yield put(addPersonSuccess(data));
-    } catch (error) {
+    } catch {
       yield put(getPersonFail('action.person?.id', ''));
     }
   }

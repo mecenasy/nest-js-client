@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import WhiteButton from '../../../Components/Buttons/IconButton';
-import { animated } from 'react-spring';
+import { animated } from '@react-spring/web'
 import DropzoneBase from '../../../Components/Input/Dropzone';
 import * as P from '../../../Components/Input/parts';
 

@@ -9,12 +9,12 @@ export const loggedInStatusSelector = ({ auth }: ApplicationState): LoggedStatus
 export const tokenExpiredInSelector = ({ auth }: ApplicationState): number => +auth.auth.expireAt;
 export const userRoleSelector = ({ auth }: ApplicationState): RoleType | undefined => auth.user.role;
 
-export const getUserId = createSelector<ApplicationState, User, string | undefined>(
+export const getUserId = createSelector(
   userSelector,
   ({ userId }) => userId,
 );
 
-export const getIsDefaultPassword = createSelector<ApplicationState, User, boolean | undefined>(
+export const getIsDefaultPassword = createSelector(
   userSelector,
   ({ isDefaultPassword }) => isDefaultPassword,
 );

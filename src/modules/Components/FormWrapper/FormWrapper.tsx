@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from 'react';
-import { AnyAction } from 'redux';
+import React from 'react';
+import { UnknownAction } from 'redux';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import MakeAsyncFunction from './MakeAsyncFunction';
 import { promiseListener } from '~/src/store/configuration/reduxPromiseListener';
@@ -7,9 +7,9 @@ import { handleAsyncFormSubmit } from '~/utils/handleSubmitForm';
 import { Config } from 'final-form';
 import * as P from './parts';
 
-export type SetPayload<A = AnyAction, T = Record<string, any>> = (action: A, formData: T) => A
-export type GetError<A = AnyAction> = (action: A) => void
-export type GetPayload<A = AnyAction> = (action: A) => Record<string, string> | undefined
+export type SetPayload<A = UnknownAction, T = Record<string, any>> = (action: A, formData: T) => A
+export type GetError<A = UnknownAction> = (action: A) => void
+export type GetPayload<A = UnknownAction> = (action: A) => Record<string, string> | undefined
 
 interface FormWrapperProps<A, T> extends Omit<FormProps, 'onSubmit'> {
   className?: string;
@@ -19,11 +19,11 @@ interface FormWrapperProps<A, T> extends Omit<FormProps, 'onSubmit'> {
   setPayload?: SetPayload<A, T>;
   getPayload?: GetPayload<A>;
   getError?: GetError<A>;
-  children: (props: Omit<FormRenderProps, 'handleSubmit'>) => React.ReactElement
+  children: (props: Omit<FormRenderProps, 'handleSubmit'>) => React.ReactNode
 }
 
-type FormWrapperType = <Action = AnyAction, FormValues = Record<string, any>>(
-  props: PropsWithChildren<FormWrapperProps<Action, FormValues>>
+type FormWrapperType = <Action = UnknownAction, FormValues = Record<string, any>>(
+  props: FormWrapperProps<Action, FormValues>
 ) => React.ReactElement;
 
 const FormWrapper: FormWrapperType = ({

@@ -17,7 +17,7 @@ export function* getUniversityWorker() {
       const { data }: { data: any } = yield call(getStudentData);
 
       yield put(getStudentSuccess(data));
-    } catch (error) {
+    } catch {
       yield put(getStudentFail(''));
     }
   }

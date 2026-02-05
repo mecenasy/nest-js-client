@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { RoleType } from '../person/constants';
+import { Reducer } from 'redux';
 
 export enum AuthActionType {
   LoginRequest = 'auth/LOGIN_REQUEST',
@@ -69,6 +70,10 @@ export type AuthAction = {
 export interface AuthState {
   auth: Auth;
   user: User;
+}
+export interface AuthReducer {
+  auth: Reducer<Auth, AuthAction>;
+  user: Reducer<User, AuthAction>;
 }
 
 export enum LoggedStatus {

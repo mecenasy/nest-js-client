@@ -1,43 +1,48 @@
-import React, { FC } from "react";
-import { Route, Switch, useLocation } from "react-router";
+import React from "react";
+import { Route, Routes, useLocation } from "react-router";
 import { menuConfig } from "./PageConfigs/menuConfig";
 import { configs } from './PageConfigs/routesConfigs';
-import { useTransition, animated } from 'react-spring';
+import { useTransition, animated } from '@react-spring/web';
 import { AppContainer } from "./modules/Components/Containers/AppContainer/parts";
 import ExcludePaths from "./Pages/ExtrudePaths/ExtrudePaths";
 import Auth from "./Pages/Auth/Auth";
 
-export const App: FC = () => {
+const AppContent = () => {
   const location = useLocation();
 
   const transitions = useTransition(
-    location,
-    ({ pathname }) => pathname,
-    {
-      initial: { opacity: 1, transform: "translate(0%, 0)" },
-      from: { opacity: 0, transform: "translate(100%, 0)" },
-      enter: { opacity: 1, transform: "translate(0%, 0)" },
-      leave: { opacity: 0, transform: "translate(-100%, 0)" }
-    });
+    location, {
+    keys: ({ pathname }) => pathname,
+    initial: { opacity: 1, transform: "translate(0%, 0)" },
+    from: { opacity: 0, transform: "translate(100%, 0)" },
+    enter: { opacity: 1, transform: "translate(0%, 0)" },
+    leave: { opacity: 0, transform: "translate(-100%, 0)" }
+  });
 
   return (
     <AppContainer>
       <ExcludePaths paths={menuConfig.extrudeUrl}         >
-        <Route path={menuConfig.url} component={menuConfig.Component} />
+        <Route path={menuConfig.url} element={<menuConfig.Component />} />
       </ExcludePaths>
-      <Route path={'/'} component={Auth} />
+      <Routes>
+        <Route path={'/*'} element={<Auth />} />
+      </Routes>
 
-      {transitions.map(({ item: location, props, key }) => (
-        <animated.div style={props} key={key}>
-          <Switch location={location}>
-            {configs.map(({ Component, url, exact = false }) => (
-              <Route key={url} exact={exact} path={url} component={Component} />
+      {transitions((style, item) => (
+        <animated.div style={style} >
+          <Routes location={item}>
+            {configs.map(({ Component, url }) => (
+              <Route key={url} path={url} element={<Component />} />
             ))}
-          </Switch>
+          </Routes>
         </animated.div>
       ))}
     </AppContainer>
   )
 };
 
-export default App;
+export const App = () => (
+  <Routes>
+    <Route path={'/*'} element={<AppContent />} />
+  </Routes>
+)

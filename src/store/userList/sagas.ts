@@ -5,7 +5,7 @@ import { PaginationFilter, SelectedFilters, UserListState, UserListAction, UserL
 import { getUserListFail, getUserListSuccess } from './actions';
 import { getSelectedFilters } from './selectors';
 import { getUsers } from '~/src/api/userlist/requests';
-import { replace } from 'connected-react-router';
+import { replace } from 'redux-first-history';
 
 export function* getUserListWatcher() {
   yield takeLatest<
@@ -47,7 +47,7 @@ export function* getUserListWorker({
       const { data }: { data: UserListState } = yield call(getUsers, searchParam ?? '', listType);
 
       yield put(getUserListSuccess(data));
-    } catch (error) {
+    } catch {
       yield put(getUserListFail(''));
     }
   }
