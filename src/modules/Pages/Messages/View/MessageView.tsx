@@ -15,6 +15,7 @@ const MessageView: FC<Omit<MessageProps, 'setId'>> = ({ message }) => {
 
   const onSuccess = useCallback(() => {
     dispatch(getMessageRequest(message?.id ?? ''))
+    setId('');
   },
     [message?.id, dispatch])
 
@@ -24,13 +25,14 @@ const MessageView: FC<Omit<MessageProps, 'setId'>> = ({ message }) => {
     to: { height: id ? `${ref.current?.clientHeight}px` : "0px" }
   });
 
+  const onScroll = useCallback((left: number, top: number) => {
+    ref.current?.scrollTo({ behavior: 'smooth', top, left })
+  }, []);
+
   if (!message) {
     return <div>Ładowanie...</div>;
   }
 
-  const onScroll = (left: number, top: number) => {
-    ref.current?.scrollTo({ behavior: 'smooth', top, left })
-  }
 
   return (
     <P.Wrapper ref={ref}>
@@ -49,4 +51,3 @@ const MessageView: FC<Omit<MessageProps, 'setId'>> = ({ message }) => {
 
 
 export default MessageView;
-

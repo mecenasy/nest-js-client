@@ -8,6 +8,7 @@ interface MenuItem extends Menu {
   asButton?: boolean;
   isSmall?: boolean;
   forceShow?: boolean;
+  counter?: number;
 }
 
 const MenuItem: FC<MenuItem> = ({
@@ -19,6 +20,7 @@ const MenuItem: FC<MenuItem> = ({
   onClick,
   isSmall = false,
   forceShow = false,
+  counter,
 }) => {
   const { isMobile } = useContext(ResponsiveContext);
 
@@ -31,6 +33,7 @@ const MenuItem: FC<MenuItem> = ({
       $isSmall={isSmall}
     >
       <P.Box >
+        {Boolean(counter) && <P.Counter $isSmall={isSmall}>{counter}</P.Counter>}
         <P.Image src={image} />
         {!isSmall && !isMobile && <P.Text>{name}</P.Text>}
       </P.Box>

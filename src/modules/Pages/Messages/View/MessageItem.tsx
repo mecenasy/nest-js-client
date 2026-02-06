@@ -5,7 +5,8 @@ import { File, Message } from '~/src/store/messages/constants';
 import fileIcon from '~/assets/document.svg';
 import replay from '~/assets/reply-all.svg';
 import { useDispatch } from 'react-redux';
-import { getFileRequest } from '~/src/store/messages/actions';
+import { getFileRequest, readedMessageRequest } from '~/src/store/messages/actions';
+import { unReadedDown } from '~/src/store/notification/actions';
 
 export interface MessageProps {
   message?: Message;
@@ -15,6 +16,7 @@ export interface MessageProps {
 
 const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   const [isOpen, setOpen] = useState(false);
+  const [isReaded, setReaded] = useState(message?.isReaded ?? false);
   const ref = useRef<HTMLDivElement>(null);
   const refAnimated = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
@@ -30,6 +32,11 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   }, [message?.id, setId]);
 
   const onToggle = useCallback(() => {
+    if (!isReaded) {
+      setReaded(true);
+      dispatch(unReadedDown());
+      dispatch(readedMessageRequest(message?.id ?? ''));
+    }
     setOpen((prev) => !prev);
   }, []);
 
@@ -85,7 +92,7 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   return (
     <>
       <P.HeaderWrapper onClick={onToggle}>
-        <P.MessageHeader >{title}</P.MessageHeader>
+        <P.MessageHeader $isReaded={isReaded} >{title}</P.MessageHeader>
         {isOpen && <P.Button onClick={onReply} icon={replay} />}
       </P.HeaderWrapper>
       <animated.div ref={refAnimated} style={{ ...style, overflow: "hidden", margin: "0 -20px" }} >

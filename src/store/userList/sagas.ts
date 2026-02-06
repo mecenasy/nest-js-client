@@ -2,15 +2,19 @@ import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import { PaginationFilter, SelectedFilters, UserListState, UserListAction, UserListActionType } from './constants';
-import { getUserListFail, getUserListSuccess } from './actions';
+import { getSimpleUserListSuccess, getUserListFail, getUserListSuccess } from './actions';
 import { getSelectedFilters } from './selectors';
-import { getUsers } from '~/src/api/userlist/requests';
+import { getSimpleUsers, getUsers } from '~/src/api/userlist/requests';
 import { replace } from 'redux-first-history';
+import { RoleType, SimplePerson } from '../person/constants';
+import { userRoleSelector } from '../auth/selectors';
 
 export function* getUserListWatcher() {
   yield takeLatest<
     ExtractByType<UserListAction, UserListActionType.GetUserListRequest>
   >(UserListActionType.GetUserListRequest, getUserListWorker);
+  yield fork(getUserListParamsWatcher)
+  yield takeLatest<UserListAction>(UserListActionType.GetSimpleUserListRequest, getSimpleUserListWorker);
   yield fork(getUserListParamsWatcher)
 }
 
@@ -47,6 +51,20 @@ export function* getUserListWorker({
       const { data }: { data: UserListState } = yield call(getUsers, searchParam ?? '', listType);
 
       yield put(getUserListSuccess(data));
+    } catch {
+      yield put(getUserListFail(''));
+    }
+  }
+}
+export function* getSimpleUserListWorker() {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+
+  if (authStatus === LoggedStatus.LoggedIn) {
+    const type: RoleType = yield select(userRoleSelector);
+    try {
+      const { data }: { data: SimplePerson[] } = yield call(getSimpleUsers, type);
+
+      yield put(getSimpleUserListSuccess(data));
     } catch {
       yield put(getUserListFail(''));
     }

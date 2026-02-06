@@ -12,7 +12,7 @@ interface IconLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 export const Image = styled.img`
   height: 100%;
 `;
-const styles = css< { isCenter?: boolean }>`
+const styles = css< { $isCenter?: boolean }>`
   grid-area: add;
   display: flex;
   align-items: center;
@@ -28,7 +28,7 @@ const styles = css< { isCenter?: boolean }>`
   padding: 10px;
   cursor: pointer;
   margin-bottom: 8px;
-  ${({ isCenter }) => isCenter && css`justify-content: center;`}
+  ${({ $isCenter }) => $isCenter && css`justify-content: center;`}
 
   &:last-child {
       margin-bottom: 0;
@@ -41,16 +41,16 @@ const styles = css< { isCenter?: boolean }>`
   &:active {
     background-color: #e9eef8f0;
     top: 1px;
-    left: 1px;     
+    left: 1px;
   }
 `;
 
 
-const Button = styled.button<{ isCenter?: boolean }>`
+const Button = styled.button<{ $isCenter?: boolean }>`
   ${styles}
 `;
 
-const Link = styled.a<{ isCenter?: boolean }>`
+const Link = styled.a<{ $isCenter?: boolean }>`
   ${styles}
 `;
 

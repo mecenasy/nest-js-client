@@ -1,7 +1,7 @@
 import api from '../api';
 import { AxiosResponse } from 'axios';
 import { MessageData, MessageList, Message } from '~/src/store/messages/constants';
-import { messageSend, messageAll, messageById } from './paths';
+import { messageSend, messageAll, messageById, messageReaded } from './paths';
 
 export const sendMessage = async (data: MessageData): Promise<AxiosResponse<void>> => {
   const formData = new FormData();
@@ -33,4 +33,7 @@ export const getMessage = async (id: string): Promise<AxiosResponse<Message>> =>
 
 export const getFile = async (path: string): Promise<AxiosResponse<any>> => {
   return await api.get(path, { responseType: 'blob' });
+};
+export const setReadedMessage = async (messageId: string): Promise<AxiosResponse<any>> => {
+  return await api.put(`${messageReaded}/${messageId}`);
 };

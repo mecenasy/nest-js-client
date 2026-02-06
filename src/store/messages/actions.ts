@@ -53,6 +53,11 @@ export const getFileRequest = (file: File): MessageAction => ({
   file,
 });
 
+export const readedMessageRequest = (messageId: string): MessageAction => ({
+  type: MessageActionType.SetReadedMessageRequest,
+  messageId,
+});
+
 export const getFileSuccess = (): MessageAction => ({
   type: MessageActionType.GetFileSuccess,
 });

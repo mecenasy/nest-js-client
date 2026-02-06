@@ -12,6 +12,7 @@ import { UserListState, UserListAction } from '../userList/constants';
 import { MessageState, MessageAction } from '../messages/constants';
 import { panelMenuReducer } from '../panelMenu/reducer';
 import { authCombinedReducer } from '../auth/reducers';
+import { NotificationAction, NotificationState } from '../notification/constants';
 
 export interface ApplicationState {
   didHydrated: boolean;
@@ -24,6 +25,7 @@ export interface ApplicationState {
   university: UniversityState;
   userList: UserListState;
   messageList: MessageState;
+  notification: NotificationState;
 }
 
 export interface ApplicationReducer extends Record<keyof ApplicationState, any> {
@@ -37,6 +39,7 @@ export interface ApplicationReducer extends Record<keyof ApplicationState, any> 
   university: Reducer<UniversityState, UniversityAction>;
   userList: Reducer<UserListState, UserListAction>;
   messageList: Reducer<MessageState, MessageAction>;
+  notification: Reducer<NotificationState, NotificationAction>;
 }
 
 export type ConfigureStore = (

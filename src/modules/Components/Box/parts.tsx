@@ -9,5 +9,6 @@ export const BoxWithShadow = styled.div`
   border-radius: 6px;
   box-shadow: 1px 1px 3px 1px #6f8cab;
   background: white;
+  position: relative;
   margin: 12px;
 `;

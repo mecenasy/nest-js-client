@@ -1,3 +1,4 @@
+import { SimplePerson } from '../person/constants';
 import { RoleType } from '../role/constants';
 import { UserListState, UserListAction, UserListActionType } from '../userList/constants';
 
@@ -15,6 +16,18 @@ export const getUserListSuccess = (userList: UserListState): UserListAction => (
 export const getUserListFail = (message: string): UserListAction => ({
   message,
   type: UserListActionType.GetUserListFail,
+});
+export const getSimpleUserListRequest = (): UserListAction => ({
+  type: UserListActionType.GetSimpleUserListRequest,
+});
+
+export const getSimpleUserListSuccess = (userList: SimplePerson[]): UserListAction => ({
+  userList,
+  type: UserListActionType.GetSimpleUserListSuccess,
+});
+
+export const getSimpleUserListFail = (): UserListAction => ({
+  type: UserListActionType.GetSimpleUserListFail,
 });
 
 export const setFilterUserFilter = (name: string, value: string | string[] | undefined): UserListAction => ({

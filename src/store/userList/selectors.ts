@@ -1,5 +1,5 @@
 import { ApplicationState } from "../configuration/constants";
-import { Person } from '../person/constants';
+import { Person, SimplePerson } from '../person/constants';
 import { University } from '../university/constants';
 import { Filters, Pagination, SelectedFilters } from "./constants";
 
@@ -11,3 +11,4 @@ export const getFiltersMap = (state: ApplicationState): University => state.user
 export const getUserListPagination = (state: ApplicationState): Pagination => state.userList.pagination;
 
 export const getFiltersMapSelector = (state: ApplicationState): University => state.userList.filtersMap;
+export const getSimpleUsersSelector = (state: ApplicationState): SimplePerson[] | undefined => state.userList.simpleUsers;

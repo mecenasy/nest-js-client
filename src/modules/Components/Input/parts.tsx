@@ -31,17 +31,16 @@ export const TextArea = styled.textarea`
 `;
 
 export const ValidationAlert = styled.div`
-  height: 12px;
+  height: 16px;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 2px;
 `;
 
 export const Error = styled.span`
   color: red;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
 `;
 
 export const Label = styled.label`

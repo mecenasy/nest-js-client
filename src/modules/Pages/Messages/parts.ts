@@ -38,9 +38,9 @@ export const MessageList = styled(Box)`
   gap: 4px 10px;
 `;
 
-export const MessageRow = styled(WhiteButton) <{ isReaded: boolean }>`
+export const MessageRow = styled(WhiteButton) <{ $isReaded: boolean }>`
   font-size: 14px;
-  ${({ isReaded }) => !isReaded && css`font-weight: bold;`}
+  ${({ $isReaded }) => !$isReaded && css`font-weight: bold;`}
 `;
 
 export const Dropzone = styled(DropzoneBase)`

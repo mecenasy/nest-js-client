@@ -18,6 +18,9 @@ export const userListReducer = (state: UserListState = initialState, action: Use
       const { selectedFilters } = state;
       return { ...action.userList, selectedFilters };
     }
+    case UserListActionType.GetSimpleUserListSuccess: {
+      return { ...state, simpleUsers: action.userList };
+    }
     case UserListActionType.SetFilter: {
       const { name, value } = action;
       return {
@@ -54,3 +57,4 @@ export const userListReducer = (state: UserListState = initialState, action: Use
     }
   }
 };
+

@@ -1,4 +1,4 @@
-import { DroppedFile } from '~/src/modules/Components/Input/types';
+import { DroppedFile, Option } from '~/src/modules/Components/Input/types';
 
 export interface Message {
   id: string;
@@ -9,6 +9,7 @@ export interface Message {
   replies?: Message[];
   to: string;
   files?: File[];
+  isReaded: boolean;
 }
 
 export interface File {
@@ -29,6 +30,13 @@ export interface MessageData {
   title: string;
   content: string;
   to: string;
+  parent?: string;
+  files?: DroppedFile[];
+}
+export interface MessageFormData {
+  title: string;
+  content: string;
+  to: Option<string>;
   parent?: string;
   files?: DroppedFile[];
 }
@@ -54,6 +62,7 @@ export interface SimpleMessage {
 export interface MessageState extends MessageList {
   messageDi: Record<string, Message>;
   isFetching: boolean;
+  unReaded: number;
 }
 
 export enum MessageActionType {
@@ -72,6 +81,8 @@ export enum MessageActionType {
   GetFileRequest = 'message/GET_FILE_REQUEST',
   GetFileSuccess = 'message/GET_FILE_SUCCESS',
   GetFileFail = 'message/GET_FILE_FAIL',
+
+  SetReadedMessageRequest = 'message/SET_READED_MESSAGE_REQUEST',
 }
 
 export type MessageAction = {
@@ -96,6 +107,9 @@ export type MessageAction = {
   type: MessageActionType.GetMessageSuccess;
   payload: Message;
 } | {
+  type: MessageActionType.SetReadedMessageRequest;
+  messageId: string;
+} | {
   type: MessageActionType.GetMessageFail;
 } | {
   type: MessageActionType.GetFileRequest;
@@ -116,4 +130,5 @@ export const initialState: MessageState = {
   },
   messageDi: {},
   isFetching: false,
+  unReaded: 0
 };

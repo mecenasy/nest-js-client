@@ -10,6 +10,7 @@ import { universityReducer } from "../university/reducer";
 import { userListReducer } from '../userList/reducer';
 import { messageReducer } from '../messages/reducer';
 import { hydrateReducer } from '../hydrate/reducer';
+import { notificationReducer } from '../notification/reducer';
 
 export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
   combineReducers<ApplicationReducer>({
@@ -22,7 +23,8 @@ export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
     panelMenu: panelMenuReducer,
     university: universityReducer,
     userList: userListReducer,
-    messageList: messageReducer
+    messageList: messageReducer,
+    notification: notificationReducer,
   })
 );
 

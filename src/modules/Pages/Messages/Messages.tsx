@@ -8,10 +8,11 @@ import PageWrapper from '../../Components/Containers/PageWrapper/PageWrapper';
 import { Helmet } from 'react-helmet';
 import plus from '~/assets/plus.svg';
 import MessageModal from './Modal/MessageModal';
-import { replace } from 'redux-first-history';
+import { useNavigate } from 'react-router';
 
 const Messages: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const messages = useSelector((state: ApplicationState) => getMessagesList(state));
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -22,14 +23,14 @@ const Messages: FC = () => {
   const handleClick = (id?: string) => {
     setModalOpen(true)
     if (id) {
-      replace({ search: `?messageId=${id}` });
+      navigate(`/messages?messageId=${id}`, { replace: true, })
     }
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setTimeout(() => {
-      replace({ search: undefined });
+      navigate(`/messages`, { replace: true, })
     }, 200)
   };
 
@@ -53,7 +54,7 @@ const Messages: FC = () => {
             <P.MessageRow
               key={message.id}
               title={message.title}
-              isReaded={message.isReaded}
+              $isReaded={message.isReaded}
               onClick={() => handleClick(message.id)}
             />
           ))}

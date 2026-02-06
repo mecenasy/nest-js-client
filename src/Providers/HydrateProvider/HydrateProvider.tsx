@@ -13,7 +13,7 @@ export const HydrateProvider = ({ children }: { children: React.ReactNode }) => 
   const isHydrated = useSelector(hydrate);
   useEffect(() => {
     dispatch(didHydrate())
-  }, []);
+  }, [dispatch]);
 
   return (
     <HydrateContext.Provider value={isHydrated}>

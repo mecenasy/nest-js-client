@@ -29,6 +29,13 @@ export type Person = {
   student?: Student;
 }
 
+export interface SimplePerson {
+  id: string;
+  fullName: string;
+  email: string;
+  photo: string;
+}
+
 export interface Address {
   street: string;
   city: string;

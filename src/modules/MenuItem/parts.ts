@@ -63,6 +63,33 @@ export const Box = styled(BoxBase)`
   }
 `;
 
+export const Counter = styled.div<{ $isSmall: boolean }>`
+  position: absolute;
+  background: red;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: white;
+  
+  ${({ $isSmall }) => $isSmall
+    ? css`
+      width: 18px;
+      height: 18px;
+      border-radius: 8px;
+      font-size: 10px;
+      top: -8px;
+      right: -8px;
+      `
+    : css`
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      font-size: 12px;
+      top: -12px;
+      right: -12px;
+    `
+  }
+`;
 export const Image = styled.img`
   width: 70px;
   height: 70px;

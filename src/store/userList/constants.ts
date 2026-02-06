@@ -1,8 +1,9 @@
-import { Person } from '../person/constants';
+import { Person, SimplePerson } from '../person/constants';
 import { RoleType } from '../role/constants';
 import { University } from '../university/constants';
 
 export interface UserListState {
+  simpleUsers?: SimplePerson[];
   users: Person[];
   pagination: Pagination;
   filters: Filters;
@@ -28,6 +29,9 @@ export enum UserListActionType {
   GetUserListRequest = 'userList/GET_USER_LIST_REQUEST',
   GetUserListSuccess = 'userList/GET_USER_LIST_SUCCESS',
   GetUserListFail = 'userList/GET_USER_LIST_FAIL',
+  GetSimpleUserListRequest = 'userList/GET_SIMPLE_USER_LIST_REQUEST',
+  GetSimpleUserListSuccess = 'userList/GET_SIMPLE_USER_LIST_SUCCESS',
+  GetSimpleUserListFail = 'userList/GET_SIMPLE_USER_LIST_FAIL',
   SetFilter = 'userList/SET_FILTER',
   SetPage = 'userList/SET_PAGE',
 }
@@ -43,6 +47,13 @@ export type UserListAction = {
   type: UserListActionType.SetFilter;
   name: string;
   value: string | string[] | undefined;
+} | {
+  type: UserListActionType.GetSimpleUserListRequest;
+} | {
+  type: UserListActionType.GetSimpleUserListSuccess;
+  userList: SimplePerson[];
+} | {
+  type: UserListActionType.GetSimpleUserListFail;
 } | {
   type: UserListActionType.SetPage;
   pageSize?: number;

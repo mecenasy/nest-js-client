@@ -1,12 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Field } from 'react-final-form';
-import { MessageAction, MessageActionType, MessageData, MessageField } from '~/src/store/messages/constants';
+import { MessageAction, MessageActionType, MessageData, MessageField, MessageFormData } from '~/src/store/messages/constants';
 import { sendMessageRequest } from '~/src/store/messages/actions';
 import { validateMessageForm } from '../helpers';
 import InputWithLabel from '~/src/modules/Components/Input/InputWithLabel';
 import FormWrapper, { SetPayload } from '~/src/modules/Components/FormWrapper/FormWrapper';
 import { Button } from '../../../Components/Buttons/Button';
 import * as P from '../parts';
+import { useDispatch } from 'react-redux';
+import { getSimpleUserListRequest } from '~/src/store/userList/actions';
+import Dropdown from '~/src/modules/Components/Input/Dropdown';
+import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
+import { useSelector } from 'react-redux';
+import { getOption } from './getOptions';
 
 interface MessageFormProps {
   messageId: string;
@@ -14,9 +20,14 @@ interface MessageFormProps {
 }
 
 const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
-  const setPayload: SetPayload<MessageAction, MessageData> = (action, values) => {
-    return sendMessageRequest(values);
+  const setPayload: SetPayload<MessageAction, MessageFormData> = (action, values) => {
+    return sendMessageRequest({ ...values, to: values.to.value });
   };
+  const users = useSelector(getSimpleUsersSelector)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSimpleUserListRequest());
+  }, [messageId, dispatch]);
 
   const getPayload = () => {
     onSuccess();
@@ -31,7 +42,7 @@ const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
   };
 
   return (
-    <FormWrapper<MessageAction, MessageData>
+    <FormWrapper<MessageAction, MessageFormData>
       start={MessageActionType.SendMessageRequest}
       resolve={MessageActionType.SendMessageSuccess}
       reject={MessageActionType.SendMessageFail}
@@ -44,8 +55,8 @@ const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
         <>
           <Field
             name={MessageField.To}
-            component={InputWithLabel}
-            type="text"
+            component={Dropdown}
+            options={getOption(users)}
             label="Do:"
             placeholder="ID lub email odbiorcy"
           />

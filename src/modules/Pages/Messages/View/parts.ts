@@ -28,11 +28,12 @@ export const ContentWrapper = styled.div`
   background-color: white;
 `;
 
-export const MessageHeader = styled.h3`
+export const MessageHeader = styled.h3<{ $isReaded: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
+  font-weight: ${({ $isReaded }) => $isReaded ? 'normal' : 'bold'};
 `;
 
 export const Content = styled.div`

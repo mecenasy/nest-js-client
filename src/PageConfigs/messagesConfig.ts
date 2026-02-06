@@ -9,7 +9,7 @@ const MessagesPage = Loadable({
 });
 
 export const actionCreator: ActionCreatorFactory = ({ isHydrated, isMount, isServer }, location) => [
-  Boolean((isHydrated && isMount) || isServer) && getMessageListRequest(''),
+  Boolean(((isHydrated && isMount) || isServer) && !location.search) && getMessageListRequest(''),
   Boolean(((isHydrated && isMount) || isServer) && location.search)
   && getMessageRequest(new URLSearchParams(location.search).get('messageId') ?? ''),
 ];
