@@ -3,55 +3,37 @@ import { Helmet } from "react-helmet";
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
 import { useSelector } from "react-redux";
-import { getMenuSelector } from "~/src/store/menu/selectors";
-import MenuItem from "../../MenuItem/MenuItem";
-import { getPerson } from "~/src/store/person/selectors";
-// import PersonDataRow from "../../PersonDataRow/PersonDataRow";
 import { loggedInStatusSelector } from "~/src/store/auth/selectors";
 import { LoggedStatus } from "~/src/store/auth/constants";
+import { getTimeTable } from '~/src/store/timeTable/selectors';
+
+import Table from './Table';
 
 export const Timetable: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
-  const { leftSide, rightSide } = useSelector(getMenuSelector);
-  const person = useSelector(getPerson);
+  const table = useSelector(getTimeTable);
+
+  if (!(table.length && isLoggedIn === LoggedStatus.LoggedIn)) {
+    return null
+  }
+
   return (
-    <PageWrapper pickUp >
+    <PageWrapper >
       <Helmet>
-        <title>System zarządzania uczelnianego</title>
+        <title>Kalendaż</title>
         <meta name="description" content={'to jest system zzarządzania uczelnianego'} />
       </Helmet>
-      {isLoggedIn === LoggedStatus.LoggedIn && (
-        <P.Wrapper >
-          <P.Row >
-            <P.BoxUser >
-              <P.Photo src={person?.photo || ''} />
-              <div>
-                {/* <PersonDataRow title={'Imie Nazwisko'} data={`${person.name} ${person.surname}`} />
-                <PersonDataRow title={'Wydział'} data={person?.direction} />
-                <PersonDataRow title={'Specjalność'} data={person?.specialty} />
-                <PersonDataRow title={'Numer albumu'} data={person?.album?.toString()} />
-                <PersonDataRow title={'Rok'} data={person.year} />
-                <PersonDataRow title={'Semestr'} data={person?.semester} />
-                <PersonDataRow title={'Grupa'} data={person?.group} /> */}
-              </div>
-            </P.BoxUser>
-          </P.Row>
-          <P.Row  >
-            {leftSide.filter(({ hidden }) => !hidden).map((item) => (
-              <P.Col key={item.link}>
-                <MenuItem {...item} />
-              </P.Col>
-            ))}
-          </P.Row>
-          <P.Row >
-            {rightSide.map((item) => (
-              <P.Col key={item.link}>
-                <MenuItem {...item} />
-              </P.Col>
-            ))}
-          </P.Row>
-        </P.Wrapper>
-      )}
+      <P.Wrapper >
+        <h2>Kalendarz</h2>
+        {table.map(({ name, year, timeTable }, index) => (
+          <Table
+            year={year}
+            name={name}
+            timeTable={timeTable}
+            key={index}
+          />
+        ))}
+      </P.Wrapper>
     </PageWrapper >
   )
 };

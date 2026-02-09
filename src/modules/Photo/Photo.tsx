@@ -8,16 +8,12 @@ interface PhotoProps {
   className?: string;
 }
 
-const Photo: FC<PhotoProps> = (props) => {
-  console.log("🚀 ~ Photo ~ props:", props)
-
-  return (
-    <Border>
-      <ImageWrapper className={props.className}>
-        <Image {...props} />
-      </ImageWrapper>
-    </Border>
-  )
-};
+const Photo: FC<PhotoProps> = (props) => (
+  <Border>
+    <ImageWrapper className={props.className}>
+      <Image {...props} />
+    </ImageWrapper>
+  </Border>
+)
 
 export default Photo;
