@@ -1,16 +1,12 @@
-import React, { FC } from 'react';
-import * as P from './parts';
+import React, { useContext } from 'react';
+import * as P from '../parts';
 import { getCalendarDays } from '~/src/store/timeTable/selectors';
 import { useSelector } from 'react-redux';
+import { TableContext } from '../TableProvider';
 
-interface TableHeaderProps {
-  name: string;
-  year: string;
-}
-
-const TableHeader: FC<TableHeaderProps> = ({ name, year }) => {
+const TableHeader = () => {
   const days = useSelector(getCalendarDays);
-
+  const { name, year } = useContext(TableContext)
   return (
     <thead>
       <P.TrRow>

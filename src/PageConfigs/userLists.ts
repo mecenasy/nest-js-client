@@ -2,7 +2,7 @@ import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
 import { getRoleRequest } from '../store/role/actions';
-import { getStudentRequest } from '../store/university/actions';
+import { getUniversityRequest } from '../store/university/actions';
 
 const AddUserPage = Loadable({
   loader: async () => import('../Pages/AddUserPage'),
@@ -11,7 +11,7 @@ const AddUserPage = Loadable({
 
 export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }) => [
   Boolean((isMount && isHydrated) || isServer) && getRoleRequest(),
-  Boolean((isMount && isHydrated) || isServer) && getStudentRequest(),
+  Boolean((isMount && isHydrated) || isServer) && getUniversityRequest(),
 ];
 
 export const addUserConfig: PageConfig = {

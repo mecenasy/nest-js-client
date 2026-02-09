@@ -38,7 +38,7 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
       dispatch(readedMessageRequest(message?.id ?? ''));
     }
     setOpen((prev) => !prev);
-  }, []);
+  }, [isReaded, message?.id, dispatch]);
 
   const style = useSpring({
     config: { duration: 200 },

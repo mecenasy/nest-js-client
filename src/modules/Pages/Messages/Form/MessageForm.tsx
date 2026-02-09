@@ -9,7 +9,7 @@ import { Button } from '../../../Components/Buttons/Button';
 import * as P from '../parts';
 import { useDispatch } from 'react-redux';
 import { getSimpleUserListRequest } from '~/src/store/userList/actions';
-import Dropdown from '~/src/modules/Components/Input/Dropdown';
+import DropdownField from '~/src/modules/Components/Input/Dropdown';
 import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
 import { useSelector } from 'react-redux';
 import { getOption } from './getOptions';
@@ -55,7 +55,7 @@ const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
         <>
           <Field
             name={MessageField.To}
-            component={Dropdown}
+            component={DropdownField}
             options={getOption(users)}
             label="Do:"
             placeholder="ID lub email odbiorcy"

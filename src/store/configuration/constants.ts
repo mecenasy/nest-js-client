@@ -14,6 +14,7 @@ import { panelMenuReducer } from '../panelMenu/reducer';
 import { authCombinedReducer } from '../auth/reducers';
 import { NotificationAction, NotificationState } from '../notification/constants';
 import { TimeTableAction, TimeTableState } from '../timeTable/constants';
+import { Subject, SubjectAction } from '../subject/constants';
 
 export interface ApplicationState {
   didHydrated: boolean;
@@ -28,6 +29,7 @@ export interface ApplicationState {
   messageList: MessageState;
   notification: NotificationState;
   timeTable: TimeTableState;
+  subjectList: Subject[];
 }
 
 export interface ApplicationReducer extends Record<keyof ApplicationState, any> {
@@ -43,6 +45,7 @@ export interface ApplicationReducer extends Record<keyof ApplicationState, any> 
   messageList: Reducer<MessageState, MessageAction>;
   notification: Reducer<NotificationState, NotificationAction>;
   timeTable: Reducer<TimeTableState, TimeTableAction>;
+  subjectList: Reducer<Subject[], SubjectAction>;
 }
 
 export type ConfigureStore = (
@@ -54,4 +57,3 @@ export type ConfigureStore = (
   store: Store<ApplicationState, UnknownAction>,
   rootSagaTask: Task;
 }>;
-

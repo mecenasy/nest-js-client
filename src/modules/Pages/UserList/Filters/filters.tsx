@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedFilters, getUserListFilters } from '~/src/store/userList/selectors';
 import { setFilterUserFilter } from '~/src/store/userList/actions';
 import { Option } from '~/src/modules/Components/Input/types';
-import { SelectComponent } from '~/src/modules/Components/Input/Dropdown';
+import { Select } from '~/src/modules/Components/Input/Dropdown';
 import { getOption } from './getOptions';
 
 
@@ -33,7 +33,7 @@ const Filters: FC = () => {
       <h3>Filtry</h3>
       <div>
         {filtersKeys.map((key: string) => (
-          <SelectComponent<string>
+          <Select<string>
             id={key}
             instanceId={key}
             value={getOption(selectedFilters[key])}

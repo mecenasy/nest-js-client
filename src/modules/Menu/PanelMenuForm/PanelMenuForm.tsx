@@ -7,7 +7,7 @@ import FormWrapper, { SetPayload, GetPayload } from '../../Components/FormWrappe
 import InputWithLabel from '../../Components/Input/InputWithLabel';
 import Toggle from '../../Components/Input/Toggle';
 import Dropzone from '../../Components/Input/Dropzone';
-import Dropdown from '../../Components/Input/Dropdown';
+import DropdownField from '../../Components/Input/Dropdown';
 import { getMenuItemById } from '~/src/store/panelMenu/menu/selectors';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
@@ -117,7 +117,7 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
             />
             <Field
               name={MenuItemField.Role}
-              component={Dropdown}
+              component={DropdownField}
               placeholder={'wybież dla kogo dostępne jest menu'}
               label={'Przeznaczenie  menu'}
               options={roles}

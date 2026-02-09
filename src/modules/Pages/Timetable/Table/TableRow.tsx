@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
-import * as P from './parts';
+import React, { FC, useContext } from 'react';
+import * as P from '../parts';
 import { useSelector } from 'react-redux';
 import { getCalendarDays } from '~/src/store/timeTable/selectors';
 import TableCell from './TableCel';
-import { CalendarPlace } from '~/src/store/timeTable/constants';
+import { TableContext } from '../TableProvider';
 
 interface TableRowProps {
   hour: string;
-  timeTable: CalendarPlace[];
 }
 
-const TableRow: FC<TableRowProps> = ({ hour, timeTable }) => {
+const TableRow: FC<TableRowProps> = ({ hour }) => {
   const days = useSelector(getCalendarDays);
+  const { timeTable } = useContext(TableContext);
 
   return (
     <P.TrRow >
@@ -19,7 +19,7 @@ const TableRow: FC<TableRowProps> = ({ hour, timeTable }) => {
       {days.map((day, index) => {
         const cel = timeTable.find(({ days, hours }) => days === day && hours === hour)
         return (
-          <TableCell cel={cel} key={index} />
+          <TableCell cel={cel} hour={hour} day={day} key={index} />
         )
       })}
     </P.TrRow>

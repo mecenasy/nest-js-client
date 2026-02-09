@@ -3,11 +3,11 @@ import { Field, useField } from 'react-final-form';
 import { PersonField } from '~/src/store/person/constants';
 import StepButton from './StepButton';
 import * as P from '../parts';
-import { getDirectionSelector, getGroupSelector, getSpecialtySelector, getYearSelector } from '~/src/store/university/selectors';
+import { getDirectionSelector, getGroupSelector, getSpecialtiesSelector, getYearSelector } from '~/src/store/university/selectors';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { Direction, Group, Specialty, Year } from '~/src/store/university/constants';
-import Dropdown from '~/src/modules/Components/Input/Dropdown';
+import DropdownField from '~/src/modules/Components/Input/Dropdown';
 
 
 const StudentFields: FC = () => {
@@ -20,7 +20,7 @@ const StudentFields: FC = () => {
   const direction = useSelector<ApplicationState, Direction[]>(
     (state => getDirectionSelector(state, specialtyInput.value)));
   const specialty = useSelector<ApplicationState, Specialty[]>(
-    (state) => getSpecialtySelector(state, { directionId: directionInput.value, yearId: yearInput.value }));
+    (state) => getSpecialtiesSelector(state, { directionId: directionInput.value, yearId: yearInput.value }));
   const year = useSelector<ApplicationState, Year[]>(
     (state) => getYearSelector(state, { specialtyId: specialtyInput.value, groupId: groupInput.value }));
   const group = useSelector<ApplicationState, Group[]>(
@@ -41,26 +41,26 @@ const StudentFields: FC = () => {
       <P.Title>Informacje studenckie</P.Title>
       <Field
         name={PersonField.Direction}
-        component={Dropdown}
+        component={DropdownField}
         options={getOption(direction)}
         placeholder={'Wydział'}
       />
       <Field
         name={PersonField.Specialty}
-        component={Dropdown}
+        component={DropdownField}
         options={getOption(specialty)}
         placeholder={'Specjalność'}
       />
       <Field
         name={PersonField.Year}
-        component={Dropdown}
+        component={DropdownField}
         placeholder={'Rok'}
         options={getOption(year)}
       />
 
       <Field
         name={PersonField.Group}
-        component={Dropdown}
+        component={DropdownField}
         placeholder={'Grupa'}
         options={getOption(group)}
       />

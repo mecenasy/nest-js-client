@@ -52,6 +52,26 @@ export interface TimeTableData {
   teacher: string;
 }
 
+export enum CalendarType {
+  Group = 'group',
+  Teacher = 'teacher`',
+  Year = 'year',
+  Specialty = 'specialty',
+}
+
+export type CalendarParams = {
+  type: CalendarType.Group;
+  group: string;
+  year: string;
+} | {
+  type: CalendarType.Teacher;
+} | {
+  type: CalendarType.Specialty;
+  specialty: string;
+} | {
+  type: CalendarType.Year;
+  year: string;
+}
 export interface MoveTimeTableData extends TimeTableData {
   newHours: string;
   newDays: string;
@@ -59,10 +79,7 @@ export interface MoveTimeTableData extends TimeTableData {
 }
 
 export enum TimeTableActionType {
-  GetTimeTableByGroupRequest = 'timeTable/GET_TIME_TABLE_BY_GROUP_REQUEST',
-  GetTimeTableByYearRequest = 'timeTable/GET_TIME_TABLE_BY_YEAR_REQUEST',
-  GetTimeTableBySpecialtyRequest = 'timeTable/GET_TIME_TABLE_BY_SPECIALTY_REQUEST',
-
+  GetTimeTableRequest = 'timeTable/GET_TIME_TABLE_REQUEST',
   GetTimeTableSuccess = 'timeTable/GET_TIME_TABLE_SUCCESS',
   GetTimeTableFail = 'timeTable/GET_TIME_TABLE_FAIL',
 
@@ -83,16 +100,22 @@ export enum TimeTableActionType {
   MoveSubjectInTimeTableFail = 'timeTable/MOVE_SUBJECT_IN_TIME_TABLE_FAIL',
 }
 
-export type TimeTableAction = {
-  type: TimeTableActionType.GetTimeTableByGroupRequest;
+export interface MoveSuccessPayload {
+  newCalendarPlace: CalendarPlace;
+  oldCalendarPlace: TimeTableData;
+  year: string;
   group: string;
+}
+
+export interface MoveRequestPayload {
+  data: MoveTimeTableData;
   year: string;
-} | {
-  type: TimeTableActionType.GetTimeTableByYearRequest;
-  year: string;
-} | {
-  type: TimeTableActionType.GetTimeTableBySpecialtyRequest;
-  specialty: string;
+  group: string;
+}
+
+export type TimeTableAction = {
+  type: TimeTableActionType.GetTimeTableRequest;
+  payload: CalendarParams;
 } | {
   type: TimeTableActionType.GetTimeTableSuccess;
   timeTable: GroupTimeTable[];
@@ -121,15 +144,16 @@ export type TimeTableAction = {
   data: TimeTableData;
 } | {
   type: TimeTableActionType.DeleteSubjectFromTimeTableSuccess;
+  data: TimeTableData;
 } | {
   type: TimeTableActionType.DeleteSubjectFromTimeTableFail;
   message: string;
 } | {
   type: TimeTableActionType.MoveSubjectInTimeTableRequest;
-  data: MoveTimeTableData;
+  payload: MoveRequestPayload
 } | {
   type: TimeTableActionType.MoveSubjectInTimeTableSuccess;
-  calendarPace: CalendarPlace;
+  payload: MoveSuccessPayload
 } | {
   type: TimeTableActionType.MoveSubjectInTimeTableFail;
   message: string;

@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getStudentData } from '~/src/api/panelMenu/requests';
-import { getStudentFail, getStudentSuccess } from './actions';
+import { getUniversityFail, getUniversitySuccess } from './actions';
 import { UniversityAction, UniversityActionType } from './constants';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
@@ -16,9 +16,9 @@ export function* getUniversityWorker() {
     try {
       const { data }: { data: any } = yield call(getStudentData);
 
-      yield put(getStudentSuccess(data));
+      yield put(getUniversitySuccess(data));
     } catch {
-      yield put(getStudentFail(''));
+      yield put(getUniversityFail(''));
     }
   }
 }

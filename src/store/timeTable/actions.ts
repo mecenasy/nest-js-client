@@ -1,27 +1,18 @@
 import {
   Calendar,
+  CalendarParams,
   CalendarPlace,
   GroupTimeTable,
-  MoveTimeTableData,
+  MoveRequestPayload,
+  MoveSuccessPayload,
   TimeTableAction,
   TimeTableActionType,
   TimeTableData,
 } from "./constants";
 
-export const getTimeTableByGroupRequest = (group: string, year: string): TimeTableAction => ({
-  type: TimeTableActionType.GetTimeTableByGroupRequest,
-  group,
-  year,
-});
-
-export const getTimeTableByYearRequest = (year: string): TimeTableAction => ({
-  type: TimeTableActionType.GetTimeTableByYearRequest,
-  year,
-});
-
-export const getTimeTableBySpecialtyRequest = (specialty: string): TimeTableAction => ({
-  type: TimeTableActionType.GetTimeTableBySpecialtyRequest,
-  specialty,
+export const getTimeTableRequest = (payload: CalendarParams): TimeTableAction => ({
+  type: TimeTableActionType.GetTimeTableRequest,
+  payload,
 });
 
 export const getTimeTableSuccess = (timeTable: GroupTimeTable[]): TimeTableAction => ({
@@ -68,8 +59,9 @@ export const deleteSubjectFromTimeTableRequest = (data: TimeTableData): TimeTabl
   data,
 });
 
-export const deleteSubjectFromTimeTableSuccess = (): TimeTableAction => ({
+export const deleteSubjectFromTimeTableSuccess = (data: TimeTableData): TimeTableAction => ({
   type: TimeTableActionType.DeleteSubjectFromTimeTableSuccess,
+  data,
 });
 
 export const deleteSubjectFromTimeTableFail = (message: string): TimeTableAction => ({
@@ -77,14 +69,14 @@ export const deleteSubjectFromTimeTableFail = (message: string): TimeTableAction
   message,
 });
 
-export const moveSubjectInTimeTableRequest = (data: MoveTimeTableData): TimeTableAction => ({
+export const moveSubjectInTimeTableRequest = (payload: MoveRequestPayload): TimeTableAction => ({
   type: TimeTableActionType.MoveSubjectInTimeTableRequest,
-  data,
+  payload
 });
 
-export const moveSubjectInTimeTableSuccess = (calendarPace: CalendarPlace): TimeTableAction => ({
+export const moveSubjectInTimeTableSuccess = (payload: MoveSuccessPayload): TimeTableAction => ({
   type: TimeTableActionType.MoveSubjectInTimeTableSuccess,
-  calendarPace,
+  payload,
 });
 
 export const moveSubjectInTimeTableFail = (message: string): TimeTableAction => ({

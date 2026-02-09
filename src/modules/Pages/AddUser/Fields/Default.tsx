@@ -8,7 +8,7 @@ import { ApplicationState } from '~/src/store/configuration/constants';
 import { Option } from '~/src/modules/Components/Input/types';
 import { roleSelector } from '~/src/store/role/selectors';
 import StepButton from './StepButton';
-import Dropdown from '~/src/modules/Components/Input/Dropdown';
+import DropdownField from '~/src/modules/Components/Input/Dropdown';
 
 const Default: FC = () => {
   const roles = useSelector<ApplicationState, Option<string>[]>(roleSelector)
@@ -52,7 +52,7 @@ const Default: FC = () => {
         <Field
           instanceId={'sdfsfdsdf'}
           name={PersonField.Role}
-          component={Dropdown}
+          component={DropdownField}
           options={roles}
           placeholder={'Rola'}
         />

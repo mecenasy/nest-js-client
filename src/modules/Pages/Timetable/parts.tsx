@@ -1,5 +1,15 @@
 import styled, { css } from 'styled-components';
+import WhiteButton from '../../Components/Buttons/IconButton';
 
+export const NodalContent = styled.div`
+  height: 300px;
+
+  .css-qr46ko,
+  .css-1nmdiq5-menu {
+    height: 220px;
+  }
+
+`
 
 export const Wrapper = styled.div`
   display: flex;
@@ -11,6 +21,7 @@ export const Wrapper = styled.div`
 export const TableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
+  overflow-y: none;
   margin-bottom: 40px;
 
   &:last-child {
@@ -50,12 +61,12 @@ export const Td = styled.td`
 export const ThHours = styled(Th)`
   flex-direction: column;
   position: sticky;
-  z-index: 1;
+  z-index: 2;
   left: 0;
 `;
 
 export const TdHours = styled(Td)`
-  z-index: 1;
+  z-index: 2;
   position: sticky;
   left: 0;
 `;
@@ -76,9 +87,20 @@ export const CelRow = styled.div`
 
 export const CelElement = styled.span`
   font-weight: bold;
+`;
+
+export const Trash = styled(WhiteButton)`
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  padding: 2px;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  opacity: 0;
 `
 
-export const Cel = styled.div`
+export const Cel = styled.div<{ $isOver: boolean }>`
   background:  #eea2a2;
   display: flex;
   flex-direction: column;
@@ -92,35 +114,64 @@ export const Cel = styled.div`
   left: 0;
   top: 0;
   transition: all 0.3s ease-in-out;
+  z-index: 1;
 
   &:hover{
-    background: #eea2a2;
-    position: absolute;
-    left: -25px;
-    top: -25px;
-    width: calc(100% + 60px);
-    height: calc(100% + 50px);
-    font-size: 12px;
-    z-index: 2;
-    border: 1px solid black;
-    padding: 4px;
-
-    ${CelTitle}{
-      margin-bottom: 4px;
-      font-size: 14px;
-      font-weight: bold;;
-    }
+    ${({ $isOver }) => $isOver
+    ? css`
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      left: 0;
+      top: 0;
+    `
+    : css`
+      left: -25px;
+      top: -25px;
+      width: calc(100% + 60px);
+      height: calc(100% + 50px);
+      font-size: 12px;
+      z-index: 3;
+      border: 1px solid black;
+      padding: 4px;
     
-    ${CelRow}{
-      margin-bottom: 2px;
-      opacity: 1;
-      height: 12px;
-    }
+      ${CelTitle}{
+        margin-bottom: 4px;
+        font-size: 14px;
+        font-weight: bold;;
+      }
+      
+      ${CelRow}{
+        margin-bottom: 2px;
+        opacity: 1;
+        height: 12px;
+      }
+
+      ${Trash} {
+        opacity: 1;
+
+        &:active {
+          top:unset;
+          left: unset;
+          right: 3px;
+          bottom: 3px
+        }
+      }
+    `}
   }
 `;
 
-// font-size: 14px;
-//     margin-bottom: 4px;
-//     font-weight: bold;
+export const ControlWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 16px;
+`;
 
-// }
+export const ButtonsWrapper = styled.div`
+  padding: 16px 0;
+`;
+
+export const SelectWrapper = styled.div`
+  width: 250px;
+`;

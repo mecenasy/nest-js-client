@@ -37,6 +37,7 @@ export type DropdownProps<T> = FieldRenderProps<Option<T>> & {
   options: Array<Option<T>>;
   isMulti: boolean;
   label: string;
+  name?: string;
 }
 
 export type SelectProps<T> = {

@@ -12,6 +12,7 @@ import { messageReducer } from '../messages/reducer';
 import { hydrateReducer } from '../hydrate/reducer';
 import { notificationReducer } from '../notification/reducer';
 import { timeTableReducer } from '../timeTable/reducer';
+import { subjectReducer } from '../subject/reducer';
 
 export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
   combineReducers<ApplicationReducer>({
@@ -26,8 +27,7 @@ export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
     userList: userListReducer,
     messageList: messageReducer,
     notification: notificationReducer,
-    timeTable: timeTableReducer
+    timeTable: timeTableReducer,
+    subjectList: subjectReducer,
   })
 );
-
-

@@ -1,6 +1,6 @@
 import { MoveTimeTableData, TimeTableData } from '../../store/timeTable/constants';
 import api from '../api';
-import { groupPath, specialtyPath, yearPath, calendar, timeTable, } from './paths';
+import { groupPath, specialtyPath, yearPath, calendar, timeTable, teacherPath, } from './paths';
 
 export const addSubjectToTimeTable = async (data: TimeTableData) => await api.post(timeTable, data);
 
@@ -14,4 +14,6 @@ export const getTimeTableBySpecialty = async (specialty: string) => await api.ge
 
 export const getTimeTableByYear = async (year: string) => await api.get(yearPath(year));
 
-export const moveSubjectInTimeTable = async (data: MoveTimeTableData) => await api.put(timeTable, data);
+export const getTimeTableByTeacher = async (teacher: string) => await api.get(teacherPath(teacher));
+
+export const moveSubjectInTimeTable = async (data: MoveTimeTableData) => await api.patch(timeTable, data);

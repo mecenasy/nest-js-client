@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import {
@@ -13,21 +13,21 @@ import {
   moveSubjectInTimeTableFail,
   moveSubjectInTimeTableSuccess,
 } from './actions';
-import { TimeTableAction, TimeTableActionType } from './constants';
+import { CalendarType, GroupTimeTable, MoveSuccessPayload, TimeTableAction, TimeTableActionType } from './constants';
 import {
   addSubjectToTimeTable,
   deleteSubjectFromTimeTable,
   getCalendar,
   getTimeTableByGroup,
   getTimeTableBySpecialty,
+  getTimeTableByTeacher,
   getTimeTableByYear,
   moveSubjectInTimeTable,
 } from '~/src/api/timeTable/requests';
+import { userIdSelector } from '../auth/selectors';
 
 export function* timeTableWatcher() {
-  yield takeLatest(TimeTableActionType.GetTimeTableByGroupRequest, getTimeTableByGroupWorker);
-  yield takeLatest(TimeTableActionType.GetTimeTableByYearRequest, getTimeTableByYearWorker);
-  yield takeLatest(TimeTableActionType.GetTimeTableBySpecialtyRequest, getTimeTableBySpecialtyWorker);
+  yield takeLatest(TimeTableActionType.GetTimeTableRequest, getTimeTableByGroupWorker);
   yield takeLatest(TimeTableActionType.GetCalendarRequest, getCalendarWorker);
   yield takeLatest(TimeTableActionType.AddSubjectToTimeTableRequest, addSubjectToTimeTableWorker);
   yield takeLatest(TimeTableActionType.DeleteSubjectFromTimeTableRequest, deleteSubjectFromTimeTableWorker);
@@ -35,40 +35,35 @@ export function* timeTableWatcher() {
 }
 
 export function* getTimeTableByGroupWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.GetTimeTableByGroupRequest) {
+  if (action.type === TimeTableActionType.GetTimeTableRequest) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
       try {
-        const { data } = yield call(getTimeTableByGroup, action.group, action.year);
-        yield put(getTimeTableSuccess(data));
-      } catch (error: any) {
-        yield put(getTimeTableFail(error?.message));
-      }
-    }
-  }
-}
+        let receivedData: GroupTimeTable[] = [];
+        switch (action.payload.type) {
+          case CalendarType.Group: {
+            const { data } = yield call(getTimeTableByGroup, action.payload.group, action.payload.year);
+            receivedData = data
+            break;
+          }
+          case CalendarType.Specialty: {
+            const { data } = yield call(getTimeTableBySpecialty, action.payload.specialty);
+            receivedData = data
+            break;
+          }
+          case CalendarType.Year: {
+            const { data } = yield call(getTimeTableByYear, action.payload.year);
+            receivedData = data
+            break;
+          } default: {
+            const teacherId: string = yield select(userIdSelector);
+            const { data } = yield call(getTimeTableByTeacher, teacherId);
+            receivedData = data
+            break;
+          }
 
-export function* getTimeTableByYearWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.GetTimeTableByYearRequest) {
-    const authStatus: LoggedStatus = yield call(waitForAuthStatus);
-    if (authStatus === LoggedStatus.LoggedIn) {
-      try {
-        const { data } = yield call(getTimeTableByYear, action.year);
-        yield put(getTimeTableSuccess(data));
-      } catch (error: any) {
-        yield put(getTimeTableFail(error?.message));
-      }
-    }
-  }
-}
-
-export function* getTimeTableBySpecialtyWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.GetTimeTableBySpecialtyRequest) {
-    const authStatus: LoggedStatus = yield call(waitForAuthStatus);
-    if (authStatus === LoggedStatus.LoggedIn) {
-      try {
-        const { data } = yield call(getTimeTableBySpecialty, action.specialty);
-        yield put(getTimeTableSuccess(data));
+        }
+        yield put(getTimeTableSuccess(receivedData));
       } catch (error: any) {
         yield put(getTimeTableFail(error?.message));
       }
@@ -108,7 +103,7 @@ export function* deleteSubjectFromTimeTableWorker(action: TimeTableAction) {
     if (authStatus === LoggedStatus.LoggedIn) {
       try {
         yield call(deleteSubjectFromTimeTable, action.data);
-        yield put(deleteSubjectFromTimeTableSuccess());
+        yield put(deleteSubjectFromTimeTableSuccess(action.data));
       } catch (error: any) {
         yield put(deleteSubjectFromTimeTableFail(error?.message));
       }
@@ -121,8 +116,16 @@ export function* moveSubjectInTimeTableWorker(action: TimeTableAction) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
       try {
-        const { data } = yield call(moveSubjectInTimeTable, action.data);
-        yield put(moveSubjectInTimeTableSuccess(data));
+        const { data } = yield call(moveSubjectInTimeTable, action.payload.data);
+
+        const successPayload: MoveSuccessPayload = {
+          newCalendarPlace: data,
+          oldCalendarPlace: action.payload.data,
+          year: action.payload.year,
+          group: action.payload.group,
+        }
+
+        yield put(moveSubjectInTimeTableSuccess(successPayload));
       } catch (error: any) {
         yield put(moveSubjectInTimeTableFail(error?.message));
       }

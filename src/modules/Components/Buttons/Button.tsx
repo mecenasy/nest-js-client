@@ -14,5 +14,7 @@ export const Button = styled.button`
 
   :active {
     box-shadow: -1px -1px 4px 0px #6f8cab;
+    top: 1px;
+    left: 1px;
   }
 `;

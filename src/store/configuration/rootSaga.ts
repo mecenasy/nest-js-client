@@ -10,6 +10,7 @@ import { getUserListWatcher } from '../userList/sagas';
 import messageWatcher from '../messages/sagas';
 import { notificationWatcher } from '../notification/sagas';
 import { timeTableWatcher } from '../timeTable/sagas';
+import { subjectWatcher } from '../subject/sagas';
 
 export function* rootSaga() {
   yield all([
@@ -25,5 +26,6 @@ export function* rootSaga() {
     fork(messageWatcher),
     fork(notificationWatcher),
     fork(timeTableWatcher),
+    fork(subjectWatcher),
   ]);
 }

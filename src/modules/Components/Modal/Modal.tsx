@@ -26,6 +26,7 @@ const Modal = ({
   const customStyle: ModalBase.Styles = {
     overlay: {
       zIndex: 10,
+      backgroundColor: 'rgba(230, 230, 230,0.4)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -38,25 +39,27 @@ const Modal = ({
   }
 
   return (
-    <ModalBase
-      isOpen={isOpen}
-      parentSelector={getOrCreateReactPortalsDiv}
-      style={customStyle}
-      closeTimeoutMS={200}
-      onRequestClose={onClose}
+    <>
+      <P.Global />
+      <ModalBase
+        isOpen={isOpen}
+        parentSelector={getOrCreateReactPortalsDiv}
+        style={customStyle}
+        closeTimeoutMS={200}
+        onRequestClose={onClose}
+        shouldCloseOnEsc
+        shouldCloseOnOverlayClick
+        shouldFocusAfterRender
+        shouldReturnFocusAfterClose
 
-      shouldCloseOnEsc
-      shouldCloseOnOverlayClick
-      shouldFocusAfterRender
-      shouldReturnFocusAfterClose
-
-    >
-      <P.TitleWrapper>
-        <P.Title>{title}</P.Title>
-        <P.Button onClick={onClose} icon={close} />
-      </P.TitleWrapper>
-      {children}
-    </ModalBase>
+      >
+        <P.TitleWrapper>
+          <P.Title>{title}</P.Title>
+          <P.Button onClick={onClose} icon={close} />
+        </P.TitleWrapper>
+        {children}
+      </ModalBase>
+    </>
   )
 };
 

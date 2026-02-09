@@ -16,10 +16,48 @@ export const timeTableReducer = (state: TimeTableState = initialState, action: T
       };
     }
     case TimeTableActionType.MoveSubjectInTimeTableSuccess: {
-      return state
+      const { newCalendarPlace, oldCalendarPlace, year, group } = action.payload;
+      const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
+
+      const newGroupsTable = [...state.groupsTable];
+
+      const newTable = {
+        ...newGroupsTable[groupIndex],
+        timeTable: [
+          newCalendarPlace,
+          ...newGroupsTable[groupIndex]
+            .timeTable
+            .filter(({ days, hours }) => days !== oldCalendarPlace.days
+              || hours !== oldCalendarPlace.hours)
+        ]
+      }
+      newGroupsTable[groupIndex] = newTable;
+
+      return {
+        ...state,
+        groupsTable: newGroupsTable,
+      };
     }
     case TimeTableActionType.DeleteSubjectFromTimeTableSuccess: {
-      return state
+      const { year, group, days, hours } = action.data;
+      const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
+      const newGroupsTable = [...state.groupsTable];
+
+      const newTable = {
+        ...newGroupsTable[groupIndex],
+        timeTable: [
+          ...newGroupsTable[groupIndex]
+            .timeTable
+            .filter((e) => days !== e.days
+              || hours !== e.hours)
+        ]
+      }
+      newGroupsTable[groupIndex] = newTable;
+
+      return {
+        ...state,
+        groupsTable: newGroupsTable,
+      };
     }
     case TimeTableActionType.AddSubjectToTimeTableSuccess: {
       const { calendarPace } = action;

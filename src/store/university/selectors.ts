@@ -23,7 +23,7 @@ interface SpecialtyIds {
   directionId: Option<string>;
 }
 
-export const getSpecialtySelector = createSelector(
+export const getSpecialtiesSelector = createSelector(
   getSpecialty,
   (_: ApplicationState, ids: SpecialtyIds) => ids?.yearId?.value,
   (_: ApplicationState, ids: SpecialtyIds) => ids?.directionId?.value,
@@ -83,3 +83,8 @@ export const getGroupSelector = createSelector(getGroup,
     }
     return group.filter((gr) => gr.years.includes(yearId));
   });
+
+export const getSpecialtySelector = createSelector(getSpecialty,
+  (_: ApplicationState, groupId: string) => groupId,
+  (specialty, groupId) => specialty?.find(({ groups }) => groups.includes(groupId))?.name ?? ''
+);

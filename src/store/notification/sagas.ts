@@ -79,6 +79,7 @@ export function* notificationChannelWorker() {
         }
       }
     } catch (error) {
+      channel.close();
       console.log(error);
     } finally {
       const cancel: boolean = yield cancelled();

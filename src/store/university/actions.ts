@@ -1,15 +1,15 @@
 import { UniversityAction, UniversityActionType, UniversityState } from "./constants";
 
-export const getStudentRequest = (): UniversityAction => ({
+export const getUniversityRequest = (): UniversityAction => ({
   type: UniversityActionType.GetUniversityRequest,
 });
 
-export const getStudentSuccess = (data: UniversityState): UniversityAction => ({
+export const getUniversitySuccess = (data: UniversityState): UniversityAction => ({
   data,
   type: UniversityActionType.GetUniversitySuccess,
 });
 
-export const getStudentFail = (message: string): UniversityAction => ({
+export const getUniversityFail = (message: string): UniversityAction => ({
   message,
   type: UniversityActionType.GetUniversityFail,
 });
