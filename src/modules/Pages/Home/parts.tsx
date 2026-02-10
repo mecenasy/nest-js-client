@@ -37,10 +37,12 @@ export const Col = styled.div`
 `;
 
 export const BoxUser = styled(BoxBase)`
-   height: 120px;
+   height: 140px;
    justify-content: flex-start;
    background-color: #c9e4ff;
-
+   width: 100%;
+   gap: 16px;
+   
    ${media.greaterThan('xs')`
       height: 200px;
    `}
@@ -64,6 +66,7 @@ export const Wrapper = styled.div`
 
 export const ContentWrapper = styled.div`
    display: flex;
+   flex-direction: column;
 `;
 
 export const Row = styled.div`
@@ -79,3 +82,20 @@ export const Row = styled.div`
       }
    `}
 `;
+
+export const DataWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+`;
+
+export const DataColumn = styled.div`
+  font-size: 12px;
+  display: grid;
+  grid-template-columns:  1fr 1fr;
+`;
+
+export const NameWrapper = styled.div`
+  margin-bottom: 8px;
+  display: flex;
+  gap: 16px;
+`

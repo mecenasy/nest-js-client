@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useState } from 'react';
-import * as P from './parts';
+import * as P from '../parts';
 import { useSelector } from 'react-redux';
 import { getSpecialty, getYear } from '~/src/store/university/selectors';
 import { CalendarType } from '~/src/store/timeTable/constants';
-import { Option } from '../../Components/Input/types';
 import { getTimeTableRequest } from '~/src/store/timeTable/actions';
 import { useDispatch } from 'react-redux';
-import { Button } from '../../Components/Buttons/Button';
-import { Select } from '../../Components/Input/Dropdown';
 import { Specialty, Year } from '~/src/store/university/constants';
+import { Option } from '~/src/modules/Components/Input/types';
+import { Button } from '~/src/modules/Components/Buttons/Button';
+import { Select } from '~/src/modules/Components/Input/Dropdown';
 
 interface ControlProps {
 

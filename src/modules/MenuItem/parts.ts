@@ -99,4 +99,6 @@ export const Image = styled.img`
   `} 
 `;
 
-export const Text = styled.div``;
+export const Text = styled.div`
+  text-align: center;
+`;

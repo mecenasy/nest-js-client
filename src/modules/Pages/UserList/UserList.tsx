@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Helmet } from "react-helmet";
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
-import PersonBox from '../Home/PersonBox';
 import { getUserList, } from '~/src/store/userList/selectors';
 import Filters from './Filters/filters';
 import Pagination from './Pagination/Pagination';
@@ -21,7 +20,7 @@ const UserList: FC = () => {
         <P.RightColumn>
           <P.ListWrapper>
             {users?.map((user: any, index: number) => (
-              <PersonBox key={user.id || index} person={user} />
+              <P.PersonBox key={user.id || index} person={user} />
             ))}
           </P.ListWrapper>
           <Pagination />
