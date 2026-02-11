@@ -1,11 +1,11 @@
 import React, { FC, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { CreateSubject, Subject, SubjectActionType } from '~/src/store/subject/constants';
+import { CreateSubject, SubjectActionType } from '~/src/store/subject/constants';
 import { FormRenderProps, useForm } from 'react-final-form-hooks';
 import { Option } from '../../Components/Input/types';
 import { FormWrapper } from '../../Components/FormWrapper/parts';
-import pop from './final-form/pop';
-import push from './final-form/push';
+import pop from '../../../final-form/pop';
+import push from '../../../final-form/push';
 import { validateLoginForm } from './helpers';
 import { addSubjectRequest } from '~/src/store/subject/actions';
 
@@ -47,7 +47,7 @@ export const SubjectForm: FC<SubjectFormProps> = ({
     return new Promise<SubjectActionType>((resolve, reject) => {
       dispatch(addSubjectRequest(data, resolve, reject),)
     });
-  }, []);
+  }, [dispatch]);
 
 
   const form = useForm<SubjectFormData>({

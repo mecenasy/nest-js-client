@@ -9,7 +9,7 @@ import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
 import { getOption, getTeacherOption } from './helpers';
 import { SubjectFormData } from './SubjectForm';
 import remove from '~/assets/cross.svg'
-import useFieldArray from './final-form/useFieldsArray';
+import useFieldArray from '../../../final-form/useFieldsArray';
 import { InputField } from '../../Components/Input/InputWithLabel';
 import { useSpring } from '@react-spring/web';
 
@@ -105,7 +105,7 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
 
 
 export const FieldsArray = (props: FormRenderProps<SubjectFormData>) => {
-  const { fields } = useFieldArray('subjects', {}, props.form);
+  const { fields } = useFieldArray('subjects', props.form);
 
   return fields.map(
     (field, index) => <SubjectFields key={field}{...props} index={index} added={fields.length > index + 1} />

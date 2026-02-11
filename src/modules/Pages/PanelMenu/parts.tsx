@@ -57,4 +57,3 @@ export const SortButtonWrapper = styled.div`
   justify-content: space-between;
   gap: 8px;
 `;
-

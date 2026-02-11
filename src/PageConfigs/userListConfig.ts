@@ -2,7 +2,7 @@ import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
 import { getUserListRequest } from '../store/userList/actions';
-import { RoleType } from '../store/role/constants';
+import { ListType } from '../store/userList/constants';
 
 const UserListPage = Loadable({
   loader: async () => import('../Pages/UserListPage'),
@@ -10,7 +10,7 @@ const UserListPage = Loadable({
 });
 
 export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }, location) => [
-  Boolean((isMount && isHydrated) || isServer) && getUserListRequest(location.search ?? '', RoleType.Admin),
+  Boolean((isMount && isHydrated) || isServer) && getUserListRequest(location.search ?? '', ListType.Admin),
 ]
 
 export const userListConfig: PageConfig = {

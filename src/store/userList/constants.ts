@@ -1,5 +1,4 @@
 import { Person, SimplePerson } from '../person/constants';
-import { RoleType } from '../role/constants';
 import { University } from '../university/constants';
 
 export enum ListType {

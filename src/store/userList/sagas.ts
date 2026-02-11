@@ -6,7 +6,7 @@ import { getSimpleUserListSuccess, getUserListFail, getUserListSuccess } from '.
 import { getSelectedFilters } from './selectors';
 import { getSimpleUsers, getUsers } from '~/src/api/userlist/requests';
 import { replace } from 'redux-first-history';
-import { RoleType, SimplePerson } from '../person/constants';
+import { SimplePerson } from '../person/constants';
 import { userRoleSelector } from '../auth/selectors';
 
 export function* getUserListWatcher() {

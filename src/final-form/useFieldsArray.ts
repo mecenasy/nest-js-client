@@ -1,28 +1,14 @@
 import { useMemo } from 'react';
 import { useField } from 'react-final-form-hooks'
-import { fieldSubscriptionItems, ARRAY_ERROR, FormApi } from 'final-form'
-import { FieldValidator, FieldSubscription } from 'final-form'
-import { FieldArrayRenderProps, UseFieldArrayConfig } from './types'
-import defaultIsEqual from './defaultIsEqual'
-import useConstant from './useConstant'
+import { FormApi } from 'final-form'
+import { FieldArrayRenderProps } from './types'
 import copyPropertyDescriptors from './copyPropertyDescriptors'
 
-const all: FieldSubscription = fieldSubscriptionItems.reduce((result: any, key) => {
-  result[key] = true
-  return result
-}, {} as FieldSubscription)
 
 const useFieldArray = <T>(
   name: string,
-  {
-    subscription = all,
-    defaultValue,
-    initialValue,
-    isEqual = defaultIsEqual,
-    validate: validateProp
-  }: UseFieldArrayConfig = {}
-  , form: FormApi<T>): FieldArrayRenderProps => {
-
+  form: FormApi<T>
+): FieldArrayRenderProps => {
   const formMutators = form.mutators
   const hasMutators = !!(formMutators && (formMutators as any).push && (formMutators as any).pop)
   if (!hasMutators) {
@@ -37,22 +23,6 @@ const useFieldArray = <T>(
       return result
     }, {} as Record<string, Function>
     ), [name, formMutators])
-
-  const validate: FieldValidator<any> | undefined = useConstant(() =>
-    !validateProp
-      ? undefined
-      : (value: any, allValues: any, meta: any) => {
-        const error = validateProp(value, allValues, meta)
-        if (!error || Array.isArray(error)) {
-          return error
-        } else {
-          const arrayError: any[] = []
-            // gross, but we have to set a string key on the array
-            ; (arrayError as any)[ARRAY_ERROR] = error
-          return arrayError
-        }
-      }
-  )
 
   const fieldState = useField(name, form)
 

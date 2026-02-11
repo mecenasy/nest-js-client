@@ -45,8 +45,10 @@ export function* addSubjectWorker(action: SubjectAction) {
       try {
         const { data } = yield call(addSubject, action.subject);
         yield put(addSubjectSuccess(data));
+        yield call(action.resolve, data)
       } catch (error: any) {
         yield put(addSubjectFail(error?.message));
+        yield call(action.reject)
       }
     }
   }

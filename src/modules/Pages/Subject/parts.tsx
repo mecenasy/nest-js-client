@@ -1,22 +1,16 @@
 import styled from 'styled-components';
-import { media } from '~/src/styles/media';
 import BoxWithShadowBase from '../../Components/Box/Box';
-import AlertBase from '../../Components/Alert/Alert';
 import { animated } from '@react-spring/web';
 import WhiteButton from '../../Components/Buttons/IconButton';
-
-export const Alert = styled(AlertBase)`
-   margin-bottom: 16px;
-`;
+import ActionButtons from '../../Components/ActionButons/ActionButtons';
 
 export const BoxWithShadow = styled(BoxWithShadowBase)`
   padding: 16px;
-  flex-direction: column;
+  width: 49%;
   align-items: center;
-
-  ${media.greaterThan('xs')`
-      padding: 32px;
-  `}
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 30px;
 `;
 
 export const Title = styled.h2`
@@ -32,20 +26,6 @@ export const WrapperAlert = styled.div`
   height: 50px;
   width: 100%;
   margin: 4px 0 12px;
-`;
-
-export const ValidationAlert = styled.div`
-  height: 24px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 2px;
-`;
-
-export const Error = styled.span`
-  color: red;
-  text-align: center;
-  font-size: 14px;
 `;
 
 export const Wrapper = styled.div`
@@ -70,3 +50,32 @@ export const Button = styled(WhiteButton)`
   padding: 8px;
   margin-top: 24px;
 `;
+
+export const SubjectWrapper = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-flow: wrap;
+  gap: 12px;
+  max-width: 1200px;
+`;
+
+export const SubjectTitle = styled.span`
+  font-weight: bold;
+`;
+
+export const SubjectRow = styled.p`
+  margin: 2px;
+  font-size: 14px;
+`;
+
+export const Buttons = styled(ActionButtons)`
+  width: 36px; 
+
+  button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 8px;
+  }
+`
+

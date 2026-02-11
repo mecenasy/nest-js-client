@@ -1,4 +1,3 @@
-import { ChangePasswordData } from "~/src/store/auth/constants";
 import { Group, Specialty, Year } from '~/src/store/university/constants';
 import { Option } from '../../Components/Input/types';
 import { SimplePerson } from '~/src/store/person/constants';

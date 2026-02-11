@@ -24,7 +24,7 @@ const TableCell = ({ cel, day, hour }: TableCellProps) => {
 
   const onAddPace = useCallback(() => {
     addPlace(day, hour);
-  }, [onMoveSubject, day, hour]);
+  }, [onMoveSubject, addPlace, day, hour]);
 
   const [, drop] = useDrop(
     () => ({

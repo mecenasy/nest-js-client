@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import * as P from '../parts';
 import MenuPhoto from './MenuPhoto';
 import MenuData from './MenuData';
-import ActionButtons from './ActionButtons';
+import ActionButtons from '../../../Components/ActionButons/ActionButtons';
 import MenuItem from '~/src/modules/MenuItem/MenuItem';
 {}
 interface MenuIteProps {
@@ -27,8 +27,8 @@ const Item: FC<MenuIteProps> = ({
       menuSide={menu.menuSide}
     />
     <ActionButtons
-      onEditMenuItem={onEditMenuItem}
-      onRemoveMenuItem={onRemoveMenuItem}
+      onEdit={onEditMenuItem}
+      onRemove={onRemoveMenuItem}
     />
   </P.Box>
 );

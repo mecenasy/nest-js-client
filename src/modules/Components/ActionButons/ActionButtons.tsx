@@ -1,26 +1,28 @@
 import React, { FC } from 'react';
-import * as P from '../parts';
+import * as P from './parts';
 import edit from '~/assets/pencil.svg';
 import minus from '~/assets/minus.svg';
 import WhiteButton from '~/src/modules/Components/Buttons/IconButton';
 
 interface ActionButtonsProps {
-  onEditMenuItem: () => void;
-  onRemoveMenuItem: () => void;
+  onEdit: () => void;
+  onRemove: () => void;
+  className?: string;
 }
 
 const ActionButtons: FC<ActionButtonsProps> = ({
-  onEditMenuItem,
-  onRemoveMenuItem,
+  onEdit,
+  onRemove,
+  className
 }) => (
-  <P.BoxColumn columnWidth={48} direction={'column'}>
+  <P.BoxColumn className={className} >
     <WhiteButton
       icon={edit}
-      onClick={onEditMenuItem}
+      onClick={onEdit}
     />
     <WhiteButton
       icon={minus}
-      onClick={onRemoveMenuItem}
+      onClick={onRemove}
     />
   </P.BoxColumn>
 );

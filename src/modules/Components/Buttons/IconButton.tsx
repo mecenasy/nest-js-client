@@ -46,7 +46,7 @@ const styles = css< { $isCenter?: boolean }>`
 `;
 
 
-const Button = styled.button<{ $isCenter?: boolean }>`
+export const Button = styled.button<{ $isCenter?: boolean }>`
   ${styles}
 `;
 
