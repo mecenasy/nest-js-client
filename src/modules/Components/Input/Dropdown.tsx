@@ -1,7 +1,8 @@
 import React from 'react';
 import * as P from './parts';
-import { DropdownProps, SelectProps } from './types';
+import { DropdownProps, SelectFieldProps, SelectProps } from './types';
 import SelectBase from 'react-select';
+import { useField } from 'react-final-form-hooks';
 
 export const Select = <T extends string | number | boolean | null | undefined | object>({
   onChange,
@@ -40,4 +41,18 @@ const DropdownField = <T extends string | number | boolean | null | undefined | 
   />
 );
 
+export const SelectField = <T extends string | number | boolean | null | undefined | object, R>({
+  name, form, ...rest
+}: SelectFieldProps<T, R>) => {
+  const field = useField(name, form);
+
+  return (
+    <DropdownField
+      instanceId={'select'}
+
+      {...field}
+      {...rest}
+    />
+  )
+}
 export default DropdownField;

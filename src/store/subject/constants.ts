@@ -12,6 +12,15 @@ export interface Subject {
   specialties: Item[];
 }
 
+export interface CreateSubject {
+  name: string;
+  auditorium: string;
+  teacher: string
+  groups: string[];
+  years: string[];
+  specialties: string[];
+}
+
 export enum SubjectActionType {
   GetSubjectsRequest = 'subject/GET_SUBJECTS_REQUEST',
   GetSubjectsSuccess = 'subject/GET_SUBJECTS_SUCCESS',
@@ -40,7 +49,9 @@ export type SubjectAction = {
   message: string;
 } | {
   type: SubjectActionType.AddSubjectRequest;
-  subject: Subject;
+  subject: CreateSubject[];
+  resolve: (value: Subject) => void,
+  reject: () => void;
 } | {
   type: SubjectActionType.AddSubjectSuccess;
   subject: Subject;

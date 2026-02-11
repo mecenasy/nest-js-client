@@ -12,6 +12,7 @@ import { addUserConfig } from './addUserConfig';
 import { userListConfig } from './userListConfig';
 import { teachersListConfig } from './teachersListConfig';
 import { studentsListConfig } from './studentsListConfig';
+import { subjectConfig } from './subjectConfig';
 
 export const configs = [
   homeConfig,
@@ -28,5 +29,5 @@ export const configs = [
   userListConfig,
   teachersListConfig,
   studentsListConfig,
-
+  subjectConfig
 ]

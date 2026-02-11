@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as P from '../parts';
 import { useSelector } from 'react-redux';
 import { getSpecialty, getYear } from '~/src/store/university/selectors';
@@ -10,11 +10,7 @@ import { Option } from '~/src/modules/Components/Input/types';
 import { Button } from '~/src/modules/Components/Buttons/Button';
 import { Select } from '~/src/modules/Components/Input/Dropdown';
 
-interface ControlProps {
-
-}
-
-const Control: FC<ControlProps> = () => {
+const Control = () => {
   const years = useSelector(getYear);
   const specialties = useSelector(getSpecialty);
 
@@ -54,17 +50,16 @@ const Control: FC<ControlProps> = () => {
         <Button onClick={onSpecialty}>Dodaj grafik specjalności</Button>
       </P.ButtonsWrapper>
       <P.SelectWrapper>
-
-        {
-          type && (
-            <Select
-              isMulti={false}
-              label={type === CalendarType.Specialty ? 'Wybierz specjalność' : 'Wybierz rok'}
-              name='select'
-              options={getOption(type === 'specialty' ? specialties : years)}
-              onChange={onChange}
-              value={value}
-            />)}
+        {type && (
+          <Select
+            isMulti={false}
+            label={type === CalendarType.Specialty ? 'Wybierz specjalność' : 'Wybierz rok'}
+            name='select'
+            options={getOption(type === 'specialty' ? specialties : years)}
+            onChange={onChange}
+            value={value}
+          />
+        )}
       </P.SelectWrapper>
     </P.ControlWrapper>
   )

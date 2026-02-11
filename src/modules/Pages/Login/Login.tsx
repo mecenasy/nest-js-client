@@ -45,7 +45,6 @@ const Login: FC = () => {
   if (isLoggedIn === LoggedStatus.LoggedIn) {
     const redirectPath = isDefaultPassword ? '/change_password' : '/';
 
-    console.log("🚀 ~ Login ~ severContext:", severContext)
     if (severContext) {
       severContext.url = redirectPath
       return null;

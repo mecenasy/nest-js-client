@@ -2,6 +2,13 @@ import { Person, SimplePerson } from '../person/constants';
 import { RoleType } from '../role/constants';
 import { University } from '../university/constants';
 
+export enum ListType {
+  Student = 'student',
+  Teacher = 'teacher',
+  Admin = 'admin',
+  User = 'user',
+  OnlyTeacher = 'onlyTeacher'
+}
 export interface UserListState {
   simpleUsers?: SimplePerson[];
   users: Person[];
@@ -39,7 +46,7 @@ export enum UserListActionType {
 export type UserListAction = {
   type: UserListActionType.GetUserListRequest;
   searchParam?: string;
-  listType: RoleType
+  listType: ListType
 } | {
   type: UserListActionType.GetUserListSuccess;
   userList: UserListState;
@@ -49,6 +56,7 @@ export type UserListAction = {
   value: string | string[] | undefined;
 } | {
   type: UserListActionType.GetSimpleUserListRequest;
+  listType?: ListType;
 } | {
   type: UserListActionType.GetSimpleUserListSuccess;
   userList: SimplePerson[];

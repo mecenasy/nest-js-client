@@ -1,8 +1,7 @@
 import { SimplePerson } from '../person/constants';
-import { RoleType } from '../role/constants';
-import { UserListState, UserListAction, UserListActionType } from '../userList/constants';
+import { UserListState, UserListAction, UserListActionType, ListType } from '../userList/constants';
 
-export const getUserListRequest = (searchParam: string, listType: RoleType): UserListAction => ({
+export const getUserListRequest = (searchParam: string, listType: ListType): UserListAction => ({
   type: UserListActionType.GetUserListRequest,
   searchParam,
   listType
@@ -17,8 +16,9 @@ export const getUserListFail = (message: string): UserListAction => ({
   message,
   type: UserListActionType.GetUserListFail,
 });
-export const getSimpleUserListRequest = (): UserListAction => ({
+export const getSimpleUserListRequest = (listType?: ListType): UserListAction => ({
   type: UserListActionType.GetSimpleUserListRequest,
+  listType
 });
 
 export const getSimpleUserListSuccess = (userList: SimplePerson[]): UserListAction => ({

@@ -61,4 +61,8 @@ const FormWrapper: FormWrapperType = ({
   </MakeAsyncFunction>
 );
 
+
+export const NewFormWrapper = () => {
+
+}
 export default FormWrapper;

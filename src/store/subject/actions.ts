@@ -1,4 +1,4 @@
-import { Subject, SubjectAction, SubjectActionType } from './constants';
+import { CreateSubject, Subject, SubjectAction, SubjectActionType } from './constants';
 
 export const getSubjectsRequest = (): SubjectAction => ({
   type: SubjectActionType.GetSubjectsRequest,
@@ -14,9 +14,11 @@ export const getSubjectsFail = (message: string): SubjectAction => ({
   message,
 });
 
-export const addSubjectRequest = (subject: Subject): SubjectAction => ({
+export const addSubjectRequest = (subject: CreateSubject[], resolve: any, reject: any): SubjectAction => ({
   type: SubjectActionType.AddSubjectRequest,
   subject,
+  resolve,
+  reject,
 });
 
 export const addSubjectSuccess = (subject: Subject): SubjectAction => ({
