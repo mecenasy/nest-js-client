@@ -1,10 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import ToggleBase from 'react-toggle';
-import FormWrapperBase from '../../Components/FormWrapper/FormWrapper';
-
-export const FromWrapper = styled(FormWrapperBase)`
-   margin: auto;
-`;
 
 export const Toggle = styled(ToggleBase)`
    margin: 0 16px;
@@ -13,7 +8,6 @@ export const Toggle = styled(ToggleBase)`
       background-color: #4D4D4D !important;
    }
 `;
-
 
 export const Input = styled.input`
   width: 100%;

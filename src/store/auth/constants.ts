@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { RoleType } from '../person/constants';
-import { Reducer } from 'redux';
+import { Reducer, UnknownAction } from 'redux';
 
 export enum AuthActionType {
   LoginRequest = 'auth/LOGIN_REQUEST',
@@ -28,43 +28,13 @@ export interface Auth {
   token: string;
   expireAt: string;
 }
-
-export type AuthAction = {
-  type: AuthActionType.LoginRequest;
-  user: string;
-  password: string;
-} | {
-  type: AuthActionType.LoginSuccess;
+export interface LoginSuccess {
   user?: User;
   auth?: Auth;
   errorMessage?: Record<string, string>;
-} | {
-  type: AuthActionType.LoginFail;
-  error: AxiosError;
-} | {
-  type: AuthActionType.LogoutRequest;
-} | {
-  type: AuthActionType.LogoutSuccess;
-} | {
-  type: AuthActionType.LogoutFail
-  error: AxiosError;
-} | {
-  type: AuthActionType.RefreshTokenRequest;
-} | {
-  type: AuthActionType.RefreshTokenSuccess;
-  auth: Auth
-} | {
-  type: AuthActionType.RefreshTokenFail
-  error: AxiosError;
-} | {
-  type: AuthActionType.ChangePasswordRequest;
-  oldPassword: string;
-  newPassword: string;
-} | {
-  type: AuthActionType.ChangePasswordSuccess;
-} | {
-  type: AuthActionType.ChangePasswordFail
-  error: AxiosError;
+}
+export interface RefreshTokenSuccess {
+  auth: Auth;
 }
 
 export interface AuthState {
@@ -72,8 +42,8 @@ export interface AuthState {
   user: User;
 }
 export interface AuthReducer {
-  auth: Reducer<Auth, AuthAction>;
-  user: Reducer<User, AuthAction>;
+  auth: Reducer<Auth, UnknownAction>;
+  user: Reducer<User, UnknownAction>;
 }
 
 export enum LoggedStatus {

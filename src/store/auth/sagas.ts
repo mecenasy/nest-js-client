@@ -3,17 +3,17 @@ import { LOCATION_CHANGE } from 'redux-first-history';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest, apply } from 'redux-saga/effects';
 import cookie from 'js-cookie';
 import { loginUser, logoutUser, refreshUserToken, changePasswordUser } from '../../api/auth/requests';
-import * as A from './actions';
-import { AuthAction, AuthActionType, AuthState, LoggedStatus } from './constants';
+import * as A from './reducers';
+import { AuthState, LoggedStatus } from './constants';
 import { loggedInStatusSelector, tokenExpiredInSelector } from './selectors';
 import axios, { AxiosError } from 'axios';
 
 export function* authWatcher() {
-  yield takeLatest(AuthActionType.LoginRequest, loginWorker);
-  yield takeLatest(AuthActionType.LogoutRequest, logoutWorker);
-  yield takeLatest(AuthActionType.ChangePasswordRequest, changePasswordWorker);
-  yield takeLatest(AuthActionType.LogoutSuccess, cancelRefreshWorker);
-  yield takeLatest(AuthActionType.RefreshTokenRequest, initialAuth);
+  yield takeLatest(A.loginRequest.type, loginWorker);
+  yield takeLatest(A.logoutRequest.type, logoutWorker);
+  yield takeLatest(A.changePasswordRequest.type, changePasswordWorker);
+  yield takeLatest(A.logoutSuccess.type, cancelRefreshWorker);
+  yield takeLatest(A.refreshTokenRequest.type, initialAuth);
 
   if (!SERVER_BUILD) {
     yield fork(initialAuth);
@@ -29,7 +29,7 @@ export function* initialAuth() {
 
     if (user) {
       yield apply(cookie, 'set', ['jwt', auth.token, { expires: +auth.expireAt }]);
-      yield put(A.loginSuccess(user, { ...auth, loggedIn: LoggedStatus.LoggedIn }));
+      yield put(A.loginSuccess({ user, auth: { ...auth, loggedIn: LoggedStatus.LoggedIn } }));
     } else {
       yield put(A.logoutSuccess());
     }
@@ -45,13 +45,13 @@ function* cancelRefreshWorker() {
   }
 }
 
-export function* loginWorker(action: AuthAction) {
-  if (action.type === AuthActionType.LoginRequest) {
+export function* loginWorker(action: ReturnType<typeof A.loginRequest>) {
+  if (action.type === A.loginRequest.type) {
     try {
-      const { data: { auth, user } }: { data: AuthState } = yield call(loginUser, action.user, action.password);
+      const { data: { auth, user } }: { data: AuthState } = yield call(loginUser, action.payload.user, action.payload.password);
 
       yield apply(cookie, 'set', ['jwt', auth.token, { expires: +auth.expireAt }]);
-      yield put(A.loginSuccess(user, auth));
+      yield put(A.loginSuccess({ user, auth }));
 
       refreshTask = yield fork(refreshTokenWorker);
 
@@ -60,25 +60,25 @@ export function* loginWorker(action: AuthAction) {
         const parsedError: AxiosError<any> = error;
 
         if (parsedError.message.includes('401')) {
-          yield put(A.loginSuccess(undefined, undefined, { error: 'Logowanie się nie powiopdło. Sprawdź czy masz poprawny login i hasło.' }));
+          yield put(A.loginSuccess({ errorMessage: { error: 'Logowanie się nie powiopdło. Sprawdź czy masz poprawny login i hasło.' } }));
           return;
         }
-        yield put(A.loginFail(error));
+        yield put(A.loginFail());
       }
     }
   }
 }
 
-export function* changePasswordWorker(action: AuthAction) {
-  if (action.type === AuthActionType.ChangePasswordRequest) {
+export function* changePasswordWorker(action: ReturnType<typeof A.changePasswordRequest>) {
+  if (action.type === A.changePasswordRequest.type) {
     try {
-      yield call(changePasswordUser, action.oldPassword, action.newPassword);
+      yield call(changePasswordUser, action.payload.oldPassword, action.payload.newPassword);
 
       yield put(A.changePasswordSuccess());
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        yield put(A.changePasswordFail(error));
+        yield put(A.changePasswordFail());
       }
     }
   }
@@ -105,13 +105,13 @@ export function* refreshTokenWorker() {
         }
         const { data }: { data: AuthState } = yield call(refreshUserToken);
 
-        yield put(A.refreshTokenSuccess(data.auth));
+        yield put(A.refreshTokenSuccess({ auth: data.auth }));
       } else {
         yield put(A.logoutSuccess());
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        yield put(A.loginFail(error));
+        yield put(A.loginFail());
       }
     }
   }
@@ -125,7 +125,7 @@ export function* logoutWorker() {
     yield put(A.logoutSuccess())
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      yield put(A.logoutFail(error));
+      yield put(A.logoutFail());
     }
   }
 }
@@ -146,9 +146,9 @@ export function* waitForAuthStatus(): any {
       }
     } else {
       yield take([
-        AuthActionType.LoginSuccess,
-        AuthActionType.LogoutSuccess,
-        AuthActionType.LoginFail,
+        A.loginSuccess.type,
+        A.logoutSuccess.type,
+        A.loginFail.type,
       ]);
     }
   }

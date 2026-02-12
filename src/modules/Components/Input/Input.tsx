@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { hasWrapperError } from './helpers';
 import * as P from './parts';
 import { InputProps, InputFormWrapperProps, InputType } from './types'

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessageListRequest } from '~/src/store/messages/actions';
 import { getMessagesList } from '~/src/store/messages/selectors';
@@ -9,26 +9,27 @@ import { Helmet } from 'react-helmet';
 import plus from '~/assets/plus.svg';
 import MessageModal from './Modal/MessageModal';
 import { useNavigate } from 'react-router';
+import { ModalRef } from '../../Components/Modal/Modal';
 
 const Messages: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const messages = useSelector((state: ApplicationState) => getMessagesList(state));
-  const [isModalOpen, setModalOpen] = useState(false);
+  const modalRef = useRef<ModalRef>(null);
+
 
   useEffect(() => {
     dispatch(getMessageListRequest(''));
   }, [dispatch]);
 
   const handleClick = (id?: string) => {
-    setModalOpen(true)
+    modalRef.current?.open();
     if (id) {
       navigate(`/messages?messageId=${id}`, { replace: true, })
     }
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false);
     setTimeout(() => {
       navigate(`/messages`, { replace: true, })
     }, 200)
@@ -60,7 +61,7 @@ const Messages: FC = () => {
           ))}
         </P.MessageList>
         <MessageModal
-          isOpen={isModalOpen}
+          ref={modalRef}
           onClose={handleCloseModal}
         />
       </P.PageWrapper>

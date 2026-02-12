@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as P from './parts';
 import { FormConfig, FormRenderProps, useForm } from 'react-final-form-hooks';
 import push from '~/src/final-form/push';
@@ -6,7 +6,7 @@ import pop from '~/src/final-form/pop';
 
 interface SubjectFormProps<T> extends FormConfig<T> {
   children: (props: FormRenderProps<T>) => React.ReactNode;
-  autoPushArray: boolean;
+  autoPushArray?: boolean;
 
 }
 export const FormAdapter = <T extends object>({ children, autoPushArray, ...rest }: SubjectFormProps<T>) => {
@@ -19,7 +19,7 @@ export const FormAdapter = <T extends object>({ children, autoPushArray, ...rest
     if (autoPushArray) {
       form.form.mutators.push('subjects', undefined);
     }
-  }, [autoPushArray])
+  }, [autoPushArray, form.form.mutators])
 
   return (
     <P.FormWrapper onSubmit={form.handleSubmit}>
@@ -27,6 +27,5 @@ export const FormAdapter = <T extends object>({ children, autoPushArray, ...rest
     </P.FormWrapper>
   )
 };
-
 
 export default FormAdapter;

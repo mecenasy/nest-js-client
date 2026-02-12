@@ -37,7 +37,8 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
 
   const onRemove = useCallback(() => {
     form.mutators.pop(`subjects`);
-  }, []);
+  }, [form.mutators]);
+
   const props = useSpring({
     config: { duration: 300 },
     onRest: () => {
@@ -106,7 +107,6 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
 
 export const FieldsArray = (props: FormRenderProps<SubjectFormData>) => {
   const { fields } = useFieldArray('subjects', props.form);
-  console.log("🚀 ~ FieldsArray ~ fields:", fields)
 
   return fields.map(
     (field, index) => <SubjectFields key={field}{...props} index={index} added={fields.length > index + 1} />

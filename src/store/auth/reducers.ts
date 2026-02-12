@@ -1,22 +1,26 @@
-import { combineReducers } from "redux";
+import { createSlice, PayloadAction, combineReducers, createAction } from '@reduxjs/toolkit';
 import {
-  AuthAction,
-  AuthActionType,
   authInitialState,
   userInitialState,
-  Auth,
-  User,
   LoggedStatus,
+  LoginSuccess,
+  RefreshTokenSuccess,
   AuthReducer,
 } from "./constants";
 
-export const authReducer = (state: Auth = authInitialState, action: AuthAction): Auth => {
-  switch (action.type) {
-    case AuthActionType.LoginSuccess:
-    case AuthActionType.RefreshTokenSuccess: {
-      if (action.auth) {
+export const loginRequest = createAction<{ user: string, password: string }>('auth/loginRequest');
+export const logoutRequest = createAction('auth/logoutRequest');
+export const refreshTokenRequest = createAction('auth/refreshTokenRequest');
+export const changePasswordRequest = createAction<{ newPassword: string, oldPassword: string }>('auth/changePasswordRequest');
+
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState: authInitialState,
+  reducers: {
+    loginSuccess: (_, action: PayloadAction<LoginSuccess>) => {
+      if (action.payload.auth) {
         return {
-          ...action.auth,
+          ...action.payload.auth,
           loggedIn: LoggedStatus.LoggedIn,
         };
       }
@@ -24,38 +28,76 @@ export const authReducer = (state: Auth = authInitialState, action: AuthAction):
         ...authInitialState,
         loggedIn: LoggedStatus.LoggedOut,
       };
-    }
-    case AuthActionType.LoginFail:
-    case AuthActionType.LogoutSuccess:
-    case AuthActionType.LogoutFail: {
+    },
+    loginFail: () => {
       return {
         ...authInitialState,
         loggedIn: LoggedStatus.LoggedOut,
       };
-    }
-    default: {
-      return state;
-    }
-  }
-}
+    },
+    logoutSuccess: () => {
+      return {
+        ...authInitialState,
+        loggedIn: LoggedStatus.LoggedOut,
+      };
+    },
+    logoutFail: () => {
+      return {
+        ...authInitialState,
+        loggedIn: LoggedStatus.LoggedOut,
+      };
+    },
+    refreshTokenSuccess: (_, action: PayloadAction<RefreshTokenSuccess>) => {
+      if (action.payload.auth) {
+        return {
+          ...action.payload.auth,
+          loggedIn: LoggedStatus.LoggedIn,
+        };
+      }
+      return {
+        ...authInitialState,
+        loggedIn: LoggedStatus.LoggedOut,
+      };
+    },
+    refreshTokenFail: () => {},
+    changePasswordSuccess: () => {},
+    changePasswordFail: () => {},
+  },
+});
 
-export const userReducer = (state: User = userInitialState, action: AuthAction): User => {
-  switch (action.type) {
-    case AuthActionType.LoginSuccess: {
-      if (action.user) {
-        return action.user;
+
+export const {
+  loginSuccess,
+  loginFail,
+  logoutSuccess,
+  logoutFail,
+  refreshTokenSuccess,
+  refreshTokenFail,
+  changePasswordSuccess,
+  changePasswordFail
+} = authSlice.actions;
+
+export const userSlice = createSlice({
+  name: 'user',
+  initialState: userInitialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(authSlice.actions.loginSuccess, (state, action) => {
+      if (action.payload.user) {
+        return action.payload.user;
       }
       return userInitialState;
-    }
-    case AuthActionType.LogoutSuccess:
-    case AuthActionType.LogoutFail: {
-      return userInitialState;
-    }
-    default: {
-      return state;
-    }
+    });
+    builder.addCase(logoutSuccess, () => userInitialState);
+    builder.addCase(logoutFail, () => userInitialState);
+    builder.addCase(loginFail, () => userInitialState);
   }
-}
+});
+
+
+
+export const authReducer = authSlice.reducer;
+export const userReducer = userSlice.reducer;
 
 export const authCombinedReducer = combineReducers<AuthReducer>({
   auth: authReducer,

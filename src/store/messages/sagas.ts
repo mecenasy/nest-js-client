@@ -93,7 +93,7 @@ function* readedMessageWorker(action: ExtractByType<MessageAction, MessageAction
   }
 }
 
-export default function* messageWatcher() {
+export function* messageWatcher() {
   yield all([
     takeLatest(MessageActionType.SetReadedMessageRequest, readedMessageWorker),
     takeLatest(MessageActionType.SendMessageRequest, sendMessageWorker),

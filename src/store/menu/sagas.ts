@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { getMenu } from '../../api/menu/requests';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
-import { getUserId } from '../auth/selectors';
+import { userIdSelector } from '../auth/selectors';
 import { getMenuFail, getMenuSuccess } from './actions';
 import { MenuActionType } from './constants';
 import { AxiosError } from 'axios';
@@ -15,7 +15,7 @@ export function* getMenuWorker() {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-    const personId: string = yield select(getUserId);
+    const personId: string = yield select(userIdSelector);
     try {
       if (personId) {
 

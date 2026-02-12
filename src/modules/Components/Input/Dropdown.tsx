@@ -33,8 +33,6 @@ const DropdownField = <T extends string | number | boolean | null | undefined | 
   ...rest
 }: DropdownProps<T>) => {
 
-  console.log(value)
-
   return (
     <Select
       onChange={onChange}

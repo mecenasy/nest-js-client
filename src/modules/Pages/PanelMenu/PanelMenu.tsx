@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
 import { Helmet } from "react-helmet";
@@ -14,6 +14,7 @@ import { roleSelector } from '~/src/store/role/selectors';
 import { Option } from '../../Components/Input/types';
 import MenuControl from './MenuControl';
 import Item from './MenuItem/MenuItem';
+import { ModalRef } from '../../Components/Modal/Modal';
 
 const Modal = Loadable({
   loader: async () => import('../../Components/Modal/Modal'),
@@ -25,18 +26,15 @@ const PanelMenu: FC = () => {
   const menus = useSelector(getMenuItems);
   const roles = useSelector<ApplicationState, Option<string>[]>(roleSelector)
   const [id, setId] = useState('');
-
+  const modalRef = useRef<ModalRef>(null);
   const [activeRole, setRule] = useState<string>('');
-  const [isOpenModal, setOpenModal] = useState(false);
 
   const dispatch = useDispatch();
 
-  const toggleModal = useCallback(() => {
-    setOpenModal((prev) => !prev);
-    if (isOpenModal) {
-      setId('');
-    }
-  }, [isOpenModal]);
+  const onClose = useCallback(() => {
+    modalRef.current?.close();
+    setId('');
+  }, []);
 
   const onSetRole = useCallback((role: string) => () => {
     setRule(role)
@@ -48,13 +46,13 @@ const PanelMenu: FC = () => {
 
   const onEditMenuItem = useCallback((id: string) => () => {
     setId(id);
-    toggleModal();
-  }, [toggleModal]);
+    modalRef.current?.open();
+  }, []);
 
   const onAddMenuItem = useCallback(() => {
     setId('');
-    toggleModal();
-  }, [toggleModal]);
+    modalRef.current?.close();
+  }, []);
 
   return (
     <PageWrapper >
@@ -80,15 +78,13 @@ const PanelMenu: FC = () => {
                 onRemoveMenuItem={onRemoveMenuItem(item.id)}
               />
             ))}
-          {!SERVER_BUILD && (
-            <Modal
-              onClose={toggleModal}
-              isOpen={isOpenModal}
-              title={'Dodawanie menu'}
-            >
-              <PanelMenuForm initialId={id} onClose={toggleModal} />
-            </Modal>
-          )}
+          <Modal
+            onClose={onClose}
+            ref={modalRef}
+            title={'Dodawanie menu'}
+          >
+            <PanelMenuForm initialId={id} onClose={onClose} />
+          </Modal>
         </P.MenuPanelWrapper>
       )}
     </PageWrapper >

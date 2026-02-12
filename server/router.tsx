@@ -20,7 +20,7 @@ import { history } from '../utils/history/history';
 import { ActionProvider } from '../src/Providers/ActionProvider/ActionProvider';
 import { UnknownAction } from 'redux';
 import { setAuthorizationProvider } from '~/src/api/api';
-import { logoutSuccess, refreshTokenRequest } from '~/src/store/auth/actions';
+import { logoutSuccess, refreshTokenRequest } from '~/src/store/auth/reducers';
 import { ServerStatusContext, Status } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
 const router = express.Router();

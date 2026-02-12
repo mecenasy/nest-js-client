@@ -1,14 +1,14 @@
-import { AuthAction, AuthActionType } from "../auth/constants";
-import { RoleAction, RoleActionType, initialState } from "./constants";
+import { UnknownAction } from 'redux';
+import { RoleActionType, initialState } from "./constants";
 
-export const roleReducer = (state: string[] = initialState, action: RoleAction | AuthAction): string[] => {
+export const roleReducer = (state: string[] = initialState, action: UnknownAction): string[] => {
   switch (action.type) {
     case RoleActionType.GetRoleSuccess: {
-      return action.roles;
+      return action.roles as string[];
     }
-    case AuthActionType.LogoutSuccess: {
-      return initialState
-    }
+    // case AuthActionType.LogoutSuccess: {
+    //   return initialState
+    // }
     default: {
       return state;
     }

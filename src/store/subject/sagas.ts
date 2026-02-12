@@ -1,17 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
-import {
-  addSubjectFail,
-  addSubjectSuccess,
-  deleteSubjectFail,
-  deleteSubjectSuccess,
-  getSubjectsFail,
-  getSubjectsSuccess,
-  updateSubjectFail,
-  updateSubjectSuccess,
-} from './actions';
-import { SubjectAction, SubjectActionType } from './constants';
+import * as A from './reducer';
 import {
   addSubject,
   deleteSubject,
@@ -20,10 +10,10 @@ import {
 } from '~/src/api/subject/requests';
 
 export function* subjectWatcher() {
-  yield takeLatest(SubjectActionType.GetSubjectsRequest, getSubjectsWorker);
-  yield takeLatest(SubjectActionType.AddSubjectRequest, addSubjectWorker);
-  yield takeLatest(SubjectActionType.DeleteSubjectRequest, deleteSubjectWorker);
-  yield takeLatest(SubjectActionType.UpdateSubjectRequest, updateSubjectWorker);
+  yield takeLatest(A.getSubjectsRequest.type, getSubjectsWorker);
+  yield takeLatest(A.addSubjectRequest.type, addSubjectWorker);
+  yield takeLatest(A.deleteSubjectRequest.type, deleteSubjectWorker);
+  yield takeLatest(A.updateSubjectRequest.type, updateSubjectWorker);
 }
 
 export function* getSubjectsWorker() {
@@ -31,53 +21,45 @@ export function* getSubjectsWorker() {
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
       const { data } = yield call(getSubjects);
-      yield put(getSubjectsSuccess(data));
-    } catch (error: any) {
-      yield put(getSubjectsFail(error?.message));
+      yield put(A.getSubjects(data));
+    } catch {
     }
   }
 }
 
-export function* addSubjectWorker(action: SubjectAction) {
-  if (action.type === SubjectActionType.AddSubjectRequest) {
-    const authStatus: LoggedStatus = yield call(waitForAuthStatus);
-    if (authStatus === LoggedStatus.LoggedIn) {
-      try {
-        const { data } = yield call(addSubject, action.subject);
-        yield put(addSubjectSuccess(data));
-        yield call(action.resolve, data)
-      } catch (error: any) {
-        yield put(addSubjectFail(error?.message));
-        yield call(action.reject)
-      }
+export function* addSubjectWorker(action: ReturnType<typeof A.addSubjectRequest>) {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+  if (authStatus === LoggedStatus.LoggedIn) {
+    const { subject, resolve, reject } = action.payload;
+    try {
+      const { data } = yield call(addSubject, subject);
+      yield put(A.addSubject(data));
+      yield call(resolve, data);
+    } catch {
+      yield call(reject);
     }
   }
 }
 
-export function* deleteSubjectWorker(action: SubjectAction) {
-  if (action.type === SubjectActionType.DeleteSubjectRequest) {
-    const authStatus: LoggedStatus = yield call(waitForAuthStatus);
-    if (authStatus === LoggedStatus.LoggedIn) {
-      try {
-        yield call(deleteSubject, action.id);
-        yield put(deleteSubjectSuccess(action.id));
-      } catch (error: any) {
-        yield put(deleteSubjectFail(error?.message));
-      }
+export function* deleteSubjectWorker(action: ReturnType<typeof A.deleteSubjectRequest>) {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const id = action.payload;
+      yield call(deleteSubject, id);
+      yield put(A.deleteSubject(id));
+    } catch {
     }
   }
 }
 
-export function* updateSubjectWorker(action: SubjectAction) {
-  if (action.type === SubjectActionType.UpdateSubjectRequest) {
-    const authStatus: LoggedStatus = yield call(waitForAuthStatus);
-    if (authStatus === LoggedStatus.LoggedIn) {
-      try {
-        const { data } = yield call(updateSubject, action.subject);
-        yield put(updateSubjectSuccess(data));
-      } catch (error: any) {
-        yield put(updateSubjectFail(error?.message));
-      }
+export function* updateSubjectWorker(action: ReturnType<typeof A.updateSubjectRequest>) {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const { data } = yield call(updateSubject, action.payload);
+      yield put(A.updateSubject(data));
+    } catch {
     }
   }
 }

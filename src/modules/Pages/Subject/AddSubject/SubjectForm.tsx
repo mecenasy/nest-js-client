@@ -5,7 +5,8 @@ import { FormRenderProps } from 'react-final-form-hooks';
 import { Option } from '../../../Components/Input/types';
 import { validateLoginForm } from '../helpers';
 import { addSubjectRequest } from '~/src/store/subject/actions';
-import FormAdapter from '~/src/modules/Components/FormWrapper/Formadapter';
+import FormAdapter from '~/src/modules/Components/FormWrapper/FormAdapter';
+
 
 export interface SubjectData {
   name: string;
@@ -19,7 +20,6 @@ export interface SubjectData {
 export interface SubjectFormData {
   subjects: SubjectData[];
 }
-
 
 interface SubjectFormProps {
   children: (props: FormRenderProps<SubjectFormData>) => React.ReactNode;
@@ -46,7 +46,7 @@ export const SubjectForm = ({ children, item, after }: SubjectFormProps) => {
       dispatch(addSubjectRequest(data, resolve, reject));
       after();
     });
-  }, [dispatch]);
+  }, [dispatch, after]);
 
   const initialValues: SubjectFormData | undefined = useMemo(() => {
     if (item) {
@@ -66,7 +66,7 @@ export const SubjectForm = ({ children, item, after }: SubjectFormProps) => {
 
   return (
     <FormAdapter<SubjectFormData>
-      autoPushArray={!!initialValues}
+      autoPushArray={!initialValues}
       onSubmit={onSubmit}
       initialValues={initialValues}
       validate={validateLoginForm}

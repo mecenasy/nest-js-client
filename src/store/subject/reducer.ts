@@ -1,23 +1,41 @@
-import { initialState, Subject, SubjectAction, SubjectActionType } from './constants';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CreateSubject, initialState, Subject } from './constants';
 
-export const subjectReducer = (state: Subject[] = initialState, action: SubjectAction): Subject[] => {
-  switch (action.type) {
-    case SubjectActionType.GetSubjectsSuccess: {
-      return action.subjects;
-    }
-    case SubjectActionType.AddSubjectSuccess: {
-      return [...state, action.subject];
-    }
-    case SubjectActionType.DeleteSubjectSuccess: {
-      return state.filter((subject) => subject.id !== action.id);
-    }
-    case SubjectActionType.UpdateSubjectSuccess: {
-      return state.map((subject) =>
-        subject.id === action.subject.id ? action.subject : subject
-      );
-    }
-    default: {
-      return state;
-    }
-  }
-};
+const subjectSlice = createSlice({
+  name: 'subject',
+  initialState,
+  reducers: {
+    getSubjects: (state, action: PayloadAction<Subject[]>) => {
+      return action.payload;
+    },
+    addSubject: (state, action: PayloadAction<Subject>) => {
+      state.push(action.payload);
+    },
+    deleteSubject: (state, action: PayloadAction<string>) => {
+      return state.filter((subject) => subject.id !== action.payload);
+    },
+    updateSubject: (state, action: PayloadAction<Subject>) => {
+      const index = state.findIndex((s) => s.id === action.payload.id);
+      if (index !== -1) {
+        state[index] = action.payload;
+      }
+    },
+  },
+  selectors: {
+    getSubjectsSelector: (state: Subject[]) => state,
+  },
+});
+
+export const subjectReducer = subjectSlice.reducer;
+
+export const { getSubjects, addSubject, deleteSubject, updateSubject } = subjectSlice.actions;
+export const { getSubjectsSelector } = subjectSlice.selectors;
+
+export const getSubjectsRequest = createAction('subject/getSubjectsRequest');
+export const addSubjectRequest = createAction<{
+  subject: CreateSubject[];
+  resolve: any;
+  reject: any;
+}>('subject/addSubjectRequest');
+export const deleteSubjectRequest = createAction<string>('subject/deleteSubjectRequest');
+export const updateSubjectRequest = createAction<Subject>('subject/updateSubjectRequest');

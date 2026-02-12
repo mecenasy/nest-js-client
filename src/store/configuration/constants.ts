@@ -15,6 +15,8 @@ import { authCombinedReducer } from '../auth/reducers';
 import { NotificationAction, NotificationState } from '../notification/constants';
 import { TimeTableAction, TimeTableState } from '../timeTable/constants';
 import { Subject, SubjectAction } from '../subject/constants';
+import { GradesState } from '../grade/constants';
+import { gradeReducer } from '../grade/reducer';
 
 export interface ApplicationState {
   didHydrated: boolean;
@@ -30,6 +32,7 @@ export interface ApplicationState {
   notification: NotificationState;
   timeTable: TimeTableState;
   subjectList: Subject[];
+  grades: GradesState;
 }
 
 export interface ApplicationReducer extends Record<keyof ApplicationState, any> {
@@ -46,6 +49,7 @@ export interface ApplicationReducer extends Record<keyof ApplicationState, any> 
   notification: Reducer<NotificationState, NotificationAction>;
   timeTable: Reducer<TimeTableState, TimeTableAction>;
   subjectList: Reducer<Subject[], SubjectAction>;
+  grades: typeof gradeReducer;
 }
 
 export type ConfigureStore = (

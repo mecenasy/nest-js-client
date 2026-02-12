@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import * as P from './parts';
 import { validateLoginForm } from './helpers';
 import InputFormWrapper from '../../Components/Input/Input';
-import { AuthAction, AuthActionType, LoggedStatus, LoginData, LoginField } from '~/src/store/auth/constants';
-import { loginRequest } from '~/src/store/auth/actions';
+import { LoggedStatus, LoginData, LoginField } from '~/src/store/auth/constants';
+import { loginRequest, loginSuccess, loginFail } from '~/src/store/auth/reducers';
 import { getIsDefaultPassword, loggedInStatusSelector } from '~/src/store/auth/selectors';
 import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { AlertType } from '../../Components/Alert/types';
@@ -15,18 +15,19 @@ import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
 import { Button } from '../../Components/Buttons/Button';
 import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
+import { UnknownAction } from 'redux';
 
 const Login: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
-  const isDefaultPassword = useSelector(getIsDefaultPassword)
+  const isDefaultPassword = useSelector(getIsDefaultPassword);
   const formRef = useRef<FormApi>(null);
-  const severContext = useContext(ServerStatusContext);
+  const serverContext = useContext(ServerStatusContext);
 
-  const onSubmit = (action: AuthAction, { password, user }: LoginData) => {
-    return loginRequest(user, password);
+  const onSubmit = (action: any, { password, user }: LoginData) => {
+    return loginRequest({ user, password });
   };
 
-  const getPayload = (action: AuthAction): Record<string, string> | undefined => {
+  const getPayload = (action: any): Record<string, string> | undefined => {
     if (formRef.current) {
       formRef.current.batch(() => {
         if (formRef.current) {
@@ -37,7 +38,7 @@ const Login: FC = () => {
       });
     }
 
-    if (action.type === AuthActionType.LoginSuccess) {
+    if (action.type === loginSuccess.type) {
       return action.errorMessage;
     }
   };
@@ -45,8 +46,8 @@ const Login: FC = () => {
   if (isLoggedIn === LoggedStatus.LoggedIn) {
     const redirectPath = isDefaultPassword ? '/change_password' : '/';
 
-    if (severContext) {
-      severContext.url = redirectPath
+    if (serverContext) {
+      serverContext.url = redirectPath;
       return null;
     }
 
@@ -61,12 +62,12 @@ const Login: FC = () => {
       </Helmet>
       <P.BoxWithShadow>
         <P.Title>Witaj w systemie uczelnianym</P.Title>
-        <P.SubTitle>Aby wejśc do systemy należy podać login i hasło</P.SubTitle>
+        <P.SubTitle>Aby wejść do systemu należy podać login i hasło</P.SubTitle>
 
-        <FormWrapper<AuthAction, LoginData>
-          start={AuthActionType.LoginRequest}
-          resolve={AuthActionType.LoginSuccess}
-          reject={AuthActionType.LoginFail}
+        <FormWrapper<UnknownAction, LoginData>
+          start={loginRequest.type}
+          resolve={loginSuccess.type}
+          reject={loginFail.type}
           setPayload={onSubmit}
           getPayload={getPayload}
           validate={validateLoginForm}

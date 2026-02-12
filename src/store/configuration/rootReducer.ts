@@ -13,6 +13,7 @@ import { hydrateReducer } from '../hydrate/reducer';
 import { notificationReducer } from '../notification/reducer';
 import { timeTableReducer } from '../timeTable/reducer';
 import { subjectReducer } from '../subject/reducer';
+import { gradeReducer } from '../grade/reducer';
 
 export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
   combineReducers<ApplicationReducer>({
@@ -29,5 +30,6 @@ export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
     notification: notificationReducer,
     timeTable: timeTableReducer,
     subjectList: subjectReducer,
+    grades: gradeReducer
   })
 );

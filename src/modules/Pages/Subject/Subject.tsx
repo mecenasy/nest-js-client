@@ -1,5 +1,5 @@
 
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
 import * as P from './parts';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
@@ -11,16 +11,15 @@ import SubjectItem from './SubjectItem';
 import ControlSubject from './ControlSubject';
 import { useDispatch } from 'react-redux';
 import { deleteSubjectRequest } from '~/src/store/subject/actions';
-import Modal from '../../Components/Modal/Modal';
-import { FormAdapter } from './AddSubject/SubjectForm';
+import Modal, { ModalRef } from '../../Components/Modal/Modal';
 import AddSubjects from './AddSubjects';
 import { Subject } from '~/src/store/subject/constants';
 
 const SubjectPage = () => {
   const [search, setSearch] = useState('');
   const filterSearch = useDebounce(search, { wait: 300 });
-  const [isModalOpen, setModalOpen] = useState(false);
   const [item, setSubjectItem] = useState<Subject | null>(null);
+  const modalRef = useRef<ModalRef>(null);
 
   const dispatch = useDispatch();
 
@@ -33,15 +32,16 @@ const SubjectPage = () => {
 
   const edit = useCallback((subject: Subject) => {
     setSubjectItem(subject);
-    toggleModal();
+    modalRef.current?.open();
   }, []);
 
   const remove = useCallback((id: string) => {
     dispatch(deleteSubjectRequest(id))
-  }, []);
+  }, [dispatch]);
 
   const toggleModal = useCallback(() => {
-    setModalOpen((prev) => !prev)
+    setSubjectItem(null);
+    modalRef.current?.toggle();
   }, []);
 
   const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
@@ -72,17 +72,12 @@ const SubjectPage = () => {
           ))}
         </P.SubjectWrapper>
       </P.SubjectWrapper>
-      <>
-        {!SERVER_BUILD && (
-          <Modal
-            onClose={toggleModal}
-            isOpen={isModalOpen}
-            title={item ? 'Edytuj przedmiot' : 'Nowy przedmiot'}
-          >
-            <AddSubjects after={toggleModal} item={item} />
-          </Modal>
-        )}
-      </>
+      <Modal
+        ref={modalRef}
+        title={item ? 'Edytuj przedmiot' : 'Nowy przedmiot'}
+      >
+        <AddSubjects after={toggleModal} item={item} />
+      </Modal>
     </PageWrapper>
   )
 };

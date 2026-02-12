@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import * as P from './parts';
 import { validateLoginForm } from './helpers';
 import InputFormWrapper from '../../Components/Input/Input';
-import { AuthAction, AuthActionType, LoggedStatus, ChangePasswordData, ChangePasswordField } from '~/src/store/auth/constants';
-import { changePasswordRequest } from '~/src/store/auth/actions';
+import { LoggedStatus, ChangePasswordData, ChangePasswordField } from '~/src/store/auth/constants';
+import { changePasswordRequest, changePasswordSuccess, changePasswordFail } from '~/src/store/auth/reducers';
 import { loggedInStatusSelector } from '~/src/store/auth/selectors';
 import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { Helmet } from 'react-helmet';
@@ -15,31 +15,31 @@ import { FormApi } from 'final-form';
 import { Button } from '../../Components/Buttons/Button';
 import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
-const Login: FC = () => {
+const ChangePassword: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
   const [isPasswordChanged, setChangedPassword] = useState(false);
   const formRef = useRef<FormApi>(null);
-  const severContext = useContext(ServerStatusContext);
+  const serverContext = useContext(ServerStatusContext);
 
-  const onSubmit = (action: AuthAction, { oldPassword, newPassword }: ChangePasswordData) => {
-    return changePasswordRequest(newPassword, oldPassword);
+  const onSubmit = (action: any, { oldPassword, newPassword }: ChangePasswordData) => {
+    return changePasswordRequest({ newPassword, oldPassword });
   };
 
-  const getPayload = (action: AuthAction): Record<string, string> | undefined => {
+  const getPayload = (action: any): Record<string, string> | undefined => {
     setChangedPassword(true)
 
     if (formRef.current) {
       setTimeout(formRef.current.reset)
     }
 
-    if (action.type === AuthActionType.LoginSuccess) {
+    if (action.type === changePasswordSuccess.type) {
       return action.errorMessage;
     }
   };
 
   if (isLoggedIn === LoggedStatus.LoggedOut || isPasswordChanged) {
-    if (severContext) {
-      severContext.url = '/'
+    if (serverContext) {
+      serverContext.url = '/';
       return null;
     }
     return <Navigate to={'/'} replace />
@@ -53,16 +53,16 @@ const Login: FC = () => {
     <P.Wrapper>
       <Helmet>
         <title>Zmiana hasła</title>
-        <meta name="description" content={'Zamia hasła użytkownika'} />
+        <meta name="description" content={'Zmiana hasła użytkownika'} />
       </Helmet>
       <P.BoxWithShadow>
-        <P.Title>Zmian hasła</P.Title>
+        <P.Title>Zmiana hasła</P.Title>
         <P.SubTitle>Aby zmienić hasło wpisz swoje stare hasło oraz nowe i potwierdź je.</P.SubTitle>
 
-        <FormWrapper<AuthAction, ChangePasswordData>
-          start={AuthActionType.ChangePasswordRequest}
-          resolve={AuthActionType.ChangePasswordSuccess}
-          reject={AuthActionType.ChangePasswordFail}
+        <FormWrapper<any, ChangePasswordData>
+          start={changePasswordRequest.type}
+          resolve={changePasswordSuccess.type}
+          reject={changePasswordFail.type}
           setPayload={onSubmit}
           getPayload={getPayload}
           validate={validateLoginForm}
@@ -89,7 +89,7 @@ const Login: FC = () => {
                   type={'password'}
                   placeholder={'Podwierdź hasło'}
                 />
-                <Button type={'submit'}>Zaloguj</Button>
+                <Button type={'submit'}>Zmień hasło</Button>
               </>
             )
           }}
@@ -99,4 +99,4 @@ const Login: FC = () => {
   );
 };
 
-export default Login;
+export default ChangePassword;

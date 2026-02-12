@@ -18,7 +18,6 @@ const Cel = ({ cel }: CelProps) => {
 
   const onRemovePlace = useCallback((evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation()
-    console.log(cel)
     removePlace(cel)
   }, [removePlace, cel]);
 

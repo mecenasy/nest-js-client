@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { addPerson, getPersonByUserId } from '../../api/person/requests';
 import { getPersonSuccess, getPersonFail, addPersonSuccess } from './actions';
 import { PersonAction, Person, PersonActionType } from './constants';
-import { getUserId } from '../auth/selectors';
+import { userIdSelector } from '../auth/selectors';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import { AxiosResponse } from 'axios';
@@ -16,7 +16,7 @@ export function* getPersonWorker() {
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
-      const personId: string = yield select(getUserId);
+      const personId: string = yield select(userIdSelector);
       try {
         if (personId) {
 

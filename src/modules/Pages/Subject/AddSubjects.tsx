@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Button } from '../../Components/Buttons/Button';
-import { FormAdapter } from './AddSubject/SubjectForm';
+import { SubjectForm } from './AddSubject/SubjectForm';
 import { FieldsArray } from './AddSubject/SubjectFields';
 import { Subject } from '~/src/store/subject/constants';
 
@@ -10,7 +10,7 @@ interface AddSubjectsProps {
 }
 
 const AddSubjects = ({ item, after }: AddSubjectsProps) => (
-  <FormAdapter item={item} after={after}>
+  <SubjectForm item={item} after={after}>
     {(props) => (
       <>
         <FieldsArray  {...props} />
@@ -24,9 +24,8 @@ const AddSubjects = ({ item, after }: AddSubjectsProps) => (
         </Button>}
         <Button type='submit'>Zapisz</Button>
       </>
-    )
-    }
-  </FormAdapter>
+    )}
+  </SubjectForm>
 );
 
 export default AddSubjects;

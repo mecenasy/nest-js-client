@@ -1,13 +1,11 @@
-import { Reducer } from 'redux';
+import { Reducer, UnknownAction } from 'redux';
 import { MenuItemAction, MenuItemsState } from "./menu/constants";
-import { RoleAction } from '../role/constants';
-import { AuthAction } from '../auth/constants';
 
 export interface MenuPanelState {
   role: string[];
   menu: MenuItemsState
 }
 export interface MenuPanelReducer {
-  role: Reducer<string[], RoleAction | AuthAction>;
+  role: Reducer<string[], UnknownAction>;
   menu: Reducer<MenuItemsState, MenuItemAction>
 }

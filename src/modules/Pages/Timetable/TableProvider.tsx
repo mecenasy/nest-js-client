@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { createContext, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { addSubjectToTimeTableRequest, deleteSubjectFromTimeTableRequest, moveSubjectInTimeTableRequest } from '~/src/store/timeTable/actions';
@@ -10,6 +10,7 @@ import { Option } from '../../Components/Input/types';
 import { Subject } from '~/src/store/subject/constants';
 import { getSpecialtySelector } from '~/src/store/university/selectors';
 import AddSubjectModal from './AddSubject/AddSubjectModal';
+import { ModalRef } from '../../Components/Modal/Modal';
 
 interface TableProviderProps extends GroupTimeTable {
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export const TableProvider = ({ children, name, timeTable, year }: TableProvider
   const subjects = useSelector((state: ApplicationState) => getSubjectSelector(state, { group: name, year }))
   const specialty: string = useSelector((state: ApplicationState) => getSpecialtySelector(state, name))
   const [place, setPlace] = useState<{ day: string, hour: string } | undefined>(undefined);
+  const modalRef = useRef<ModalRef>(null);
 
   const onClose = useCallback(() => {
     setPlace(undefined)
@@ -58,9 +60,9 @@ export const TableProvider = ({ children, name, timeTable, year }: TableProvider
 
 
   const addPlace = useCallback((day: string, hour: string) => {
+    modalRef.current?.open();
     setPlace({ day, hour })
-
-  }, [dispatch, year, name]);
+  }, []);
 
   const removePlace = useCallback((item: CalendarPlace) => {
     dispatch(deleteSubjectFromTimeTableRequest({
@@ -96,9 +98,9 @@ export const TableProvider = ({ children, name, timeTable, year }: TableProvider
       {children}
 
       <AddSubjectModal
+        ref={modalRef}
         onChangePlace={onChangePlace}
         onClose={onClose}
-        place={place}
         subjects={subjects}
       />
     </TableContext.Provider>
