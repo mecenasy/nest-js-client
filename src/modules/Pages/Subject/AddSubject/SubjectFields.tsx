@@ -1,16 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import * as P from './parts';
-import { InputType } from '../../Components/Input/types';
-import { SelectField } from '../../Components/Input/Dropdown';
+import { InputType } from '../../../Components/Input/types';
+import { SelectField } from '../../../Components/Input/Dropdown';
 import { FormRenderProps } from 'react-final-form-hooks';
 import { useSelector } from 'react-redux';
 import { getGroup, getSpecialty, getYear } from '~/src/store/university/selectors';
 import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
-import { getOption, getTeacherOption } from './helpers';
+import { getOption, getTeacherOption } from '../helpers';
 import { SubjectFormData } from './SubjectForm';
 import remove from '~/assets/cross.svg'
-import useFieldArray from '../../../final-form/useFieldsArray';
-import { InputField } from '../../Components/Input/InputWithLabel';
+import useFieldArray from '../../../../final-form/useFieldsArray';
+import { InputField } from '../../../Components/Input/InputWithLabel';
 import { useSpring } from '@react-spring/web';
 
 export enum Fields {
@@ -106,6 +106,7 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
 
 export const FieldsArray = (props: FormRenderProps<SubjectFormData>) => {
   const { fields } = useFieldArray('subjects', props.form);
+  console.log("🚀 ~ FieldsArray ~ fields:", fields)
 
   return fields.map(
     (field, index) => <SubjectFields key={field}{...props} index={index} added={fields.length > index + 1} />

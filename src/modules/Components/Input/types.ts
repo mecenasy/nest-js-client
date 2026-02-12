@@ -10,10 +10,11 @@ export interface DroppedFile extends File {
   type: string;
 }
 
-export interface InputProps {
+export interface InputProps<T> {
   placeholder: string,
-  onChange: (event: ChangeEvent) => void;
+  onChange: (event: ChangeEvent<T>) => void;
   type?: string;
+  [key: string]: any;
 }
 
 export enum InputType {

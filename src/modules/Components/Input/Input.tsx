@@ -3,11 +3,11 @@ import { hasWrapperError } from './helpers';
 import * as P from './parts';
 import { InputProps, InputFormWrapperProps, InputType } from './types'
 
-export const Input: FC<InputProps> = (props) => (
+export const Input = (props: InputProps<HTMLInputElement>) => (
   <P.Input {...props} />
 );
 
-export const Textarea: FC<InputProps> = (props) => (
+export const Textarea = (props: InputProps<HTMLTextAreaElement>) => (
   <P.TextArea {...props} />
 );
 

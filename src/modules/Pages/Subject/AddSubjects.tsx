@@ -1,21 +1,32 @@
 import React, { FC } from 'react';
 import { Button } from '../../Components/Buttons/Button';
-import { SubjectForm } from './SubjectForm';
-import { FieldsArray } from './SubjectFields';
+import { FormAdapter } from './AddSubject/SubjectForm';
+import { FieldsArray } from './AddSubject/SubjectFields';
+import { Subject } from '~/src/store/subject/constants';
 
-const AddSubjects = () => (
-  <SubjectForm>
+interface AddSubjectsProps {
+  after: () => void;
+  item: Subject | null;
+}
+
+const AddSubjects = ({ item, after }: AddSubjectsProps) => (
+  <FormAdapter item={item} after={after}>
     {(props) => (
       <>
         <FieldsArray  {...props} />
-        <Button type='button' onClick={() => {
-          props.form.mutators.push('subjects', undefined)
-        }}   >dodaj przedmiot</Button>
+        {!item && <Button
+          type='button'
+          onClick={() => {
+            props.form.mutators.push('subjects', undefined)
+          }}
+        >
+          dodaj przedmiot
+        </Button>}
         <Button type='submit'>Zapisz</Button>
       </>
     )
     }
-  </SubjectForm>
+  </FormAdapter>
 );
 
 export default AddSubjects;

@@ -51,7 +51,6 @@ const Modal = ({
         shouldCloseOnOverlayClick
         shouldFocusAfterRender
         shouldReturnFocusAfterClose
-
       >
         <P.TitleWrapper>
           <P.Title>{title}</P.Title>

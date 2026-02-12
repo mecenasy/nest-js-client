@@ -1,15 +1,52 @@
 
-import React from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import * as P from './parts';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { getSubjectSelector } from '~/src/store/subject/selectors';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import PageWrapper from '../../Components/Containers/PageWrapper/PageWrapper';
+import { useDebounce } from 'ahooks';
+import SubjectItem from './SubjectItem';
+import ControlSubject from './ControlSubject';
+import { useDispatch } from 'react-redux';
+import { deleteSubjectRequest } from '~/src/store/subject/actions';
+import Modal from '../../Components/Modal/Modal';
+import { FormAdapter } from './AddSubject/SubjectForm';
+import AddSubjects from './AddSubjects';
+import { Subject } from '~/src/store/subject/constants';
 
-const Subject = () => {
-  const subjects = useSelector((state: ApplicationState) => getSubjectSelector(state, { group: '', year: '' }))
-  console.log("🚀 ~ Subject ~ subjects:", subjects)
+const SubjectPage = () => {
+  const [search, setSearch] = useState('');
+  const filterSearch = useDebounce(search, { wait: 300 });
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [item, setSubjectItem] = useState<Subject | null>(null);
+
+  const dispatch = useDispatch();
+
+  const subjects = useSelector(
+    (state: ApplicationState) => getSubjectSelector(
+      state,
+      { group: '', year: '', search: filterSearch }
+    )
+  );
+
+  const edit = useCallback((subject: Subject) => {
+    setSubjectItem(subject);
+    toggleModal();
+  }, []);
+
+  const remove = useCallback((id: string) => {
+    dispatch(deleteSubjectRequest(id))
+  }, []);
+
+  const toggleModal = useCallback(() => {
+    setModalOpen((prev) => !prev)
+  }, []);
+
+  const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+    setSearch(evt.target.value);
+  }, [setSearch]);
 
   return (
     <PageWrapper>
@@ -17,35 +54,37 @@ const Subject = () => {
         <title>Zmiana hasła</title>
         <meta name="description" content={'Zamia hasła użytkownika'} />
       </Helmet>
-
       <P.SubjectWrapper>
 
-
-        {subjects?.map((item) => (
-          <P.BoxWithShadow key={item.id}>
-            <P.Title>{item.name}</P.Title>
-            <div>
-              <P.SubjectRow><P.SubjectTitle>Nazwa: </P.SubjectTitle><span>{item.name}</span></P.SubjectRow>
-              <P.SubjectRow><P.SubjectTitle>Audytorium: </P.SubjectTitle><span>{item.auditorium}</span></P.SubjectRow>
-              <P.SubjectRow><P.SubjectTitle>Wykładowca: </P.SubjectTitle><span>{item.teacher.name}</span></P.SubjectRow>
-            </div>
-            <div>
-              <P.SubjectRow><P.SubjectTitle>Grupy: </P.SubjectTitle><span>{item.groups.map(({ name }) => name).join(', ')}</span></P.SubjectRow>
-              <P.SubjectRow><P.SubjectTitle>Lata: </P.SubjectTitle><span>{item.years.map(({ name }) => name).join(', ')}</span></P.SubjectRow>
-              <P.SubjectRow><P.SubjectTitle>Specjalności: </P.SubjectTitle><span>{item.specialties.map(({ name }) => name).join(', ')}</span></P.SubjectRow>
-            </div>
-            <P.Buttons
-              onEdit={() => {}}
-              onRemove={() => {}}
+        <ControlSubject
+          onChange={onChange}
+          add={toggleModal}
+          search={filterSearch}
+        />
+        <P.SubjectWrapper>
+          {subjects?.map((item) => (
+            <SubjectItem
+              key={item.name}
+              edit={edit}
+              remove={remove}
+              item={item}
             />
-          </P.BoxWithShadow>
-
-        ))}
+          ))}
+        </P.SubjectWrapper>
       </P.SubjectWrapper>
-      {/* <P.Title>Dodaj przedmiot</P.Title>
-      <P.SubTitle> Wybierz roczniki, grupy specjalności i nauczyciela</P.SubTitle> */}
+      <>
+        {!SERVER_BUILD && (
+          <Modal
+            onClose={toggleModal}
+            isOpen={isModalOpen}
+            title={item ? 'Edytuj przedmiot' : 'Nowy przedmiot'}
+          >
+            <AddSubjects after={toggleModal} item={item} />
+          </Modal>
+        )}
+      </>
     </PageWrapper>
   )
 };
 
-export default Subject;
+export default SubjectPage;

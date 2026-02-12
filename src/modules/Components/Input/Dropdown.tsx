@@ -17,7 +17,8 @@ export const Select = <T extends string | number | boolean | null | undefined | 
     <SelectBase
       onChange={onChange}
       value={value}
-      options={options as any}
+      options={options}
+      defaultValue={value}
       styles={{ control: (prov) => ({ ...prov, border: '1px solid black', borderRadius: '8px' }) }}
       {...rest}
     />
@@ -30,16 +31,23 @@ const DropdownField = <T extends string | number | boolean | null | undefined | 
   className,
   name,
   ...rest
-}: DropdownProps<T>) => (
-  <Select
-    onChange={onChange}
-    value={value}
-    options={options}
-    className={className}
-    name={name ?? ''}
-    {...rest}
-  />
-);
+}: DropdownProps<T>) => {
+
+  console.log(value)
+
+  return (
+    <Select
+      onChange={onChange}
+      value={value}
+      options={options}
+      className={className}
+      defaultValue={value}
+
+      name={name ?? ''}
+      {...rest}
+    />
+  )
+};
 
 export const SelectField = <T extends string | number | boolean | null | undefined | object, R>({
   name, form, ...rest

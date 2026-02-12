@@ -1,7 +1,7 @@
 import { Group, Specialty, Year } from '~/src/store/university/constants';
 import { Option } from '../../Components/Input/types';
 import { SimplePerson } from '~/src/store/person/constants';
-import { SubjectFormData } from './SubjectForm';
+import { SubjectFormData } from './AddSubject/SubjectForm';
 
 export const validateLoginForm = (values: SubjectFormData) => {
   const error: Partial<Record<keyof SubjectFormData, Array<Partial<Record<keyof SubjectFormData['subjects'][0], string>>>>> = {};

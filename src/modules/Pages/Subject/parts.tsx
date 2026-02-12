@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import BoxWithShadowBase from '../../Components/Box/Box';
-import { animated } from '@react-spring/web';
 import WhiteButton from '../../Components/Buttons/IconButton';
 import ActionButtons from '../../Components/ActionButons/ActionButtons';
+import { Input } from '../../Components/Input/Input';
 
 export const BoxWithShadow = styled(BoxWithShadowBase)`
   padding: 16px;
@@ -14,19 +14,30 @@ export const BoxWithShadow = styled(BoxWithShadowBase)`
 `;
 
 export const Title = styled.h2`
+  grid-area: header;
   margin: 4px;
-   text-align: center;
-`;
-
-export const SubTitle = styled.h4`
   text-align: center;
 `;
 
-export const WrapperAlert = styled.div`
-  height: 50px;
-  width: 100%;
-  margin: 4px 0 12px;
+export const Search = styled.div`
+  grid-area: search;
 `;
+
+
+export const AddButton = styled(WhiteButton)`
+  grid-area: add;
+  justify-self: end;
+  height: 40px;
+  width: 250px;
+`;
+
+export const SubTitle = styled.h4`
+  margin: 4px 0;
+`;
+
+export const SearchInput = styled(Input)`
+  width: 250px;
+`
 
 export const Wrapper = styled.div`
   height: 100vh;
@@ -36,20 +47,6 @@ export const Wrapper = styled.div`
   justify-content: center;
 `;
 
-export const Animated = styled(animated.div)`
-  height: 60px;
-  display: flex;
-  gap: 8px;
-  padding-left: 16px;
-`;
-
-export const Button = styled(WhiteButton)`
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  padding: 8px;
-  margin-top: 24px;
-`;
 
 export const SubjectWrapper = styled.div`
   margin-top: 30px;
@@ -77,5 +74,17 @@ export const Buttons = styled(ActionButtons)`
     min-width: 36px;
     padding: 8px;
   }
-`
+`;
+
+export const ControlWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  align-items: end;
+  grid-template-areas: 
+    'header header'
+    'search add'
+    ;
+`;
+
 

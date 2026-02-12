@@ -79,6 +79,7 @@
   "dependencies": {
     "@react-loadable/revised": "^0.0.26",
     "@react-spring/web": "^10.0.3",
+    "ahooks": "^3.9.6",
     "axios": "^1.7.9",
     "cookie-parser": "^1.4.7",
     "event-source-polyfill": "^1.0.31",
