@@ -1,13 +1,12 @@
 import { takeLatest, call, put, select, take, cancelled, race, } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
-  NotificationActionType,
-} from './constants';
-import {
   GetNotificationFail,
   GetNotificationSuccess,
-  unReadedUp
-} from './actions';
+  unReadedUp,
+  GetNotificationRequest,
+  notificationStart
+} from './reducer';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { userIdSelector, userTokenSelector } from '../auth/selectors';
 import { basePath } from '~/src/api/apiConfig';
@@ -40,8 +39,8 @@ export function notificationChannel(id: string, token: string) {
 }
 
 export function* notificationWatcher() {
-  yield takeLatest(NotificationActionType.NotificationStart, notificationChannelWorker);
-  yield takeLatest(NotificationActionType.GetNotificationRequest, notificationWorker);
+  yield takeLatest(notificationStart.type, notificationChannelWorker);
+  yield takeLatest(GetNotificationRequest.type, notificationWorker);
 }
 
 export function* notificationWorker() {

@@ -1,72 +1,61 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 import {
-  MessageActionType,
   MessageList,
   Message,
-  MessageAction,
 } from './constants';
-import {
-  sendMessageSuccess,
-  sendMessageFail,
-  getMessageListSuccess,
-  getMessageListFail,
-  getMessageSuccess,
-  getMessageFail,
-  getFileSuccess,
-  getFileFail,
-} from './actions';
+import * as A from './reducer';
 import { getFile, getMessage, getMessages, sendMessage, setReadedMessage } from '~/src/api/messages/requests';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 
-function* sendMessageWorker(action: ExtractByType<MessageAction, MessageActionType.SendMessageRequest>) {
+function* sendMessageWorker(action: ReturnType<typeof A.sendMessageRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
       yield call(sendMessage, action.payload);
-      yield put(sendMessageSuccess());
+      yield put(A.sendMessageSuccess());
     } catch {
-      yield put(sendMessageFail());
+      yield put(A.sendMessageFail());
     }
   }
 }
 
-function* getMessageListWorker(action: ExtractByType<MessageAction, MessageActionType.GetMessageListRequest>) {
+function* getMessageListWorker(action: ReturnType<typeof A.getMessageListRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
       const { data }: AxiosResponse<MessageList> = yield call(getMessages, action.payload);
-      yield put(getMessageListSuccess(data));
+      yield put(A.getMessageListSuccess(data));
     } catch {
-      yield put(getMessageListFail());
+      yield put(A.getMessageListFail());
     }
   }
 }
 
-function* getMessageWorker(action: ExtractByType<MessageAction, MessageActionType.GetMessageRequest>) {
+function* getMessageWorker(action: ReturnType<typeof A.getMessageRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
       const response: AxiosResponse<Message> = yield call(getMessage, action.payload);
-      yield put(getMessageSuccess(response.data));
+      yield put(A.getMessageSuccess(response.data));
     } catch {
-      yield put(getMessageFail());
+      yield put(A.getMessageFail());
     }
   }
 }
 
-function* getFileWorker(action: ExtractByType<MessageAction, MessageActionType.GetFileRequest>) {
+function* getFileWorker(action: ReturnType<typeof A.getFileRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
 
-      const fileName = action.file.name;
-      const response: AxiosResponse<Blob> = yield call(getFile, action.file.path);
+      const fileName = action.payload.name;
+      const response: AxiosResponse<Blob> = yield call(getFile, action.payload.path);
       const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
 
@@ -78,27 +67,27 @@ function* getFileWorker(action: ExtractByType<MessageAction, MessageActionType.G
 
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      yield put(getFileSuccess());
+      yield put(A.getFileSuccess());
     } catch {
-      yield put(getFileFail());
+      yield put(A.getFileFail());
     }
   }
 }
 
-function* readedMessageWorker(action: ExtractByType<MessageAction, MessageActionType.SetReadedMessageRequest>) {
+function* readedMessageWorker(action: ReturnType<typeof A.readedMessageRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-    yield call(setReadedMessage, action.messageId);
+    yield call(setReadedMessage, action.payload);
   }
 }
 
 export function* messageWatcher() {
   yield all([
-    takeLatest(MessageActionType.SetReadedMessageRequest, readedMessageWorker),
-    takeLatest(MessageActionType.SendMessageRequest, sendMessageWorker),
-    takeLatest(MessageActionType.GetMessageListRequest, getMessageListWorker),
-    takeLatest(MessageActionType.GetMessageRequest, getMessageWorker),
-    takeLatest(MessageActionType.GetFileRequest, getFileWorker),
+    takeLatest(A.readedMessageRequest.type, readedMessageWorker),
+    takeLatest(A.sendMessageRequest.type, sendMessageWorker),
+    takeLatest(A.getMessageListRequest.type, getMessageListWorker),
+    takeLatest(A.getMessageRequest.type, getMessageWorker),
+    takeLatest(A.getFileRequest.type, getFileWorker),
   ]);
 }

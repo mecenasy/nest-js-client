@@ -3,12 +3,10 @@ import { getMenu } from '../../api/menu/requests';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import { userIdSelector } from '../auth/selectors';
-import { getMenuFail, getMenuSuccess } from './actions';
-import { MenuActionType } from './constants';
-import { AxiosError } from 'axios';
+import { getMenuFail, getMenuSuccess, getMenuRequest } from './reducers';
 
 export function* getMenuWatcher() {
-  yield takeLatest(MenuActionType.GetMenuRequest, getMenuWorker);
+  yield takeLatest(getMenuRequest.type, getMenuWorker);
 }
 
 export function* getMenuWorker() {
@@ -23,8 +21,8 @@ export function* getMenuWorker() {
 
         yield put(getMenuSuccess(data));
       }
-    } catch (error) {
-      yield put(getMenuFail(error as AxiosError));
+    } catch {
+      yield put(getMenuFail());
     }
   }
 }

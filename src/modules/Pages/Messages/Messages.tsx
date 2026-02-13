@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMessageListRequest } from '~/src/store/messages/actions';
+import { getMessageListRequest } from '~/src/store/messages/reducer';
 import { getMessagesList } from '~/src/store/messages/selectors';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import * as P from './parts';

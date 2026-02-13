@@ -5,8 +5,8 @@ import { File, Message } from '~/src/store/messages/constants';
 import fileIcon from '~/assets/document.svg';
 import replay from '~/assets/reply-all.svg';
 import { useDispatch } from 'react-redux';
-import { getFileRequest, readedMessageRequest } from '~/src/store/messages/actions';
-import { unReadedDown } from '~/src/store/notification/actions';
+import { getFileRequest, readedMessageRequest } from '~/src/store/messages/reducer';
+import { unReadedDown } from '~/src/store/notification/reducer';
 
 export interface MessageProps {
   message?: Message;

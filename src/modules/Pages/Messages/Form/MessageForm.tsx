@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { Field } from 'react-final-form';
-import { MessageAction, MessageActionType, MessageData, MessageField, MessageFormData } from '~/src/store/messages/constants';
-import { sendMessageRequest } from '~/src/store/messages/actions';
+import { MessageData, MessageField, MessageFormData } from '~/src/store/messages/constants';
+import { sendMessageRequest } from '~/src/store/messages/reducer';
 import { validateMessageForm } from '../helpers';
 import InputWithLabel from '~/src/modules/Components/Input/InputWithLabel';
 import FormWrapper, { SetPayload } from '~/src/modules/Components/FormWrapper/FormWrapper';
@@ -13,6 +13,7 @@ import DropdownField from '~/src/modules/Components/Input/Dropdown';
 import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
 import { useSelector } from 'react-redux';
 import { getOption } from './getOptions';
+import { UnknownAction } from 'redux';
 
 interface MessageFormProps {
   messageId: string;
@@ -20,7 +21,7 @@ interface MessageFormProps {
 }
 
 const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
-  const setPayload: SetPayload<MessageAction, MessageFormData> = (action, values) => {
+  const setPayload: SetPayload<UnknownAction, MessageFormData> = (action, values) => {
     return sendMessageRequest({ ...values, to: values.to.value });
   };
   const users = useSelector(getSimpleUsersSelector)
@@ -42,10 +43,10 @@ const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
   };
 
   return (
-    <FormWrapper<MessageAction, MessageFormData>
-      start={MessageActionType.SendMessageRequest}
-      resolve={MessageActionType.SendMessageSuccess}
-      reject={MessageActionType.SendMessageFail}
+    <FormWrapper<UnknownAction, MessageFormData>
+      start={"MessageActionType.SendMessageRequest"}
+      resolve={"MessageActionType.SendMessageSuccess"}
+      reject={"MessageActionType.SendMessageFail"}
       setPayload={setPayload}
       getPayload={getPayload}
       validate={validateMessageForm}

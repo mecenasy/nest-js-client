@@ -1,4 +1,3 @@
-import { AuthActionType } from "../auth/constants";
 import { UniversityAction, UniversityActionType, initialState } from "./constants";
 
 export const universityReducer = (state: any = initialState, action: UniversityAction): any => {

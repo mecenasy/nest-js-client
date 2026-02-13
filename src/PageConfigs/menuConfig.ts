@@ -1,9 +1,9 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getMenuRequest } from "../store/menu/actions";
+import { getMenuRequest } from "../store/menu/reducers";
 import { getPersonRequest } from '../store/person/actions';
-import { GetNotificationRequest, notificationStart } from '../store/notification/actions';
+import { GetNotificationRequest, notificationStart } from '../store/notification/reducer';
 
 const Menu = Loadable({
   loader: async () => import('../Pages/MenuPage'),

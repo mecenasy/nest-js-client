@@ -5,7 +5,7 @@ import close from '~/assets/cross.svg';
 import MessageForm from '../Form/MessageForm';
 import MessageItem, { MessageProps } from './MessageItem';
 import { useDispatch } from 'react-redux';
-import { getMessageRequest } from '~/src/store/messages/actions';
+import { getMessageRequest } from '~/src/store/messages/reducer';
 
 const MessageView: FC<Omit<MessageProps, 'setId'>> = ({ message }) => {
   const [id, setId] = useState<string>('');

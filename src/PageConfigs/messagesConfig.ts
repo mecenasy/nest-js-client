@@ -1,7 +1,7 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getMessageListRequest, getMessageRequest } from '../store/messages/actions';
+import { getMessageListRequest, getMessageRequest } from '../store/messages/reducer';
 
 const MessagesPage = Loadable({
   loader: async () => import('../Pages/MessagesPage'),

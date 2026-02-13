@@ -1,17 +1,27 @@
-import * as C from './constants';
+import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
+import { initialState } from './constants';
 
-export const counterReducer = (state: C.CounterState = C.initialState, action: C.CounterAction): C.CounterState => {
-   switch (action.type) {
-      case C.CounterActionType.Increment: {
-         return { value: state.value + 1 }
-      }
-      case C.CounterActionType.Decrement: {
-         return { value: state.value - 1 }
-      }
-      case C.CounterActionType.IncrementByCount: {
-         return { value: state.value + action.count }
-      }
-      default:
-         return state
-   }
-}
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByCount: (state, action: PayloadAction<number>) => {
+      state.value += action.payload;
+    }
+  },
+  selectors: {
+    counterSelector: (state) => state.value
+  }
+});
+
+export const counterReducer = counterSlice.reducer;
+export const { increment, decrement, incrementByCount } = counterSlice.actions;
+export const { counterSelector } = counterSlice.selectors;
+
+export const incrementByCountRequest = createAction<number>('counter/incrementByCountRequest');
