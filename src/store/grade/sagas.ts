@@ -1,44 +1,82 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import * as A from './reducer';
 import { addGrades, getStudentGrades, getTeacherGrades, removeGrade, updateGrades } from '~/src/api/grade/requests';
+import axios from 'axios';
+import { LoggedStatus } from '../auth/constants';
+import { waitForAuthStatus } from '../auth/sagas';
 
 function* addGradesWorker({ payload }: ReturnType<typeof A.addGradesRequest>) {
-  try {
-    const { data } = yield call(addGrades, payload);
-    yield put(A.addGrades(data));
-  } catch {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const { data } = yield call(addGrades, payload);
+      yield put(A.addGrades(data));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.addGradesFail(error.message));
+      }
+    }
   }
 }
 
 function* updateGradesWorker({ payload }: ReturnType<typeof A.updateGradesRequest>) {
-  try {
-    const { data } = yield call(updateGrades, payload);
-    yield put(A.updateGrades(data));
-  } catch {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const { data } = yield call(updateGrades, payload);
+      yield put(A.updateGrades(data));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.updateGradesFail(error.message));
+      }
+    }
   }
 }
 
 function* removeGradesWorker({ payload }: ReturnType<typeof A.removeGradeRequest>) {
-  try {
-    yield call(removeGrade, payload);
-    yield put(A.removeGrade(payload));
-  } catch {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      yield call(removeGrade, payload);
+      yield put(A.removeGrade(payload));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.removeGradeFail(error.message));
+      }
+    }
   }
 }
 
 function* getTeacherGradesWorker() {
-  try {
-    const { data } = yield call(getTeacherGrades);
-    yield put(A.getTeacherGrades(data));
-  } catch {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const { data } = yield call(getTeacherGrades);
+      yield put(A.getTeacherGrades(data));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getTeacherGradesFail(error.message));
+      }
+    }
   }
 }
 
 function* getStudentGradesWorker() {
-  try {
-    const { data } = yield call(getStudentGrades);
-    yield put(A.getStudentsGrades(data));
-  } catch {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
+
+  if (authStatus === LoggedStatus.LoggedIn) {
+    try {
+      const { data } = yield call(getStudentGrades);
+      yield put(A.getStudentsGrades(data));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getTeacherGradesFail(error.message));
+      }
+    }
   }
 }
 

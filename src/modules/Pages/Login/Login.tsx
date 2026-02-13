@@ -8,7 +8,7 @@ import { validateLoginForm } from './helpers';
 import InputFormWrapper from '../../Components/Input/Input';
 import { LoggedStatus, LoginData, LoginField } from '~/src/store/auth/constants';
 import { loginRequest, loginSuccess, loginFail } from '~/src/store/auth/reducers';
-import { getIsDefaultPassword, loggedInStatusSelector } from '~/src/store/auth/selectors';
+import { getIsDefaultPassword, loggedInStatusSelector } from '~/src/store/auth/reducers';
 import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { AlertType } from '../../Components/Alert/types';
 import { Helmet } from 'react-helmet';

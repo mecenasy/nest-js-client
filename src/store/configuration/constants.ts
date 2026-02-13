@@ -2,30 +2,30 @@ import { Task } from "@redux-saga/types";
 import { RouterState } from "redux-first-history";
 import { History } from "history";
 import { UnknownAction, Reducer, Store } from "redux";
-import { AuthState } from "../auth/constants";
+import { Auth, User } from "../auth/constants";
 import { CounterState } from "../counter/constants";
 import { MenuState } from "../menu/constants";
 import { Person } from "../person/constants";
-import { MenuPanelState, } from "../panelMenu/constants";
 import { UniversityState } from "../university/constants";
 import { UserListState } from '../userList/constants';
 import { MessageState } from '../messages/constants';
-import { panelMenuReducer } from '../panelMenu/reducer';
-import { authCombinedReducer } from '../auth/reducers';
 import { NotificationState } from '../notification/constants';
 import { TimeTableState } from '../timeTable/constants';
 import { Subject } from '../subject/constants';
 import { GradesState } from '../grade/constants';
 import { gradeReducer } from '../grade/reducer';
+import { MenuItem } from '../panelMenu/constants';
 
 export interface ApplicationState {
-  didHydrated: boolean;
-  auth: AuthState;
+  hydrate: boolean;
+  auth: Auth;
+  user: User;
   counter: CounterState;
   person: Person;
   router: RouterState;
   menu: MenuState;
-  panelMenu: MenuPanelState;
+  panelMenu: MenuItem[];
+  role: string[];
   university: UniversityState;
   userList: UserListState;
   messageList: MessageState;
@@ -36,19 +36,21 @@ export interface ApplicationState {
 }
 
 export interface ApplicationReducer extends Record<keyof ApplicationState, any> {
-  didHydrated: Reducer<boolean>;
-  auth: typeof authCombinedReducer;
-  counter: Reducer<CounterState, UnknownAction>;
-  person: Reducer<Person, UnknownAction>;
-  router: Reducer<RouterState, UnknownAction>;
-  menu: Reducer<MenuState, UnknownAction>;
-  panelMenu: typeof panelMenuReducer;
-  university: Reducer<UniversityState, UnknownAction>;
-  userList: Reducer<UserListState, UnknownAction>;
-  messageList: Reducer<MessageState, UnknownAction>;
-  notification: Reducer<NotificationState, UnknownAction>;
-  timeTable: Reducer<TimeTableState, UnknownAction>;
-  subject: Reducer<Subject[], UnknownAction>;
+  hydrate: Reducer<boolean>;
+  auth: Reducer<Auth>;
+  user: Reducer<User>
+  counter: Reducer<CounterState>;
+  person: Reducer<Person>;
+  router: Reducer<RouterState>;
+  menu: Reducer<MenuState>;
+  panelMenu: Reducer<MenuItem[]>;
+  role: Reducer<string[]>;
+  university: Reducer<UniversityState>;
+  userList: Reducer<UserListState>;
+  messageList: Reducer<MessageState>;
+  notification: Reducer<NotificationState>;
+  timeTable: Reducer<TimeTableState>;
+  subject: Reducer<Subject[]>;
   grades: typeof gradeReducer;
 }
 

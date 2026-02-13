@@ -1,8 +1,16 @@
-export const hydrateReducer = (state: boolean = false, action: any) => {
-  switch (action.type) {
-    case 'HYDRATE':
-      return true;
-    default:
-      return state;
+import { createSlice } from '@reduxjs/toolkit';
+
+const hydrateSlice = createSlice({
+  name: 'hydrate',
+  initialState: false,
+  reducers: {
+    didHydrate: () => true,
+  },
+  selectors: {
+    didHydrateSelector: (state) => state
   }
-} 
+});
+
+export const hydrateReducer = hydrateSlice.reducer;
+export const { didHydrate } = hydrateSlice.actions;
+export const { didHydrateSelector } = hydrateSlice.selectors;

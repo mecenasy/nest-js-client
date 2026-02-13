@@ -1,3 +1,0 @@
-interface Hydrate {
-  type: 'HYDRATE'
-}

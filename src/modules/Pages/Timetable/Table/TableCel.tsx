@@ -4,7 +4,7 @@ import { CalendarPlace } from '~/src/store/timeTable/constants';
 import { useDrop } from 'react-dnd';
 import Cel from './Cel';
 import { useSelector } from 'react-redux';
-import { userRoleSelector } from '~/src/store/auth/selectors';
+import { userRoleSelector } from '~/src/store/auth/reducers';
 import { TableContext } from '../TableProvider';
 import { RoleType } from '~/src/store/role/constants';
 

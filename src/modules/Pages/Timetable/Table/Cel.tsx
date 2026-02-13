@@ -3,7 +3,7 @@ import * as P from '../parts';
 import { useDrag } from 'react-dnd';
 import { CalendarPlace } from '~/src/store/timeTable/constants';
 import { useSelector } from 'react-redux';
-import { userRoleSelector } from '~/src/store/auth/selectors';
+import { userRoleSelector } from '~/src/store/auth/reducers';
 import trash from '~/assets/trash.svg';
 import { TableContext } from '../TableProvider';
 import { RoleType } from '~/src/store/role/constants';

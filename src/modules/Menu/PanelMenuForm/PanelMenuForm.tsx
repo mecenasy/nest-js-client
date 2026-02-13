@@ -2,17 +2,17 @@ import React, { FC, useCallback } from 'react';
 import * as P from './parts';
 import { Field } from 'react-final-form';
 import createDecorator from 'final-form-calculate';
-import { MenuItemAction, MenuItemData, MenuItemActionType, MenuItemField } from '~/src/store/panelMenu/menu/constants';
+import { MenuItemData, MenuItemField } from '~/src/store/panelMenu/constants';
 import FormWrapper, { SetPayload, GetPayload } from '../../Components/FormWrapper/FormWrapper';
 import InputWithLabel from '../../Components/Input/InputWithLabel';
 import Toggle from '../../Components/Input/Toggle';
 import Dropzone from '../../Components/Input/Dropzone';
 import DropdownField from '../../Components/Input/Dropdown';
-import { getMenuItemById } from '~/src/store/panelMenu/menu/selectors';
+import { getMenuItemById } from '~/src/store/panelMenu/selectors';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { MenuSide } from '~/src/store/menu/constants';
-import { setMenuItemsRequest } from '~/src/store/panelMenu/menu/actions';
+import { addMenuItemsRequest } from '~/src/store/panelMenu/reducers';
 import { validateMenuItem } from './helpers';
 import { roleSelector } from '~/src/store/role/selectors';
 
@@ -35,10 +35,10 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
     image: undefined,
   }
   const roles = useSelector(roleSelector)
-  const setPayload: SetPayload<MenuItemAction, MenuItemData> = (action, value) => {
-    return setMenuItemsRequest(value)
+  const setPayload: SetPayload<any, MenuItemData> = (action, value) => {
+    return addMenuItemsRequest(value)
   }
-  const getPayload: GetPayload<MenuItemAction> = () => {
+  const getPayload: GetPayload<any> = () => {
     onClose();
     return undefined
   }
@@ -52,10 +52,10 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
 
   return (
     <div>
-      <FormWrapper<MenuItemAction, MenuItemData>
-        start={MenuItemActionType.SetMenuItemsRequest}
-        resolve={MenuItemActionType.SetMenuItemsSuccess}
-        reject={MenuItemActionType.SetMenuItemsFail}
+      <FormWrapper<any, MenuItemData>
+        start={"MenuItemActionType.SetMenuItemsRequest"}
+        resolve={"MenuItemActionType.SetMenuItemsSuccess"}
+        reject={"MenuItemActionType.SetMenuItemsFail"}
         setPayload={setPayload}
         getPayload={getPayload}
 

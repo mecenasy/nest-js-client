@@ -7,6 +7,7 @@ import {
   CreateGrade,
   initialState,
 } from './constants';
+import { logoutSuccess } from '../auth/reducers';
 
 const teacherSlice = createSlice({
   name: 'teachers',
@@ -70,18 +71,28 @@ const teacherSlice = createSlice({
       });
     },
   },
-  selectors: {
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState.teachers);
   },
+  selectors: {
+    getTeacherGradesSelector: (state) => state,
+  }
 });
 
 const studentsSlice = createSlice({
   name: 'student',
   initialState: initialState.student,
   reducers: {
-    getStudentsGrades: (state: SubjectGrades[], action: PayloadAction<SubjectGrades[]>) => {
+    getStudentsGrades: (_: SubjectGrades[], action: PayloadAction<SubjectGrades[]>) => {
       return action.payload || [];
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState.student);
+  },
+  selectors: {
+    getStudentsGradesSelector: (state) => state,
+  }
 });
 
 const teacherReducer = teacherSlice.reducer;
@@ -90,14 +101,22 @@ const studentReducer = studentsSlice.reducer;
 export const { getTeacherGrades, updateGrades, removeGrade, addGrades } = teacherSlice.actions;
 export const { getStudentsGrades } = studentsSlice.actions;
 
+export const { getTeacherGradesSelector } = teacherSlice.selectors;
+export const { getStudentsGradesSelector } = studentsSlice.selectors;
 
 export const gradeReducer = combineReducers<GradesReducer>({
   teachers: teacherReducer,
   student: studentReducer,
 });
 
-export const getTeacherGradesRequest = createAction('grade/getTeacherGrades')
-export const updateGradesRequest = createAction<CreateGrade[]>('grade/updateGrades')
-export const removeGradeRequest = createAction<string>('grade/removeGrade')
-export const addGradesRequest = createAction<CreateGrade[]>('grade/addGrades')
-export const getStudentsGradesRequest = createAction('grade/getStudentsGrades')
+export const getTeacherGradesRequest = createAction('grade/getTeacherGradesRequest')
+export const updateGradesRequest = createAction<CreateGrade[]>('grade/updateGradesRequest')
+export const removeGradeRequest = createAction<string>('grade/removeGradeRequest')
+export const addGradesRequest = createAction<CreateGrade[]>('grade/addGradesRequest')
+export const getStudentsGradesRequest = createAction('grade/getStudentsGradesRequest')
+
+export const getTeacherGradesFail = createAction<string>('grade/getTeacherGradesFail')
+export const updateGradesFail = createAction<string>('grade/updateGradesFail')
+export const removeGradeFail = createAction<string>('grade/removeGradeFail')
+export const addGradesFail = createAction<string>('grade/addGradesFail')
+export const getStudentsGradesFail = createAction<string>('grade/getStudentsGradesFail')

@@ -1,8 +1,11 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { Person, initialState, PersonFormData, PersonResponse } from "./constants";
+import { logoutSuccess } from '../auth/reducers';
 
-export const getPersonRequest = createAction('person/GET_PERSON_REQUEST');
-export const addPersonRequest = createAction<PersonFormData>('person/ADD_PERSON_REQUEST');
+export const getPersonRequest = createAction('person/getPersonRequest');
+export const addPersonRequest = createAction<PersonFormData>('person/addPersonRequest');
+export const getPersonFail = createAction<string>('person/getPersonFail');
+export const addPersonFail = createAction<string>('person/addPersonFail');
 
 const personSlice = createSlice({
   name: 'person',
@@ -11,15 +14,12 @@ const personSlice = createSlice({
     getPersonSuccess: (state, action: PayloadAction<PersonResponse>) => {
       return action.payload.person;
     },
-    getPersonFail: (state, action: PayloadAction<PersonResponse>) => {
-      return state;
-    },
     addPersonSuccess: (_, action: PayloadAction<Person>) => {
       return action.payload;
     },
-    addPersonFail: (state, action: PayloadAction<string>) => {
-      return state;
-    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState);
   },
   selectors: {
     getPerson: (state) => state,
@@ -29,8 +29,6 @@ const personSlice = createSlice({
 export const personReducer = personSlice.reducer;
 export const {
   getPersonSuccess,
-  getPersonFail,
   addPersonSuccess,
-  addPersonFail
 } = personSlice.actions;
 export const { getPerson } = personSlice.selectors;

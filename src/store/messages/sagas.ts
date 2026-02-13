@@ -1,5 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
   MessageList,
   Message,
@@ -16,8 +16,10 @@ function* sendMessageWorker(action: ReturnType<typeof A.sendMessageRequest>) {
     try {
       yield call(sendMessage, action.payload);
       yield put(A.sendMessageSuccess());
-    } catch {
-      yield put(A.sendMessageFail());
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.sendMessageFail(error.message));
+      }
     }
   }
 }
@@ -29,8 +31,10 @@ function* getMessageListWorker(action: ReturnType<typeof A.getMessageListRequest
     try {
       const { data }: AxiosResponse<MessageList> = yield call(getMessages, action.payload);
       yield put(A.getMessageListSuccess(data));
-    } catch {
-      yield put(A.getMessageListFail());
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getMessageListFail(error.message));
+      }
     }
   }
 }
@@ -42,8 +46,10 @@ function* getMessageWorker(action: ReturnType<typeof A.getMessageRequest>) {
     try {
       const response: AxiosResponse<Message> = yield call(getMessage, action.payload);
       yield put(A.getMessageSuccess(response.data));
-    } catch {
-      yield put(A.getMessageFail());
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getMessageFail(error.message));
+      }
     }
   }
 }
@@ -68,8 +74,10 @@ function* getFileWorker(action: ReturnType<typeof A.getFileRequest>) {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       yield put(A.getFileSuccess());
-    } catch {
-      yield put(A.getFileFail());
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getFileFail(error.message));
+      }
     }
   }
 }

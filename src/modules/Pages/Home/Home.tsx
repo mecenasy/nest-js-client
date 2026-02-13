@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { getMenuSelector } from "~/src/store/menu/selectors";
 import MenuItem from "../../MenuItem/MenuItem";
 import { getPerson } from "~/src/store/person/reducer";
-import { loggedInStatusSelector } from "~/src/store/auth/selectors";
+import { loggedInStatusSelector } from "~/src/store/auth/reducers";
 import { LoggedStatus } from "~/src/store/auth/constants";
 import PersonBox from './PersonBox';
 

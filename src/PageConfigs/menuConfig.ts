@@ -3,7 +3,7 @@ import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
 import { getMenuRequest } from "../store/menu/reducers";
 import { getPersonRequest } from '../store/person/reducer';
-import { GetNotificationRequest, notificationStart } from '../store/notification/reducer';
+import { getNotificationRequest, notificationStart } from '../store/notification/reducer';
 
 const Menu = Loadable({
   loader: async () => import('../Pages/MenuPage'),
@@ -13,7 +13,7 @@ const Menu = Loadable({
 export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer, isUpdate }) => [
   Boolean((isHydrated && isMount && !isUpdate) || isServer) && getMenuRequest(),
   Boolean((isHydrated && isMount && !isUpdate) || isServer) && getPersonRequest(),
-  Boolean((isHydrated && isMount && !isUpdate) || isServer) && GetNotificationRequest(),
+  Boolean((isHydrated && isMount && !isUpdate) || isServer) && getNotificationRequest(),
   Boolean(isMount && !isUpdate) && notificationStart(),
 ]
 

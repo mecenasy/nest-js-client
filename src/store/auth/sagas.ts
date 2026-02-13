@@ -5,7 +5,7 @@ import cookie from 'js-cookie';
 import { loginUser, logoutUser, refreshUserToken, changePasswordUser } from '../../api/auth/requests';
 import * as A from './reducers';
 import { AuthState, LoggedStatus } from './constants';
-import { loggedInStatusSelector, tokenExpiredInSelector } from './selectors';
+import { loggedInStatusSelector, tokenExpiredInSelector } from './reducers';
 import axios, { AxiosError } from 'axios';
 
 export function* authWatcher() {

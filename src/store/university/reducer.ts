@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, UniversityState } from "./constants";
 import { Option } from '~/src/modules/Components/Input/types';
+import { logoutSuccess } from '../auth/reducers';
 
-export const getUniversityRequest = createAction('university/GET_UNIVERSITY_REQUEST');
+export const getUniversityRequest = createAction('university/getUniversityRequest');
+export const getUniversityFail = createAction<string>('university/getUniversityFail');
 
 interface SpecialtyIds {
   yearId: Option<string>;
@@ -26,6 +28,9 @@ const universitySlice = createSlice({
     getUniversitySuccess: (_, action: PayloadAction<UniversityState>) => {
       return action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState);
   },
   selectors: {
     getDirection: (state) => state.directions,

@@ -1,4 +1,4 @@
-import { MenuItemData, MenuItemField } from '~/src/store/panelMenu/menu/constants';
+import { MenuItemData, MenuItemField } from '~/src/store/panelMenu/constants';
 import api from '../api';
 import { role, menu, universityMap, allMenu } from './paths';
 

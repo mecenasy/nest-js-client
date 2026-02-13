@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router';
 import { LoggedStatus } from '../../store/auth/constants';
-import { loggedInStatusSelector } from '../../store/auth/selectors';
+import { loggedInStatusSelector } from '../../store/auth/reducers';
 import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 
 const Auth = () => {

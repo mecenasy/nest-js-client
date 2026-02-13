@@ -29,7 +29,8 @@ import {
   getTimeTableByYear,
   moveSubjectInTimeTable,
 } from '~/src/api/timeTable/requests';
-import { userIdSelector } from '../auth/selectors';
+import { userIdSelector } from '../auth/reducers';
+import axios from 'axios';
 
 export function* timeTableWatcher() {
   yield takeLatest(getTimeTableRequest.type, getTimeTableByGroupWorker);
@@ -69,8 +70,10 @@ export function* getTimeTableByGroupWorker(action: ReturnType<typeof getTimeTabl
 
         }
         yield put(getTimeTableSuccess(receivedData));
-      } catch (error: any) {
-        yield put(getTimeTableFail(error?.message));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          yield put(getTimeTableFail(error.message));
+        }
       }
     }
   }
@@ -82,8 +85,10 @@ export function* getCalendarWorker() {
     try {
       const { data } = yield call(getCalendar);
       yield put(getCalendarSuccess(data));
-    } catch (error: any) {
-      yield put(getCalendarFail(error?.message));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(getCalendarFail(error.message));
+      }
     }
   }
 }
@@ -95,8 +100,10 @@ export function* addSubjectToTimeTableWorker(action: ReturnType<typeof addSubjec
       try {
         const { data } = yield call(addSubjectToTimeTable, action.payload);
         yield put(addSubjectToTimeTableSuccess(data));
-      } catch (error: any) {
-        yield put(addSubjectToTimeTableFail(error?.message));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          yield put(addSubjectToTimeTableFail(error.message));
+        }
       }
     }
   }
@@ -109,8 +116,10 @@ export function* deleteSubjectFromTimeTableWorker(action: ReturnType<typeof dele
       try {
         yield call(deleteSubjectFromTimeTable, action.payload);
         yield put(deleteSubjectFromTimeTableSuccess(action.payload));
-      } catch (error: any) {
-        yield put(deleteSubjectFromTimeTableFail(error?.message));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          yield put(deleteSubjectFromTimeTableFail(error.message));
+        }
       }
     }
   }
@@ -131,8 +140,10 @@ export function* moveSubjectInTimeTableWorker(action: ReturnType<typeof moveSubj
         }
 
         yield put(moveSubjectInTimeTableSuccess(successPayload));
-      } catch (error: any) {
-        yield put(moveSubjectInTimeTableFail(error?.message));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          yield put(moveSubjectInTimeTableFail(error.message));
+        }
       }
     }
   }

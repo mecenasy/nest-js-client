@@ -1,20 +1,4 @@
 import { RoleType } from '../person/constants';
-import { Reducer, UnknownAction } from 'redux';
-
-export enum AuthActionType {
-  LoginRequest = 'auth/LOGIN_REQUEST',
-  LoginSuccess = 'auth/LOGIN_SUCCESS',
-  LoginFail = 'auth/LOGIN_FAIL',
-  ChangePasswordRequest = 'auth/CHANG_PASSWORD_REQUEST',
-  ChangePasswordSuccess = 'auth/CHANG_PASSWORD_SUCCESS',
-  ChangePasswordFail = 'auth/CHANG_PASSWORD_FAIL',
-  LogoutRequest = 'auth/LOGOUT_REQUEST',
-  LogoutSuccess = 'auth/LOGOUT_SUCCESS',
-  LogoutFail = 'auth/LOGOUT_FAIL',
-  RefreshTokenRequest = 'auth/REFRESH_TOKEN_REQUEST',
-  RefreshTokenSuccess = 'auth/REFRESH_TOKEN_SUCCESS',
-  RefreshTokenFail = 'auth/REFRESH_TOKEN_FAIL',
-}
 export interface User {
   name: string;
   userId: string;
@@ -39,10 +23,6 @@ export interface RefreshTokenSuccess {
 export interface AuthState {
   auth: Auth;
   user: User;
-}
-export interface AuthReducer {
-  auth: Reducer<Auth, UnknownAction>;
-  user: Reducer<User, UnknownAction>;
 }
 
 export enum LoggedStatus {

@@ -1,10 +1,11 @@
 import { createSelector } from "reselect";
-import { ApplicationState } from "../../configuration/constants";
-import { MenuSide } from "../../menu/constants";
+import { ApplicationState } from "../configuration/constants";
+import { MenuSide } from "../menu/constants";
 import { MenuItem, MenuItemData, MenuItemField } from "./constants";
-import { roleOption } from '../../role/selectors';
+import { roleOption } from '../role/reducer';
+import { getMenuItems } from './reducers';
 
-export const getMenuItems = (state: ApplicationState): MenuItem[] => state.panelMenu.menu;
+export { getMenuItems };
 
 export const getMenuItemById = createSelector(
   getMenuItems,

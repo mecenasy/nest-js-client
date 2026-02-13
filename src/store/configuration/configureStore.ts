@@ -53,7 +53,7 @@ const configureStore: ConfigureStore = async (
   );
 
   if (!SERVER_BUILD) {
-    setAuthorizationProvider(() => store.getState().auth.auth.token)
+    setAuthorizationProvider(() => store.getState().auth.token)
   }
 
   const rootSagaTask = rootSaga && sagaMiddleware.run(rootSaga);

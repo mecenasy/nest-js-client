@@ -2,9 +2,11 @@ import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { convertFieldsToArray } from '~/src/PageConfigs/helpers/concert-fields-to-array';
 import { UserListState, initialState, ListType } from "./constants";
 import { SimplePerson } from '../person/constants';
+import { logoutSuccess } from '../auth/reducers';
 
-export const getUserListRequest = createAction<{ searchParam: string, listType: ListType }>('userList/GET_USER_LIST_REQUEST');
-export const getSimpleUserListRequest = createAction<ListType | undefined>('userList/GET_SIMPLE_USER_LIST_REQUEST');
+export const getUserListRequest = createAction<{ searchParam: string, listType: ListType }>('userList/getUserListRequest');
+export const getSimpleUserListRequest = createAction<ListType | undefined>('userList/getSimpleUserListRequest');
+export const getSimpleUserListFail = createAction<ListType | undefined>('userList/getSimpleUserListFail');
 
 const userListSlice = createSlice({
   name: 'userList',
@@ -14,13 +16,12 @@ const userListSlice = createSlice({
       const { selectedFilters } = state;
       return { ...action.payload, selectedFilters };
     },
-    getUserListFail: (state, action: PayloadAction<string>) => {
+    getUserListFail: (state, _: PayloadAction<string>) => {
       state.isFetching = false;
     },
     getSimpleUserListSuccess: (state, action: PayloadAction<SimplePerson[]>) => {
       state.simpleUsers = action.payload;
     },
-    getSimpleUserListFail: (state) => {},
     setFilter: (state, action: PayloadAction<{ name: string, value: string | string[] | undefined }>) => {
       const { name, value } = action.payload;
       state.isFetching = true;
@@ -34,23 +35,23 @@ const userListSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserListRequest, (state, action) => {
-      const { searchParam } = action.payload;
-      state.selectedFilters = convertFieldsToArray(
-        Object.fromEntries(new URLSearchParams(searchParam ?? '')),
-        ['page', 'pageSize', 'orderBy', 'orderType']
-      );
-      state.isFetching = true;
-    });
+    builder
+      .addCase(logoutSuccess, () => initialState)
+      .addCase(getUserListRequest, (state, action) => {
+        const { searchParam } = action.payload;
+        state.selectedFilters = convertFieldsToArray(
+          Object.fromEntries(new URLSearchParams(searchParam ?? '')),
+          ['page', 'pageSize', 'orderBy', 'orderType']
+        );
+        state.isFetching = true;
+      });
   },
   selectors: {
     getUserList: (state) => state.users,
-
     getUserListFilters: (state) => state.filters,
     getSelectedFilters: (state) => state.selectedFilters,
     getFiltersMap: (state) => state.filtersMap,
     getUserListPagination: (state) => state.pagination,
-
     getFiltersMapSelector: (state) => state.filtersMap,
     getSimpleUsersSelector: (state) => state.simpleUsers,
   }
@@ -61,7 +62,6 @@ export const {
   getUserListSuccess,
   getUserListFail,
   getSimpleUserListSuccess,
-  getSimpleUserListFail,
   setFilter,
   setPage
 } = userListSlice.actions;

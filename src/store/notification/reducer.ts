@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, NotificationState } from './constants';
+import { logoutSuccess } from '../auth/reducers';
 
-export const GetNotificationRequest = createAction('notification/GetNotificationRequest');
+export const getNotificationRequest = createAction('notification/GetNotificationRequest');
+export const getNotificationFail = createAction<string>('notification/GetNotificationFail');
 export const notificationStart = createAction('notification/notificationStart');
 export const notificationEnd = createAction('notification/notificationEnd');
 
@@ -9,10 +11,9 @@ const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    GetNotificationSuccess: (state, action: PayloadAction<NotificationState>) => {
+    getNotificationSuccess: (state, action: PayloadAction<NotificationState>) => {
       return { ...state, ...action.payload };
     },
-    GetNotificationFail: () => {},
     setUnReadedMessage: (state, action: PayloadAction<number>) => {
       state.unReadedMessage = action.payload;
     },
@@ -23,7 +24,9 @@ const notificationSlice = createSlice({
       state.unReadedMessage -= 1;
     },
   },
-
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState);
+  },
   selectors: {
     unReadedSelector: (state: NotificationState) => state.unReadedMessage,
   }
@@ -32,8 +35,7 @@ const notificationSlice = createSlice({
 export const notificationReducer = notificationSlice.reducer;
 export const { unReadedSelector } = notificationSlice.selectors;
 export const {
-  GetNotificationSuccess,
-  GetNotificationFail,
+  getNotificationSuccess,
   setUnReadedMessage,
   unReadedUp,
   unReadedDown

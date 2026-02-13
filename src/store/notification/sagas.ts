@@ -1,19 +1,20 @@
 import { takeLatest, call, put, select, take, cancelled, race, } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
-  GetNotificationFail,
-  GetNotificationSuccess,
   unReadedUp,
-  GetNotificationRequest,
-  notificationStart
+  notificationStart,
+  getNotificationFail,
+  getNotificationSuccess,
+  getNotificationRequest
 } from './reducer';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { userIdSelector, userTokenSelector } from '../auth/selectors';
+import { userIdSelector, userTokenSelector } from '../auth/reducers';
 import { basePath } from '~/src/api/apiConfig';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { getNotification } from '~/src/api/notification/requests';
 import { waitForAuthStatus } from '../auth/sagas';
-import { AuthActionType, LoggedStatus } from '../auth/constants';
+import { LoggedStatus } from '../auth/constants';
+import { logoutSuccess } from '../auth/reducers';
 
 export function notificationChannel(id: string, token: string) {
   return eventChannel((emit) => {
@@ -40,7 +41,7 @@ export function notificationChannel(id: string, token: string) {
 
 export function* notificationWatcher() {
   yield takeLatest(notificationStart.type, notificationChannelWorker);
-  yield takeLatest(GetNotificationRequest.type, notificationWorker);
+  yield takeLatest(getNotificationRequest.type, notificationWorker);
 }
 
 export function* notificationWorker() {
@@ -49,9 +50,11 @@ export function* notificationWorker() {
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
       const response: AxiosResponse<any> = yield call(getNotification);
-      yield put(GetNotificationSuccess(response.data));
-    } catch {
-      yield put(GetNotificationFail());
+      yield put(getNotificationSuccess(response.data));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(getNotificationFail(error.message));
+      }
     }
   }
 }
@@ -60,7 +63,6 @@ export function* notificationChannelWorker() {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-
     const id: string = yield select(userIdSelector);
     const token: string = yield select(userTokenSelector);
     const channel: EventChannel<number> = yield call(notificationChannel, id, token);
@@ -69,7 +71,7 @@ export function* notificationChannelWorker() {
       while (true) {
         const { winner } = yield race({
           winner: take(channel),
-          cancel: take(AuthActionType.LogoutSuccess)
+          cancel: take(logoutSuccess.type)
         });
         if (winner) {
           yield put(unReadedUp());

@@ -1,11 +1,18 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, MessageList, Message, MessageData, File } from './constants';
+import { logoutSuccess } from '../auth/reducers';
 
 export const sendMessageRequest = createAction<MessageData>('message/sendMessageRequest');
 export const getMessageListRequest = createAction<string>('message/getMessageListRequest');
 export const getMessageRequest = createAction<string>('message/getMessageRequest');
 export const getFileRequest = createAction<File>('message/getFileRequest');
 export const readedMessageRequest = createAction<string>('message/readedMessageRequest');
+
+export const sendMessageFail = createAction<string>('message/sendMessageFail');
+export const getMessageListFail = createAction<string>('message/getMessageListFail');
+export const getMessageFail = createAction<string>('message/getMessageFail');
+export const getFileFail = createAction<string>('message/getFileFail');
+export const readedMessageFail = createAction<string>('message/readedMessageFail');
 
 const messageSlice = createSlice({
   name: 'message',
@@ -37,20 +44,20 @@ const messageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(logoutSuccess, () => initialState)
       .addCase(sendMessageRequest, (state) => { state.isFetching = true; })
       .addCase(getMessageListRequest, (state) => { state.isFetching = true; })
-      .addCase(getMessageRequest, (state) => { state.isFetching = true; });
+      .addCase(getMessageRequest, (state) => { state.isFetching = true; })
+      .addCase(sendMessageFail, (state) => { state.isFetching = true; })
+      .addCase(getMessageListFail, (state) => { state.isFetching = true; })
+      .addCase(getMessageFail, (state) => { state.isFetching = true; })
   }
 });
 
 export const messageReducer = messageSlice.reducer;
 export const {
   sendMessageSuccess,
-  sendMessageFail,
   getMessageListSuccess,
-  getMessageListFail,
   getMessageSuccess,
-  getMessageFail,
   getFileSuccess,
-  getFileFail
 } = messageSlice.actions;

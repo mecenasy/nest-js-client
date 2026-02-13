@@ -1,17 +1,12 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CreateSubject, initialState, Subject } from './constants';
-
-interface Param {
-  group?: string;
-  year?: string;
-  search?: string
-}
+import { CreateSubject, initialState, Param, Subject } from './constants';
+import { logoutSuccess } from '../auth/reducers';
 
 const subjectSlice = createSlice({
   name: 'subject',
   initialState,
   reducers: {
-    getSubjects: (state, action: PayloadAction<Subject[]>) => {
+    getSubjects: (_, action: PayloadAction<Subject[]>) => {
       return action.payload;
     },
     addSubject: (state, action: PayloadAction<Subject>) => {
@@ -26,6 +21,9 @@ const subjectSlice = createSlice({
         state[index] = action.payload;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState);
   },
   selectors: {
     getSubjectSelector: (subjects, { search }: Param) => {
@@ -52,3 +50,8 @@ export const addSubjectRequest = createAction<{
 }>('subject/addSubjectRequest');
 export const deleteSubjectRequest = createAction<string>('subject/deleteSubjectRequest');
 export const updateSubjectRequest = createAction<Subject>('subject/updateSubjectRequest');
+
+export const getSubjectsFail = createAction<string>('subject/getSubjectsFail');
+export const addSubjectFail = createAction<string>('subject/addSubjectFail');
+export const deleteSubjectFail = createAction<string>('subject/deleteSubjectFail');
+export const updateSubjectFail = createAction<string>('subject/updateSubjectFail');

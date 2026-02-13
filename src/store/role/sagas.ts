@@ -1,12 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getRole } from '~/src/api/panelMenu/requests';
-import { RoleAction, RoleActionType } from './constants';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
-import { getRoleFail, getRoleSuccess } from './actions';
+import { getRoleFail, getRoleSuccess } from './reducer';
+import { getRoleRequest } from './reducer';
+import axios from 'axios';
 
 export function* getRoleWatcher() {
-  yield takeLatest<RoleAction>(RoleActionType.GetRoleRequest, getRoleWorker);
+  yield takeLatest(getRoleRequest.type, getRoleWorker);
 }
 
 export function* getRoleWorker() {
@@ -17,8 +18,10 @@ export function* getRoleWorker() {
       const { data }: { data: string[] } = yield call(getRole);
 
       yield put(getRoleSuccess(data));
-    } catch {
-      yield put(getRoleFail(''));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(getRoleFail(error.message));
+      }
     }
   }
 }

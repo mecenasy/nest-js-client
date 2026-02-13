@@ -1,11 +1,27 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
-import { initialState, GroupTimeTable, Calendar, MoveSuccessPayload, TimeTableData, CalendarPlace, CalendarParams, MoveRequestPayload } from './constants';
+import {
+  initialState,
+  GroupTimeTable,
+  Calendar,
+  MoveSuccessPayload,
+  TimeTableData,
+  CalendarPlace,
+  CalendarParams,
+  MoveRequestPayload
+} from './constants';
+import { logoutSuccess } from '../auth/reducers';
 
-export const getTimeTableRequest = createAction<CalendarParams>('timeTable/GET_TIME_TABLE_REQUEST');
-export const getCalendarRequest = createAction('timeTable/GET_CALENDAR_REQUEST');
-export const addSubjectToTimeTableRequest = createAction<TimeTableData>('timeTable/ADD_SUBJECT_TO_TIME_TABLE_REQUEST');
-export const deleteSubjectFromTimeTableRequest = createAction<TimeTableData>('timeTable/DELETE_SUBJECT_FROM_TIME_TABLE_REQUEST');
-export const moveSubjectInTimeTableRequest = createAction<MoveRequestPayload>('timeTable/MOVE_SUBJECT_IN_TIME_TABLE_REQUEST');
+export const getTimeTableRequest = createAction<CalendarParams>('timeTable/getTimeTableRequest');
+export const getCalendarRequest = createAction('timeTable/getCalendarRequest');
+export const addSubjectToTimeTableRequest = createAction<TimeTableData>('timeTable/addSubjectToTimeTableRequest');
+export const deleteSubjectFromTimeTableRequest = createAction<TimeTableData>('timeTable/deleteSubjectFromTimeTableRequest');
+export const moveSubjectInTimeTableRequest = createAction<MoveRequestPayload>('timeTable/moveSubjectInTimeTableRequest');
+
+export const getTimeTableFail = createAction<string>('timeTable/getTimeTableFail');
+export const getCalendarFail = createAction<string>('timeTable/getCalendarFail');
+export const moveSubjectInTimeTableFail = createAction<string>('timeTable/moveSubjectInTimeTableFail');
+export const deleteSubjectFromTimeTableFail = createAction<string>('timeTable/deleteSubjectFromTimeTableFail');
+export const addSubjectToTimeTableFail = createAction<string>('timeTable/addSubjectToTimeTableFail');
 
 const timeTableSlice = createSlice({
   name: 'timeTable',
@@ -14,12 +30,10 @@ const timeTableSlice = createSlice({
     getTimeTableSuccess: (state, action: PayloadAction<GroupTimeTable[]>) => {
       state.groupsTable = action.payload;
     },
-    getTimeTableFail: (state, action: PayloadAction<string>) => {},
     getCalendarSuccess: (state, action: PayloadAction<Calendar>) => {
       state.days = action.payload.days;
       state.hours = action.payload.hours;
     },
-    getCalendarFail: (state, action: PayloadAction<string>) => {},
     moveSubjectInTimeTableSuccess: (state, action: PayloadAction<MoveSuccessPayload>) => {
       const { newCalendarPlace, oldCalendarPlace, year, group } = action.payload;
       const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
@@ -30,7 +44,6 @@ const timeTableSlice = createSlice({
         groupTable.timeTable.push(newCalendarPlace);
       }
     },
-    moveSubjectInTimeTableFail: (state, action: PayloadAction<string>) => {},
     deleteSubjectFromTimeTableSuccess: (state, action: PayloadAction<TimeTableData>) => {
       const { year, group, days, hours } = action.payload;
       const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
@@ -38,7 +51,6 @@ const timeTableSlice = createSlice({
         state.groupsTable[groupIndex].timeTable = state.groupsTable[groupIndex].timeTable.filter((e) => days !== e.days || hours !== e.hours);
       }
     },
-    deleteSubjectFromTimeTableFail: (state, action: PayloadAction<string>) => {},
     addSubjectToTimeTableSuccess: (state, action: PayloadAction<CalendarPlace>) => {
       const calendarPace = action.payload;
       const groupIndex = state.groupsTable.findIndex((group) => group.name === calendarPace.group);
@@ -53,7 +65,9 @@ const timeTableSlice = createSlice({
         });
       }
     },
-    addSubjectToTimeTableFail: (state, action: PayloadAction<string>) => {},
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutSuccess, () => initialState);
   },
   selectors: {
     getCalendarDays: (state) => state.days,
@@ -64,11 +78,11 @@ const timeTableSlice = createSlice({
 
 export const timeTableReducer = timeTableSlice.reducer;
 export const {
-  getTimeTableSuccess, getTimeTableFail,
-  getCalendarSuccess, getCalendarFail,
-  moveSubjectInTimeTableSuccess, moveSubjectInTimeTableFail,
-  deleteSubjectFromTimeTableSuccess, deleteSubjectFromTimeTableFail,
-  addSubjectToTimeTableSuccess, addSubjectToTimeTableFail
+  getTimeTableSuccess,
+  getCalendarSuccess,
+  moveSubjectInTimeTableSuccess,
+  deleteSubjectFromTimeTableSuccess,
+  addSubjectToTimeTableSuccess,
 } = timeTableSlice.actions;
 
 export const {

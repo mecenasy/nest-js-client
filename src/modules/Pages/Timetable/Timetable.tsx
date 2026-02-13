@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
 import { useSelector } from "react-redux";
-import { loggedInStatusSelector, userRoleSelector } from "~/src/store/auth/selectors";
+import { loggedInStatusSelector, userRoleSelector } from "~/src/store/auth/reducers";
 import { LoggedStatus } from "~/src/store/auth/constants";
 import { getTimeTable } from '~/src/store/timeTable/reducer';
 import Table from './Table/Table';

@@ -8,7 +8,7 @@ import { validateLoginForm } from './helpers';
 import InputFormWrapper from '../../Components/Input/Input';
 import { LoggedStatus, ChangePasswordData, ChangePasswordField } from '~/src/store/auth/constants';
 import { changePasswordRequest, changePasswordSuccess, changePasswordFail } from '~/src/store/auth/reducers';
-import { loggedInStatusSelector } from '~/src/store/auth/selectors';
+import { loggedInStatusSelector } from '~/src/store/auth/reducers';
 import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';

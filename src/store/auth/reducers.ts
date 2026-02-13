@@ -1,11 +1,10 @@
-import { createSlice, PayloadAction, combineReducers, createAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import {
   authInitialState,
   userInitialState,
   LoggedStatus,
   LoginSuccess,
   RefreshTokenSuccess,
-  AuthReducer,
 } from "./constants";
 
 export const loginRequest = createAction<{ user: string, password: string }>('auth/loginRequest');
@@ -63,8 +62,13 @@ export const authSlice = createSlice({
     changePasswordSuccess: () => {},
     changePasswordFail: () => {},
   },
-});
+  selectors: {
+    userTokenSelector: (state) => state.token,
+    loggedInStatusSelector: (state) => state.loggedIn,
+    tokenExpiredInSelector: (state) => +state.expireAt,
 
+  }
+});
 
 export const {
   loginSuccess,
@@ -76,6 +80,7 @@ export const {
   changePasswordSuccess,
   changePasswordFail
 } = authSlice.actions;
+
 
 export const userSlice = createSlice({
   name: 'user',
@@ -91,15 +96,26 @@ export const userSlice = createSlice({
     builder.addCase(logoutSuccess, () => userInitialState);
     builder.addCase(logoutFail, () => userInitialState);
     builder.addCase(loginFail, () => userInitialState);
+  },
+  selectors: {
+    getIsDefaultPassword: (state) => state.isDefaultPassword,
+    userIdSelector: (state) => state.userId,
+    userSelector: (state) => state,
+    userRoleSelector: (state) => state.role,
   }
 });
-
-
 
 export const authReducer = authSlice.reducer;
 export const userReducer = userSlice.reducer;
 
-export const authCombinedReducer = combineReducers<AuthReducer>({
-  auth: authReducer,
-  user: userReducer,
-});
+export const {
+  loggedInStatusSelector,
+  userTokenSelector,
+  tokenExpiredInSelector
+} = authSlice.selectors;
+export const {
+  getIsDefaultPassword,
+  userIdSelector,
+  userSelector,
+  userRoleSelector
+} = userSlice.selectors;

@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { ApplicationState } from "../configuration/constants";
 import { Menu, MenuSide } from "./constants";
-import { unReadedSelector } from '../notification/selectors';
+import { unReadedSelector } from '../notification/reducer';
 
 export const menuSelector = ({ menu }: ApplicationState) => menu;
 

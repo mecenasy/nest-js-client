@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 import { LoggedStatus } from '~/src/store/auth/constants';
-import { loggedInStatusSelector } from '~/src/store/auth/selectors';
+import { loggedInStatusSelector } from '~/src/store/auth/reducers';
 
 const Logout = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);

@@ -8,6 +8,7 @@ import {
   getSubjects,
   updateSubject,
 } from '~/src/api/subject/requests';
+import axios from 'axios';
 
 export function* subjectWatcher() {
   yield takeLatest(A.getSubjectsRequest.type, getSubjectsWorker);
@@ -22,7 +23,10 @@ export function* getSubjectsWorker() {
     try {
       const { data } = yield call(getSubjects);
       yield put(A.getSubjects(data));
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getSubjectsFail(error.message));
+      }
     }
   }
 }
@@ -35,8 +39,11 @@ export function* addSubjectWorker(action: ReturnType<typeof A.addSubjectRequest>
       const { data } = yield call(addSubject, subject);
       yield put(A.addSubject(data));
       yield call(resolve, data);
-    } catch {
-      yield call(reject);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield call(reject);
+        yield put(A.addSubjectFail(error.message));
+      }
     }
   }
 }
@@ -48,7 +55,10 @@ export function* deleteSubjectWorker(action: ReturnType<typeof A.deleteSubjectRe
       const id = action.payload;
       yield call(deleteSubject, id);
       yield put(A.deleteSubject(id));
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.deleteSubjectFail(error.message));
+      }
     }
   }
 }
@@ -59,7 +69,11 @@ export function* updateSubjectWorker(action: ReturnType<typeof A.updateSubjectRe
     try {
       const { data } = yield call(updateSubject, action.payload);
       yield put(A.updateSubject(data));
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.updateSubjectFail(error.message));
+      }
     }
   }
 }
+

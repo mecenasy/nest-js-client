@@ -1,14 +1,15 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { addPerson, getPersonByUserId } from '../../api/person/requests';
-import { getPersonSuccess, addPersonSuccess, getPersonRequest, addPersonRequest } from './reducer';
+import * as A from './reducer';
 import { Person } from './constants';
-import { userIdSelector } from '../auth/selectors';
+import { userIdSelector } from '../auth/reducers';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export function* getPersonWatcher() {
-  yield takeLatest(getPersonRequest.type, getPersonWorker);
+export function* personWatcher() {
+  yield takeLatest(A.getPersonRequest.type, getPersonWorker);
+  yield takeLatest(A.addPersonRequest.type, addPersonWorker);
 }
 
 export function* getPersonWorker() {
@@ -16,33 +17,34 @@ export function* getPersonWorker() {
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
-      const personId: string = yield select(userIdSelector); ``
-      try {
-        if (personId) {
+      const personId: string = yield select(userIdSelector);
+      if (personId) {
 
-          const { data }: { data: Person } = yield call(getPersonByUserId);
+        const { data }: { data: Person } = yield call(getPersonByUserId);
 
-          yield put(getPersonSuccess({ userId: personId, person: data }));
-        }
-      } catch {
+        yield put(A.getPersonSuccess({ userId: personId, person: data }));
       }
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.getPersonFail(error.message));
+      }
     }
   }
 }
 
-export function* addPersonWatcher() {
-  yield takeLatest(addPersonRequest.type, addPersonWorker);
-}
+export function* addPersonWorker(action: ReturnType<typeof A.addPersonRequest>) {
+  const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
-export function* addPersonWorker(action: ReturnType<typeof addPersonRequest>) {
-  if (action.type === addPersonRequest.type) {
+  if (authStatus === LoggedStatus.LoggedIn) {
     try {
       const personToAdd: any = action.payload;
       const { data }: AxiosResponse<Person> = yield call(addPerson, personToAdd);
 
-      yield put(addPersonSuccess(data));
-    } catch {
+      yield put(A.addPersonSuccess(data));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(A.addPersonFail(error.message));
+      }
     }
   }
 } 

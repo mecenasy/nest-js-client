@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
 import { useSelector } from "react-redux";
-import { loggedInStatusSelector } from "~/src/store/auth/selectors";
+import { loggedInStatusSelector } from "~/src/store/auth/reducers";
 import { LoggedStatus } from "~/src/store/auth/constants";
 import { PersonField, PersonFormData, RoleType } from "~/src/store/person/constants";
 import FormWrapper, { SetPayload } from "../../Components/FormWrapper/FormWrapper";

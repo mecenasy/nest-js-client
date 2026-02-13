@@ -2,6 +2,12 @@ export interface Item {
   name: string;
 }
 
+export interface Param {
+  group?: string;
+  year?: string;
+  search?: string
+}
+
 export interface Subject {
   id: string;
   name: string;

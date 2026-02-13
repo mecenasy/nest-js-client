@@ -15,7 +15,8 @@ import {
 import { getSimpleUsers, getUsers } from '~/src/api/userlist/requests';
 import { replace } from 'redux-first-history';
 import { SimplePerson } from '../person/constants';
-import { userRoleSelector } from '../auth/selectors';
+import { userRoleSelector } from '../auth/reducers';
+import axios from 'axios';
 
 export function* getUserListWatcher() {
   yield takeLatest(getUserListRequest.type, getUserListWorker);
@@ -55,8 +56,10 @@ export function* getUserListWorker(action: ReturnType<typeof getUserListRequest>
       const { data }: { data: UserListState } = yield call(getUsers, searchParam ?? '', listType);
 
       yield put(getUserListSuccess(data));
-    } catch {
-      yield put(getUserListFail(''));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(getUserListFail(error.message));
+      }
     }
   }
 }
@@ -69,8 +72,10 @@ export function* getSimpleUserListWorker(action: ReturnType<typeof getSimpleUser
       const { data }: { data: SimplePerson[] } = yield call(getSimpleUsers, action.payload ?? type);
 
       yield put(getSimpleUserListSuccess(data));
-    } catch {
-      yield put(getUserListFail(''));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        yield put(getUserListFail(error.message));
+      }
     }
   }
 }
