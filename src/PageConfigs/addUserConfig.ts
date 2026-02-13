@@ -1,8 +1,8 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
+import { getUniversityRequest } from '../store/university/reducer';
 import { getRoleRequest } from '../store/role/actions';
-import { getUniversityRequest } from '../store/university/actions';
 
 const AddUserPage = Loadable({
   loader: async () => import('../Pages/AddUserPage'),

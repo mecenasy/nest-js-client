@@ -12,10 +12,9 @@ import { getMenuItemById } from '~/src/store/panelMenu/menu/selectors';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { MenuSide } from '~/src/store/menu/constants';
-import { roleSelector } from '~/src/store/role/selectors';
-import { Option } from '../../Components/Input/types';
 import { setMenuItemsRequest } from '~/src/store/panelMenu/menu/actions';
 import { validateMenuItem } from './helpers';
+import { roleSelector } from '~/src/store/role/selectors';
 
 interface PanelMenuFormProps {
   initialId: string;
@@ -35,7 +34,7 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
     role: [],
     image: undefined,
   }
-  const roles = useSelector<ApplicationState, Option<string>[]>(roleSelector)
+  const roles = useSelector(roleSelector)
   const setPayload: SetPayload<MenuItemAction, MenuItemData> = (action, value) => {
     return setMenuItemsRequest(value)
   }

@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import * as P from '../parts';
 import { useSelector } from 'react-redux';
-import { getSpecialty, getYear } from '~/src/store/university/selectors';
+import { getSpecialty, getYear } from '~/src/store/university/reducer';
 import { CalendarType } from '~/src/store/timeTable/constants';
-import { getTimeTableRequest } from '~/src/store/timeTable/actions';
+import { getTimeTableRequest } from '~/src/store/timeTable/reducer';
 import { useDispatch } from 'react-redux';
 import { Specialty, Year } from '~/src/store/university/constants';
 import { Option } from '~/src/modules/Components/Input/types';

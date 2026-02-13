@@ -5,7 +5,7 @@ import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
 import { useSelector } from "react-redux";
 import { loggedInStatusSelector, userRoleSelector } from "~/src/store/auth/selectors";
 import { LoggedStatus } from "~/src/store/auth/constants";
-import { getTimeTable } from '~/src/store/timeTable/selectors';
+import { getTimeTable } from '~/src/store/timeTable/reducer';
 import Table from './Table/Table';
 import Control from './Control/Control';
 import { RoleType } from '~/src/store/role/constants';

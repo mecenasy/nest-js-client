@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import { RoleType } from '../person/constants';
 import { Reducer, UnknownAction } from 'redux';
 

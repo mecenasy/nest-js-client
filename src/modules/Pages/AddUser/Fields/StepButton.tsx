@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import * as P from '../parts';
 import { useField } from 'react-final-form';
-import { PersonField } from '~/src/store/person/constants';
-import { RoleType } from '~/src/store/role/constants';
+import { PersonField, RoleType } from '~/src/store/person/constants';
 import { Button } from '~/src/modules/Components/Buttons/Button';
 
 const StepButton: FC = () => {

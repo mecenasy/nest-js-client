@@ -5,20 +5,20 @@ import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
 import { useSelector } from "react-redux";
 import { loggedInStatusSelector } from "~/src/store/auth/selectors";
 import { LoggedStatus } from "~/src/store/auth/constants";
-import { PersonAction, PersonActionType, PersonField, PersonFormData } from "~/src/store/person/constants";
+import { PersonField, PersonFormData, RoleType } from "~/src/store/person/constants";
 import FormWrapper, { SetPayload } from "../../Components/FormWrapper/FormWrapper";
 import AddressFields from "./Fields/Address";
 import StudentFields from "./Fields/Student";
 import DefaultFields from "./Fields/Default";
-import { RoleType } from "~/src/store/role/constants";
-import { addPersonRequest } from "~/src/store/person/actions";
+import { addPersonRequest } from "~/src/store/person/reducer";
 import { FormApi } from "final-form";
 import Box from '../../Components/Box/Box';
+import { UnknownAction } from 'redux';
 
 export const AddUser: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
   const formRef: React.MutableRefObject<FormApi | null> = useRef<FormApi | null>(null);
-  const setPayload: SetPayload<PersonAction, any> = (action, values) => {
+  const setPayload: SetPayload<UnknownAction, any> = (action, values) => {
     delete values.step;
     const data: PersonFormData = {
       ...values,
@@ -41,10 +41,10 @@ export const AddUser: FC = () => {
       {isLoggedIn === LoggedStatus.LoggedIn && (
         <P.Wrapper  >
           <h3>Dodaj nowego urzytkownika</h3>
-          <FormWrapper<PersonAction, PersonActionType>
-            start={PersonActionType.AddPersonRequest}
-            resolve={PersonActionType.AddPersonSuccess}
-            reject={PersonActionType.AddPersonFail}
+          <FormWrapper<any, any>
+            start={'PersonActionType.AddPersonRequest'}
+            resolve={'PersonActionType.AddPersonSucces'}
+            reject={'PersonActionType.AddPersonFail'}
             setPayload={setPayload}
             getPayload={() => {
               formRef.current?.reset();

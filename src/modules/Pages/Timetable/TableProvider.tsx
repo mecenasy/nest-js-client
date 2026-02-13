@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { createContext, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { addSubjectToTimeTableRequest, deleteSubjectFromTimeTableRequest, moveSubjectInTimeTableRequest } from '~/src/store/timeTable/actions';
+import { addSubjectToTimeTableRequest, deleteSubjectFromTimeTableRequest, moveSubjectInTimeTableRequest } from '~/src/store/timeTable/reducer';
 import { CalendarPlace, GroupTimeTable } from '~/src/store/timeTable/constants';
-import { getSubjectSelector } from '~/src/store/subject/selectors';
+import { getSubjectSelector } from '~/src/store/subject/reducer';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { useSelector } from 'react-redux';
 import { Option } from '../../Components/Input/types';
 import { Subject } from '~/src/store/subject/constants';
-import { getSpecialtySelector } from '~/src/store/university/selectors';
+import { getSpecialtySelector } from '~/src/store/university/reducer';
 import AddSubjectModal from './AddSubject/AddSubjectModal';
 import { ModalRef } from '../../Components/Modal/Modal';
 

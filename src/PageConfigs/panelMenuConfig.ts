@@ -1,8 +1,8 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getRoleRequest } from '../store/role/actions';
 import { getMenuItemsRequest } from '../store/panelMenu/menu/actions';
+import { getRoleRequest } from '../store/role/actions';
 
 const PanelMenu = Loadable({
   loader: async () => import('../Pages/PanelMenuPage'),

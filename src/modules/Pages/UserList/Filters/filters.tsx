@@ -1,8 +1,8 @@
 import React, { FC, useCallback } from 'react';
 import * as P from './parts';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedFilters, getUserListFilters } from '~/src/store/userList/selectors';
-import { setFilterUserFilter } from '~/src/store/userList/actions';
+import { getSelectedFilters, getUserListFilters } from '~/src/store/userList/reducer';
+import { setFilter } from '~/src/store/userList/reducer';
 import { Option } from '~/src/modules/Components/Input/types';
 import { Select } from '~/src/modules/Components/Input/Dropdown';
 import { getOption } from './getOptions';
@@ -15,14 +15,14 @@ const Filters: FC = () => {
   const dispatch = useDispatch();
   const filtersKeys = Object.keys(filters);
 
-  const onFilterChange = useCallback((key: string) => {
+  const onFilterChange = useCallback((name: string) => {
     return (option: Option<string> | Option<string>[]) => {
       if (Array.isArray(option)) {
         const selectedValue = option.map((item: Option<string>) => item.value);
-        dispatch(setFilterUserFilter(key, option.length > 0 ? selectedValue : undefined));
+        dispatch(setFilter({ name, value: option.length > 0 ? selectedValue : undefined }));
       }
       if (!Array.isArray(option) && option?.value) {
-        dispatch(setFilterUserFilter(key, option.value ?? undefined));
+        dispatch(setFilter({ name, value: option.value ?? undefined }));
       }
     };
   }, [dispatch]);

@@ -4,14 +4,12 @@ import { PersonField } from '~/src/store/person/constants';
 import { Field, useField } from 'react-final-form';
 import * as P from '../parts';
 import { useSelector } from 'react-redux';
-import { ApplicationState } from '~/src/store/configuration/constants';
-import { Option } from '~/src/modules/Components/Input/types';
-import { roleSelector } from '~/src/store/role/selectors';
 import StepButton from './StepButton';
 import DropdownField from '~/src/modules/Components/Input/Dropdown';
+import { roleSelector } from '~/src/store/role/selectors';
 
 const Default: FC = () => {
-  const roles = useSelector<ApplicationState, Option<string>[]>(roleSelector)
+  const roles = useSelector(roleSelector)
   const { input } = useField(PersonField.Step, { subscription: { value: true } });
 
   if (input.value !== 1) {

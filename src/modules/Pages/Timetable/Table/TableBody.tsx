@@ -1,7 +1,7 @@
 import React from 'react';
 import TableRow from './TableRow';
 import { useSelector } from 'react-redux';
-import { getCalendarHours } from '~/src/store/timeTable/selectors';
+import { getCalendarHours } from '~/src/store/timeTable/reducer';
 
 const TableBody = () => {
   const hours = useSelector(getCalendarHours);

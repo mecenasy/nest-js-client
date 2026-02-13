@@ -52,35 +52,10 @@ interface Student {
   year: string;
 }
 
-export enum PersonActionType {
-  GetPersonRequest = 'person/GET_PERSON_REQUEST',
-  GetPersonSuccess = 'person/GET_PERSON_SUCCESS',
-  GetPersonFail = 'person/GET_PERSON_FAIL',
-  AddPersonRequest = 'person/ADD_PERSON_REQUEST',
-  AddPersonSuccess = 'person/ADD_PERSON_SUCCESS',
-  AddPersonFail = 'person/ADD_PERSON_FAIL',
+export interface PersonResponse {
+  userId: string; person: Person;
 }
 
-export type PersonAction = {
-  type: PersonActionType.GetPersonRequest;
-} | {
-  userId: string;
-  type: PersonActionType.GetPersonSuccess;
-  person: Person;
-} | {
-  userId: string;
-  type: PersonActionType.GetPersonFail;
-  message: string,
-} | {
-  type: PersonActionType.AddPersonRequest;
-  person: PersonFormData;
-} | {
-  type: PersonActionType.AddPersonSuccess;
-  person: Person;
-} | {
-  type: PersonActionType.AddPersonFail;
-  message: string,
-};
 
 export const initialState: Person = {
   id: '',

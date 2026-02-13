@@ -1,6 +1,12 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CreateSubject, initialState, Subject } from './constants';
 
+interface Param {
+  group?: string;
+  year?: string;
+  search?: string
+}
+
 const subjectSlice = createSlice({
   name: 'subject',
   initialState,
@@ -22,14 +28,21 @@ const subjectSlice = createSlice({
     },
   },
   selectors: {
-    getSubjectsSelector: (state: Subject[]) => state,
+    getSubjectSelector: (subjects, { search }: Param) => {
+      if (search) {
+        return subjects?.
+          filter(({ name }) => name?.toLocaleLowerCase()
+            .includes(search.toLocaleLowerCase()))
+      }
+      return subjects
+    }
   },
 });
 
 export const subjectReducer = subjectSlice.reducer;
 
 export const { getSubjects, addSubject, deleteSubject, updateSubject } = subjectSlice.actions;
-export const { getSubjectsSelector } = subjectSlice.selectors;
+export const { getSubjectSelector } = subjectSlice.selectors;
 
 export const getSubjectsRequest = createAction('subject/getSubjectsRequest');
 export const addSubjectRequest = createAction<{

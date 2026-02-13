@@ -5,8 +5,8 @@ import { useDrop } from 'react-dnd';
 import Cel from './Cel';
 import { useSelector } from 'react-redux';
 import { userRoleSelector } from '~/src/store/auth/selectors';
-import { RoleType } from '~/src/store/role/constants';
 import { TableContext } from '../TableProvider';
+import { RoleType } from '~/src/store/role/constants';
 
 interface TableCellProps {
   hour: string;

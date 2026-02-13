@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
 import { ApplicationState } from "../../configuration/constants";
 import { MenuSide } from "../../menu/constants";
-import { roleOption } from "../../role/selectors";
 import { MenuItem, MenuItemData, MenuItemField } from "./constants";
+import { roleOption } from '../../role/selectors';
 
 export const getMenuItems = (state: ApplicationState): MenuItem[] => state.panelMenu.menu;
 

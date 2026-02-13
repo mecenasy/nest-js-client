@@ -1,14 +1,14 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { addPerson, getPersonByUserId } from '../../api/person/requests';
-import { getPersonSuccess, getPersonFail, addPersonSuccess } from './actions';
-import { PersonAction, Person, PersonActionType } from './constants';
+import { getPersonSuccess, addPersonSuccess, getPersonRequest, addPersonRequest } from './reducer';
+import { Person } from './constants';
 import { userIdSelector } from '../auth/selectors';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import { AxiosResponse } from 'axios';
 
 export function* getPersonWatcher() {
-  yield takeLatest<PersonAction>(PersonActionType.GetPersonRequest, getPersonWorker);
+  yield takeLatest(getPersonRequest.type, getPersonWorker);
 }
 
 export function* getPersonWorker() {
@@ -16,38 +16,33 @@ export function* getPersonWorker() {
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
-      const personId: string = yield select(userIdSelector);
+      const personId: string = yield select(userIdSelector); ``
       try {
         if (personId) {
 
           const { data }: { data: Person } = yield call(getPersonByUserId);
 
-          yield put(getPersonSuccess(personId, data));
+          yield put(getPersonSuccess({ userId: personId, person: data }));
         }
       } catch {
-        yield put(getPersonFail(personId, ''));
       }
-
     } catch {
-
     }
   }
 }
 
 export function* addPersonWatcher() {
-  yield takeLatest<PersonAction>(PersonActionType.AddPersonRequest, addPersonWorker);
+  yield takeLatest(addPersonRequest.type, addPersonWorker);
 }
 
-export function* addPersonWorker(action: PersonAction) {
-  if (action.type === PersonActionType.AddPersonRequest) {
+export function* addPersonWorker(action: ReturnType<typeof addPersonRequest>) {
+  if (action.type === addPersonRequest.type) {
     try {
-      const personToAdd: any = action.person;
+      const personToAdd: any = action.payload;
       const { data }: AxiosResponse<Person> = yield call(addPerson, personToAdd);
-
 
       yield put(addPersonSuccess(data));
     } catch {
-      yield put(getPersonFail('action.person?.id', ''));
     }
   }
 } 

@@ -78,28 +78,6 @@ export interface MoveTimeTableData extends TimeTableData {
   newAuditorium: string
 }
 
-export enum TimeTableActionType {
-  GetTimeTableRequest = 'timeTable/GET_TIME_TABLE_REQUEST',
-  GetTimeTableSuccess = 'timeTable/GET_TIME_TABLE_SUCCESS',
-  GetTimeTableFail = 'timeTable/GET_TIME_TABLE_FAIL',
-
-  GetCalendarRequest = 'timeTable/GET_CALENDAR_REQUEST',
-  GetCalendarSuccess = 'timeTable/GET_CALENDAR_SUCCESS',
-  GetCalendarFail = 'timeTable/GET_CALENDAR_FAIL',
-
-  AddSubjectToTimeTableRequest = 'timeTable/ADD_SUBJECT_TO_TIME_TABLE_REQUEST',
-  AddSubjectToTimeTableSuccess = 'timeTable/ADD_SUBJECT_TO_TIME_TABLE_SUCCESS',
-  AddSubjectToTimeTableFail = 'timeTable/ADD_SUBJECT_TO_TIME_TABLE_FAIL',
-
-  DeleteSubjectFromTimeTableRequest = 'timeTable/DELETE_SUBJECT_FROM_TIME_TABLE_REQUEST',
-  DeleteSubjectFromTimeTableSuccess = 'timeTable/DELETE_SUBJECT_FROM_TIME_TABLE_SUCCESS',
-  DeleteSubjectFromTimeTableFail = 'timeTable/DELETE_SUBJECT_FROM_TIME_TABLE_FAIL',
-
-  MoveSubjectInTimeTableRequest = 'timeTable/MOVE_SUBJECT_IN_TIME_TABLE_REQUEST',
-  MoveSubjectInTimeTableSuccess = 'timeTable/MOVE_SUBJECT_IN_TIME_TABLE_SUCCESS',
-  MoveSubjectInTimeTableFail = 'timeTable/MOVE_SUBJECT_IN_TIME_TABLE_FAIL',
-}
-
 export interface MoveSuccessPayload {
   newCalendarPlace: CalendarPlace;
   oldCalendarPlace: TimeTableData;
@@ -112,49 +90,3 @@ export interface MoveRequestPayload {
   year: string;
   group: string;
 }
-
-export type TimeTableAction = {
-  type: TimeTableActionType.GetTimeTableRequest;
-  payload: CalendarParams;
-} | {
-  type: TimeTableActionType.GetTimeTableSuccess;
-  timeTable: GroupTimeTable[];
-} | {
-  type: TimeTableActionType.GetTimeTableFail;
-  message: string;
-} | {
-  type: TimeTableActionType.GetCalendarRequest;
-} | {
-  type: TimeTableActionType.GetCalendarSuccess;
-  calendar: Calendar;
-} | {
-  type: TimeTableActionType.GetCalendarFail;
-  message: string;
-} | {
-  type: TimeTableActionType.AddSubjectToTimeTableRequest;
-  data: TimeTableData;
-} | {
-  type: TimeTableActionType.AddSubjectToTimeTableSuccess;
-  calendarPace: CalendarPlace;
-} | {
-  type: TimeTableActionType.AddSubjectToTimeTableFail;
-  message: string;
-} | {
-  type: TimeTableActionType.DeleteSubjectFromTimeTableRequest;
-  data: TimeTableData;
-} | {
-  type: TimeTableActionType.DeleteSubjectFromTimeTableSuccess;
-  data: TimeTableData;
-} | {
-  type: TimeTableActionType.DeleteSubjectFromTimeTableFail;
-  message: string;
-} | {
-  type: TimeTableActionType.MoveSubjectInTimeTableRequest;
-  payload: MoveRequestPayload
-} | {
-  type: TimeTableActionType.MoveSubjectInTimeTableSuccess;
-  payload: MoveSuccessPayload
-} | {
-  type: TimeTableActionType.MoveSubjectInTimeTableFail;
-  message: string;
-};

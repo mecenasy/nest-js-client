@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Helmet } from "react-helmet";
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
-import { getUserList, } from '~/src/store/userList/selectors';
+import { getUserList, } from '~/src/store/userList/reducer';
 import Filters from './Filters/filters';
 import Pagination from './Pagination/Pagination';
 

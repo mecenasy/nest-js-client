@@ -29,7 +29,7 @@ export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
     messageList: messageReducer,
     notification: notificationReducer,
     timeTable: timeTableReducer,
-    subjectList: subjectReducer,
+    subject: subjectReducer,
     grades: gradeReducer
   })
 );

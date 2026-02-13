@@ -2,18 +2,23 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import {
+  addSubjectToTimeTableRequest,
   addSubjectToTimeTableFail,
   addSubjectToTimeTableSuccess,
+  deleteSubjectFromTimeTableRequest,
   deleteSubjectFromTimeTableFail,
   deleteSubjectFromTimeTableSuccess,
+  getCalendarRequest,
   getCalendarFail,
   getCalendarSuccess,
+  getTimeTableRequest,
   getTimeTableFail,
   getTimeTableSuccess,
+  moveSubjectInTimeTableRequest,
   moveSubjectInTimeTableFail,
   moveSubjectInTimeTableSuccess,
-} from './actions';
-import { CalendarType, GroupTimeTable, MoveSuccessPayload, TimeTableAction, TimeTableActionType } from './constants';
+} from './reducer';
+import { CalendarType, GroupTimeTable, MoveSuccessPayload } from './constants';
 import {
   addSubjectToTimeTable,
   deleteSubjectFromTimeTable,
@@ -27,15 +32,15 @@ import {
 import { userIdSelector } from '../auth/selectors';
 
 export function* timeTableWatcher() {
-  yield takeLatest(TimeTableActionType.GetTimeTableRequest, getTimeTableByGroupWorker);
-  yield takeLatest(TimeTableActionType.GetCalendarRequest, getCalendarWorker);
-  yield takeLatest(TimeTableActionType.AddSubjectToTimeTableRequest, addSubjectToTimeTableWorker);
-  yield takeLatest(TimeTableActionType.DeleteSubjectFromTimeTableRequest, deleteSubjectFromTimeTableWorker);
-  yield takeLatest(TimeTableActionType.MoveSubjectInTimeTableRequest, moveSubjectInTimeTableWorker);
+  yield takeLatest(getTimeTableRequest.type, getTimeTableByGroupWorker);
+  yield takeLatest(getCalendarRequest.type, getCalendarWorker);
+  yield takeLatest(addSubjectToTimeTableRequest.type, addSubjectToTimeTableWorker);
+  yield takeLatest(deleteSubjectFromTimeTableRequest.type, deleteSubjectFromTimeTableWorker);
+  yield takeLatest(moveSubjectInTimeTableRequest.type, moveSubjectInTimeTableWorker);
 }
 
-export function* getTimeTableByGroupWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.GetTimeTableRequest) {
+export function* getTimeTableByGroupWorker(action: ReturnType<typeof getTimeTableRequest>) {
+  if (action.type === getTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
       try {
@@ -83,12 +88,12 @@ export function* getCalendarWorker() {
   }
 }
 
-export function* addSubjectToTimeTableWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.AddSubjectToTimeTableRequest) {
+export function* addSubjectToTimeTableWorker(action: ReturnType<typeof addSubjectToTimeTableRequest>) {
+  if (action.type === addSubjectToTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
       try {
-        const { data } = yield call(addSubjectToTimeTable, action.data);
+        const { data } = yield call(addSubjectToTimeTable, action.payload);
         yield put(addSubjectToTimeTableSuccess(data));
       } catch (error: any) {
         yield put(addSubjectToTimeTableFail(error?.message));
@@ -97,13 +102,13 @@ export function* addSubjectToTimeTableWorker(action: TimeTableAction) {
   }
 }
 
-export function* deleteSubjectFromTimeTableWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.DeleteSubjectFromTimeTableRequest) {
+export function* deleteSubjectFromTimeTableWorker(action: ReturnType<typeof deleteSubjectFromTimeTableRequest>) {
+  if (action.type === deleteSubjectFromTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
       try {
-        yield call(deleteSubjectFromTimeTable, action.data);
-        yield put(deleteSubjectFromTimeTableSuccess(action.data));
+        yield call(deleteSubjectFromTimeTable, action.payload);
+        yield put(deleteSubjectFromTimeTableSuccess(action.payload));
       } catch (error: any) {
         yield put(deleteSubjectFromTimeTableFail(error?.message));
       }
@@ -111,8 +116,8 @@ export function* deleteSubjectFromTimeTableWorker(action: TimeTableAction) {
   }
 }
 
-export function* moveSubjectInTimeTableWorker(action: TimeTableAction) {
-  if (action.type === TimeTableActionType.MoveSubjectInTimeTableRequest) {
+export function* moveSubjectInTimeTableWorker(action: ReturnType<typeof moveSubjectInTimeTableRequest>) {
+  if (action.type === moveSubjectInTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
       try {

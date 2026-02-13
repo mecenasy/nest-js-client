@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import * as P from '../parts';
-import { getCalendarDays } from '~/src/store/timeTable/selectors';
+import { getCalendarDays } from '~/src/store/timeTable/reducer';
 import { useSelector } from 'react-redux';
 import { TableContext } from '../TableProvider';
 

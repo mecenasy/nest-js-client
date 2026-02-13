@@ -12,7 +12,7 @@ const teacherSlice = createSlice({
   name: 'teachers',
   initialState: initialState.teachers,
   reducers: {
-    getTeacherGrades: (state, action: PayloadAction<TeacherGrades[]>) => {
+    getTeacherGrades: (_, action: PayloadAction<TeacherGrades[]>) => {
       return action.payload || [];
     },
     updateGrades: (state, action: PayloadAction<Grade[]>) => {
@@ -71,7 +71,6 @@ const teacherSlice = createSlice({
     },
   },
   selectors: {
-    getTeacherGradesSelector: (state: TeacherGrades[]) => state,
   },
 });
 
@@ -83,18 +82,13 @@ const studentsSlice = createSlice({
       return action.payload || [];
     },
   },
-  selectors: {
-    getStudentsGradesSelector: (state: SubjectGrades[]) => state,
-  },
 });
 
 const teacherReducer = teacherSlice.reducer;
 const studentReducer = studentsSlice.reducer;
 
 export const { getTeacherGrades, updateGrades, removeGrade, addGrades } = teacherSlice.actions;
-export const { getTeacherGradesSelector } = teacherSlice.selectors;
 export const { getStudentsGrades } = studentsSlice.actions;
-export const { getStudentsGradesSelector } = studentsSlice.selectors;
 
 
 export const gradeReducer = combineReducers<GradesReducer>({

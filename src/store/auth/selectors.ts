@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { ApplicationState } from "../configuration/constants";
-import { RoleType } from "../role/constants";
 import { LoggedStatus, User } from "./constants";
+import { RoleType } from '../person/constants';
 
 export const userSelector = ({ auth }: ApplicationState): User => auth.user;
 export const userIdSelector = ({ auth }: ApplicationState): string => auth.user.userId;

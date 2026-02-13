@@ -40,22 +40,6 @@ export interface UniversityState {
   roles: string[];
 }
 
-export enum UniversityActionType {
-  GetUniversityRequest = 'university/GET_UNIVERSITY_REQUEST',
-  GetUniversitySuccess = 'university/GET_UNIVERSITY_SUCCESS',
-  GetUniversityFail = 'university/GET_UNIVERSITY_FAIL',
-}
-
-export type UniversityAction = {
-  type: UniversityActionType.GetUniversityRequest;
-} | {
-  type: UniversityActionType.GetUniversitySuccess;
-  data: any;
-} | {
-  type: UniversityActionType.GetUniversityFail;
-  message: string,
-};
-
 export const initialState: UniversityState = {
   directions: [],
   specialties: [],

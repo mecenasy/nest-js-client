@@ -20,7 +20,7 @@ export const removeMenuItem = async (id: string) => {
 export const addMenuItem = (form: MenuItemData) => {
   const data: FormData = new FormData();
 
-  const roles = form.role.map(({ value }) => value).join(',');
+  const roles = form.role?.map(({ value }) => value).join(',') ?? '';
   data.append(MenuItemField.Name, form.name);
   data.append(MenuItemField.Link, form.link);
   data.append(MenuItemField.Side, form.menuSide);

@@ -69,7 +69,7 @@ export interface MenuItemData {
   [MenuItemField.Side]: MenuSide;
   [MenuItemField.SideBoolean]: boolean;
   [MenuItemField.Image]?: DroppedFile;
-  [MenuItemField.Role]: Option<string>[];
+  [MenuItemField.Role]: Option<string>[] | undefined;
 }
 
 export const initialState: MenuItem[] = [];

@@ -4,8 +4,8 @@ import { InputType } from '../../../Components/Input/types';
 import { SelectField } from '../../../Components/Input/Dropdown';
 import { FormRenderProps } from 'react-final-form-hooks';
 import { useSelector } from 'react-redux';
-import { getGroup, getSpecialty, getYear } from '~/src/store/university/selectors';
-import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
+import { getGroup, getSpecialty, getYear } from '~/src/store/university/reducer';
+import { getSimpleUsersSelector } from '~/src/store/userList/reducer';
 import { getOption, getTeacherOption } from '../helpers';
 import { SubjectFormData } from './SubjectForm';
 import remove from '~/assets/cross.svg'

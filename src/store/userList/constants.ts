@@ -31,45 +31,6 @@ export interface Pagination {
 
 export type Filters = Record<string, string[]>
 export type SelectedFilters = Record<string, string | string[] | undefined>
-export enum UserListActionType {
-  GetUserListRequest = 'userList/GET_USER_LIST_REQUEST',
-  GetUserListSuccess = 'userList/GET_USER_LIST_SUCCESS',
-  GetUserListFail = 'userList/GET_USER_LIST_FAIL',
-  GetSimpleUserListRequest = 'userList/GET_SIMPLE_USER_LIST_REQUEST',
-  GetSimpleUserListSuccess = 'userList/GET_SIMPLE_USER_LIST_SUCCESS',
-  GetSimpleUserListFail = 'userList/GET_SIMPLE_USER_LIST_FAIL',
-  SetFilter = 'userList/SET_FILTER',
-  SetPage = 'userList/SET_PAGE',
-}
-
-export type UserListAction = {
-  type: UserListActionType.GetUserListRequest;
-  searchParam?: string;
-  listType: ListType
-} | {
-  type: UserListActionType.GetUserListSuccess;
-  userList: UserListState;
-} | {
-  type: UserListActionType.SetFilter;
-  name: string;
-  value: string | string[] | undefined;
-} | {
-  type: UserListActionType.GetSimpleUserListRequest;
-  listType?: ListType;
-} | {
-  type: UserListActionType.GetSimpleUserListSuccess;
-  userList: SimplePerson[];
-} | {
-  type: UserListActionType.GetSimpleUserListFail;
-} | {
-  type: UserListActionType.SetPage;
-  pageSize?: number;
-  page?: number,
-} | {
-  type: UserListActionType.GetUserListFail;
-  message: string,
-};
-
 
 export const initialState: UserListState = {
   pagination: {

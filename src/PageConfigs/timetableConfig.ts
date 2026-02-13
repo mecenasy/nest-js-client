@@ -1,10 +1,10 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getCalendarRequest, getTimeTableRequest } from '../store/timeTable/actions';
+import { getCalendarRequest, getTimeTableRequest } from '../store/timeTable/reducer';
 import { CalendarType } from '../store/timeTable/constants';
-import { getUniversityRequest } from '../store/university/actions';
-import { getSubjectsRequest } from '../store/subject/actions';
+import { getUniversityRequest } from '../store/university/reducer';
+import { getSubjectsRequest } from '../store/subject/reducer';
 
 const TimetablePage = Loadable({
   loader: async () => import('../Pages/TimetablePage'),

@@ -1,95 +1,78 @@
-import { initialState, TimeTableAction, TimeTableActionType, TimeTableState } from './constants';
+import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
+import { initialState, GroupTimeTable, Calendar, MoveSuccessPayload, TimeTableData, CalendarPlace, CalendarParams, MoveRequestPayload } from './constants';
 
-export const timeTableReducer = (state: TimeTableState = initialState, action: TimeTableAction): TimeTableState => {
-  switch (action.type) {
-    case TimeTableActionType.GetTimeTableSuccess: {
-      return {
-        ...state,
-        groupsTable: action.timeTable,
-      };
-    }
-    case TimeTableActionType.GetCalendarSuccess: {
-      return {
-        ...state,
-        days: action.calendar.days,
-        hours: action.calendar.hours,
-      };
-    }
-    case TimeTableActionType.MoveSubjectInTimeTableSuccess: {
+export const getTimeTableRequest = createAction<CalendarParams>('timeTable/GET_TIME_TABLE_REQUEST');
+export const getCalendarRequest = createAction('timeTable/GET_CALENDAR_REQUEST');
+export const addSubjectToTimeTableRequest = createAction<TimeTableData>('timeTable/ADD_SUBJECT_TO_TIME_TABLE_REQUEST');
+export const deleteSubjectFromTimeTableRequest = createAction<TimeTableData>('timeTable/DELETE_SUBJECT_FROM_TIME_TABLE_REQUEST');
+export const moveSubjectInTimeTableRequest = createAction<MoveRequestPayload>('timeTable/MOVE_SUBJECT_IN_TIME_TABLE_REQUEST');
+
+const timeTableSlice = createSlice({
+  name: 'timeTable',
+  initialState,
+  reducers: {
+    getTimeTableSuccess: (state, action: PayloadAction<GroupTimeTable[]>) => {
+      state.groupsTable = action.payload;
+    },
+    getTimeTableFail: (state, action: PayloadAction<string>) => {},
+    getCalendarSuccess: (state, action: PayloadAction<Calendar>) => {
+      state.days = action.payload.days;
+      state.hours = action.payload.hours;
+    },
+    getCalendarFail: (state, action: PayloadAction<string>) => {},
+    moveSubjectInTimeTableSuccess: (state, action: PayloadAction<MoveSuccessPayload>) => {
       const { newCalendarPlace, oldCalendarPlace, year, group } = action.payload;
       const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
 
-      const newGroupsTable = [...state.groupsTable];
-
-      const newTable = {
-        ...newGroupsTable[groupIndex],
-        timeTable: [
-          newCalendarPlace,
-          ...newGroupsTable[groupIndex]
-            .timeTable
-            .filter(({ days, hours }) => days !== oldCalendarPlace.days
-              || hours !== oldCalendarPlace.hours)
-        ]
+      if (groupIndex !== -1) {
+        const groupTable = state.groupsTable[groupIndex];
+        groupTable.timeTable = groupTable.timeTable.filter(({ days, hours }) => days !== oldCalendarPlace.days || hours !== oldCalendarPlace.hours);
+        groupTable.timeTable.push(newCalendarPlace);
       }
-      newGroupsTable[groupIndex] = newTable;
-
-      return {
-        ...state,
-        groupsTable: newGroupsTable,
-      };
-    }
-    case TimeTableActionType.DeleteSubjectFromTimeTableSuccess: {
-      const { year, group, days, hours } = action.data;
+    },
+    moveSubjectInTimeTableFail: (state, action: PayloadAction<string>) => {},
+    deleteSubjectFromTimeTableSuccess: (state, action: PayloadAction<TimeTableData>) => {
+      const { year, group, days, hours } = action.payload;
       const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
-      const newGroupsTable = [...state.groupsTable];
-
-      const newTable = {
-        ...newGroupsTable[groupIndex],
-        timeTable: [
-          ...newGroupsTable[groupIndex]
-            .timeTable
-            .filter((e) => days !== e.days
-              || hours !== e.hours)
-        ]
+      if (groupIndex !== -1) {
+        state.groupsTable[groupIndex].timeTable = state.groupsTable[groupIndex].timeTable.filter((e) => days !== e.days || hours !== e.hours);
       }
-      newGroupsTable[groupIndex] = newTable;
-
-      return {
-        ...state,
-        groupsTable: newGroupsTable,
-      };
-    }
-    case TimeTableActionType.AddSubjectToTimeTableSuccess: {
-      const { calendarPace } = action;
+    },
+    deleteSubjectFromTimeTableFail: (state, action: PayloadAction<string>) => {},
+    addSubjectToTimeTableSuccess: (state, action: PayloadAction<CalendarPlace>) => {
+      const calendarPace = action.payload;
       const groupIndex = state.groupsTable.findIndex((group) => group.name === calendarPace.group);
 
       if (groupIndex !== -1) {
-        const newGroupsTable = [...state.groupsTable];
-        newGroupsTable[groupIndex] = {
-          ...newGroupsTable[groupIndex],
-          timeTable: [...newGroupsTable[groupIndex].timeTable, calendarPace],
-        };
-
-        return {
-          ...state,
-          groupsTable: newGroupsTable,
-        };
+        state.groupsTable[groupIndex].timeTable.push(calendarPace);
       } else {
-        return {
-          ...state,
-          groupsTable: [
-            ...state.groupsTable,
-            {
-              name: calendarPace.group,
-              year: calendarPace.year,
-              timeTable: [calendarPace],
-            },
-          ],
-        };
+        state.groupsTable.push({
+          name: calendarPace.group,
+          year: calendarPace.year,
+          timeTable: [calendarPace],
+        });
       }
-    }
-    default: {
-      return state;
-    }
+    },
+    addSubjectToTimeTableFail: (state, action: PayloadAction<string>) => {},
+  },
+  selectors: {
+    getCalendarDays: (state) => state.days,
+    getCalendarHours: (state) => state.hours,
+    getTimeTable: (state) => state.groupsTable,
   }
-};
+});
+
+export const timeTableReducer = timeTableSlice.reducer;
+export const {
+  getTimeTableSuccess, getTimeTableFail,
+  getCalendarSuccess, getCalendarFail,
+  moveSubjectInTimeTableSuccess, moveSubjectInTimeTableFail,
+  deleteSubjectFromTimeTableSuccess, deleteSubjectFromTimeTableFail,
+  addSubjectToTimeTableSuccess, addSubjectToTimeTableFail
+} = timeTableSlice.actions;
+
+export const {
+  getCalendarDays,
+  getCalendarHours,
+  getTimeTable
+} = timeTableSlice.selectors;

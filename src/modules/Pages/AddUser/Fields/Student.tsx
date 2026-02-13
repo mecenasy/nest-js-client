@@ -3,7 +3,12 @@ import { Field, useField } from 'react-final-form';
 import { PersonField } from '~/src/store/person/constants';
 import StepButton from './StepButton';
 import * as P from '../parts';
-import { getDirectionSelector, getGroupSelector, getSpecialtiesSelector, getYearSelector } from '~/src/store/university/selectors';
+import {
+  getDirectionSelector,
+  getGroupSelector,
+  getSpecialtiesSelector,
+  getYearSelector
+} from '~/src/store/university/reducer';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { Direction, Group, Specialty, Year } from '~/src/store/university/constants';

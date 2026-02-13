@@ -8,9 +8,9 @@ import FormWrapper, { SetPayload } from '~/src/modules/Components/FormWrapper/Fo
 import { Button } from '../../../Components/Buttons/Button';
 import * as P from '../parts';
 import { useDispatch } from 'react-redux';
-import { getSimpleUserListRequest } from '~/src/store/userList/actions';
+import { getSimpleUserListRequest } from '~/src/store/userList/reducer';
 import DropdownField from '~/src/modules/Components/Input/Dropdown';
-import { getSimpleUsersSelector } from '~/src/store/userList/selectors';
+import { getSimpleUsersSelector } from '~/src/store/userList/reducer';
 import { useSelector } from 'react-redux';
 import { getOption } from './getOptions';
 import { UnknownAction } from 'redux';

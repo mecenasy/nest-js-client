@@ -1,9 +1,9 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getUniversityRequest } from '../store/university/actions';
-import { getSimpleUserListRequest } from '../store/userList/actions';
-import { getSubjectsRequest } from '../store/subject/actions';
+import { getUniversityRequest } from '../store/university/reducer';
+import { getSimpleUserListRequest } from '../store/userList/reducer';
+import { getSubjectsRequest } from '../store/subject/reducer';
 import { ListType } from '../store/userList/constants';
 
 const Subject = Loadable({

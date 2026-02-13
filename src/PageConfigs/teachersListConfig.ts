@@ -1,7 +1,7 @@
 import Loadable from '@react-loadable/revised';
 import { PageConfig, ActionCreatorFactory } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getUserListRequest } from '../store/userList/actions';
+import { getUserListRequest } from '../store/userList/reducer';
 import { ListType } from '../store/userList/constants';
 
 const TeacherListPage = Loadable({
@@ -11,7 +11,7 @@ const TeacherListPage = Loadable({
 
 export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }, location) => [
   Boolean((isMount && isHydrated) || isServer)
-  && getUserListRequest(location.search ?? '', ListType.Teacher),
+  && getUserListRequest({ searchParam: location.search ?? '', listType: ListType.Teacher }),
 ]
 
 export const teachersListConfig: PageConfig = {

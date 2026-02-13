@@ -1,12 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getStudentData } from '~/src/api/panelMenu/requests';
-import { getUniversityFail, getUniversitySuccess } from './actions';
-import { UniversityAction, UniversityActionType } from './constants';
+import { getUniversitySuccess, getUniversityRequest } from './reducer';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 
 export function* getUniversityWatcher() {
-  yield takeLatest<UniversityAction>(UniversityActionType.GetUniversityRequest, getUniversityWorker);
+  yield takeLatest(getUniversityRequest.type, getUniversityWorker);
 }
 
 export function* getUniversityWorker() {
@@ -18,8 +17,6 @@ export function* getUniversityWorker() {
 
       yield put(getUniversitySuccess(data));
     } catch {
-      yield put(getUniversityFail(''));
     }
   }
 }
-

@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { CreateSubject, Subject, SubjectActionType } from '~/src/store/subject/constants';
+import { CreateSubject, Subject } from '~/src/store/subject/constants';
 import { FormRenderProps } from 'react-final-form-hooks';
 import { Option } from '../../../Components/Input/types';
 import { validateLoginForm } from '../helpers';
-import { addSubjectRequest } from '~/src/store/subject/actions';
+import { addSubjectRequest } from '~/src/store/subject/reducer';
 import FormAdapter from '~/src/modules/Components/FormWrapper/FormAdapter';
 
 
@@ -42,8 +42,8 @@ export const SubjectForm = ({ children, item, after }: SubjectFormProps) => {
       });
     });
 
-    return new Promise<SubjectActionType>((resolve, reject) => {
-      dispatch(addSubjectRequest(data, resolve, reject));
+    return new Promise<any>((resolve, reject) => {
+      dispatch(addSubjectRequest({ subject: data, resolve, reject }));
       after();
     });
   }, [dispatch, after]);
