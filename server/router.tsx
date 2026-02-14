@@ -14,7 +14,6 @@ import {
 } from './helpers';
 import AppProvider from '../src/Providers/AppProvider';
 import { configureStore } from '../src/store/configuration/configureStore';
-import { rootReducerFactory } from '../src/store/configuration/rootReducer';
 import { rootSaga } from '../src/store/configuration/rootSaga';
 import { history } from '../utils/history/history';
 import { ActionProvider } from '../src/Providers/ActionProvider/ActionProvider';
@@ -22,6 +21,12 @@ import { UnknownAction } from 'redux';
 import { setAuthorizationProvider } from '~/src/api/api';
 import { logoutSuccess, refreshTokenRequest } from '~/src/store/auth/reducers';
 import { ServerStatusContext, Status } from '~/src/Providers/ServerProvider/ServerStatusProvider';
+import { ApplicationState } from '~/src/store/configuration/constants';
+import { personReducer } from '~/src/store/person/reducer';
+import { counterReducer } from '~/src/store/counter/reducers';
+import { menuReducer } from '~/src/store/menu/reducers';
+import { notificationReducer } from '~/src/store/notification/reducer';
+import { injectReducer, registerReducer } from '~/src/store/configuration/rootReducer';
 
 const router = express.Router();
 const DEV = process.env.NODE_ENV !== 'production';
@@ -42,13 +47,19 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
   const sheet = new ServerStyleSheet();
 
   // pre render
-  const { store, rootSagaTask } = await configureStore(undefined, history, rootReducerFactory, rootSaga);
+
+  const { store, rootSagaTask } = await configureStore(undefined, history, rootSaga);
+
+  registerReducer()
 
   const actions: UnknownAction[] = [];
+  const sagas: any[] = [];
+  const reducersKey: Array<keyof ApplicationState> = [];
+  console.log("🚀 ~ reducersKey:", reducersKey)
 
   ReactDomServer.renderToString(
     <ServerStatusContext.Provider value={context}>
-      <ActionProvider actions={actions}>
+      <ActionProvider actions={actions} reducersKey={reducersKey} sagas={sagas} >
         <AppProvider
           store={store}
           url={req.url}
@@ -101,6 +112,7 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
   } = req.useragent || {};
 
   //final render
+  const finalState = await configureStore(store.getState(), history, rootSaga, reducersKey);
   const app = (
     <Capture report={getModules(modules)} >
       <ServerStatusContext.Provider value={context}>
@@ -112,7 +124,7 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
               isDesktop,
             }
           }}
-          store={store}
+          store={finalState.store}
           url={req.url}
           history={history}
         >
@@ -121,7 +133,6 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
       </ServerStatusContext.Provider>
     </Capture >
   );
-
 
   const body = ReactDomServer.renderToString(sheet.collectStyles(app));
   const { url: redirectUrl, status } = context;
@@ -140,7 +151,7 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
     bundlesScripts = { assets: [], prefetch: [], preload: [] };
   }
   const styles = sheet.getStyleTags();
-  const initialState = store.getState();
+  const initialState = finalState.store.getState();
 
   const html = generateHtml(body, styles, metaTags, bundlesScripts, initialState);
 

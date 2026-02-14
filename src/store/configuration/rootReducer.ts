@@ -1,38 +1,61 @@
-import { combineReducers, Reducer } from "redux";
-import { RouterState } from "redux-first-history";
-import { counterReducer } from "../counter/reducers";
-import { menuReducer } from "../menu/reducers";
-import { personReducer } from "../person/reducer";
-import { ApplicationReducer } from "./constants";
-import { universityReducer } from "../university/reducer";
-import { userListReducer } from '../userList/reducer';
-import { messageReducer } from '../messages/reducer';
-import { hydrateReducer } from '../hydrate/reducer';
-import { notificationReducer } from '../notification/reducer';
-import { timeTableReducer } from '../timeTable/reducer';
-import { subjectReducer } from '../subject/reducer';
-import { gradeReducer } from '../grade/reducer';
+import { ApplicationReducer, ApplicationState } from "./constants";
 import { authReducer, userReducer } from '../auth/reducers';
-import { roleReducer } from '../role/reducer';
-import { panelMenuReducer } from '../panelMenu/reducers';
+import { configureStore, combineReducers, Reducer, EnhancedStore, ReducersMapObject, } from '@reduxjs/toolkit';
+import { hydrateReducer } from '../hydrate/reducer';
 
-export const rootReducerFactory = (routerReducer: Reducer<RouterState>) => (
-  combineReducers<ApplicationReducer>({
+export const createLazyStore = () => {
+  let store: EnhancedStore<ApplicationState>;
+
+  const defaultKeys: Array<keyof ApplicationState> = ['hydrate', 'auth', 'user', 'router'];
+  const asyncReducers: ReducersMapObject<ApplicationState> = {
     hydrate: hydrateReducer,
     auth: authReducer,
     user: userReducer,
-    counter: counterReducer,
-    router: routerReducer,
-    menu: menuReducer,
-    person: personReducer,
-    panelMenu: panelMenuReducer,
-    role: roleReducer,
-    university: universityReducer,
-    userList: userListReducer,
-    messageList: messageReducer,
-    notification: notificationReducer,
-    timeTable: timeTableReducer,
-    subject: subjectReducer,
-    grades: gradeReducer
-  })
-);
+  } as ReducersMapObject<ApplicationState>;
+
+  const createReducer = (asyncReducers: ReducersMapObject<ApplicationState>): Reducer<ApplicationState> => {
+    return combineReducers({
+      ...asyncReducers,
+    });
+  }
+
+  const createStore = (middleware: any, preloadedState?: ApplicationState, reducersKeys?: Array<keyof ApplicationState>) => {
+    const reducer: any = {};
+    const state: any = {};
+
+    if (reducersKeys) {
+      defaultKeys.concat(reducersKeys).forEach((key) => {
+        reducer[key] = asyncReducers[key];
+        if (preloadedState) {
+          state[key] = preloadedState?.[key];
+        }
+      });
+    }
+    const keys = Object.keys(preloadedState ?? {}) as unknown as Array<keyof ApplicationReducer>;
+
+
+    store = configureStore<ApplicationState>({
+      reducer: createReducer(reducersKeys ? reducer : asyncReducers),
+      preloadedState: reducersKeys ? state : preloadedState,
+      middleware: (getDefault) => (middleware ? middleware(getDefault) : getDefault()),
+    });
+
+    return store;
+  }
+
+  const injectReducer = (key: keyof ApplicationReducer, asyncReducer: Reducer<any>) => {
+
+    if (!asyncReducers[key]) {
+      asyncReducers[key] = asyncReducer;
+    }
+  };
+  const registerReducer = () => {
+    store.replaceReducer(createReducer(asyncReducers));
+    return asyncReducers;
+  }
+
+  return { createStore, injectReducer, registerReducer };
+}
+
+
+export const { createStore, injectReducer, registerReducer } = createLazyStore();

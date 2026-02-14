@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessageListRequest } from '~/src/store/messages/reducer';
 import { getMessagesList } from '~/src/store/messages/selectors';
@@ -11,12 +11,11 @@ import MessageModal from './Modal/MessageModal';
 import { useNavigate } from 'react-router';
 import { ModalRef } from '../../Components/Modal/Modal';
 
-const Messages: FC = () => {
+const Messages = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const messages = useSelector((state: ApplicationState) => getMessagesList(state));
   const modalRef = useRef<ModalRef>(null);
-
 
   useEffect(() => {
     dispatch(getMessageListRequest(''));

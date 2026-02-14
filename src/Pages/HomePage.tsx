@@ -1,12 +1,14 @@
 import React, { FC } from "react";
 import Home from "../modules/Pages/Home/Home";
 import ActionsWrapper from "./Actions/ActionsWrapper";
-import { actionCreator } from '../PageConfigs/homeConfig';
+import { ActionCreatorFactory } from '../PageConfigs/constants';
+
+const actionCreator: ActionCreatorFactory = () => [];
 
 const HomePage: FC = () => (
-   <ActionsWrapper actionCreatorFactory={actionCreator}   >
-      <Home />
-   </ActionsWrapper>
+  <ActionsWrapper actionCreatorFactory={actionCreator}   >
+    <Home />
+  </ActionsWrapper>
 );
 
 export default HomePage

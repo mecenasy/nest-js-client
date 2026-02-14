@@ -1,21 +1,11 @@
 import Loadable from '@react-loadable/revised';
-import { PageConfig, ActionCreatorFactory } from "./constants";
+import { PageConfig } from "./constants";
 import Loader from "../modules/Loader/Loader";
-import { getMenuRequest } from "../store/menu/reducers";
-import { getPersonRequest } from '../store/person/reducer';
-import { getNotificationRequest, notificationStart } from '../store/notification/reducer';
 
 const Menu = Loadable({
   loader: async () => import('../Pages/MenuPage'),
   loading: Loader,
 });
-
-export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer, isUpdate }) => [
-  Boolean((isHydrated && isMount && !isUpdate) || isServer) && getMenuRequest(),
-  Boolean((isHydrated && isMount && !isUpdate) || isServer) && getPersonRequest(),
-  Boolean((isHydrated && isMount && !isUpdate) || isServer) && getNotificationRequest(),
-  Boolean(isMount && !isUpdate) && notificationStart(),
-]
 
 export const menuConfig: PageConfig = {
   extrudeUrl: ['/login', '/logout', '/change_password'],

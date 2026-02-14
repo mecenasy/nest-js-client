@@ -4,13 +4,13 @@ import { Bundle } from "../types";
 import { ApplicationState } from "../../src/store/configuration/constants";
 
 export const generateHtml = (
-   body: string,
-   styles: string,
-   metaTags: HelmetData,
-   bundlesScripts: Bundle,
-   initialState: ApplicationState,
+  body: string,
+  styles: string,
+  metaTags: HelmetData,
+  bundlesScripts: Bundle,
+  initialState: ApplicationState,
 ): string => {
-   const html = `
+  const html = `
       <!DOCTYPE html>
       <html ${metaTags.htmlAttributes.toString()}>
          <head>
@@ -34,5 +34,5 @@ export const generateHtml = (
       </html>
    `;
 
-   return html;
+  return html;
 }

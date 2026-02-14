@@ -1,33 +1,10 @@
-import { homeConfig } from './homeConfig';
-import { counterConfig } from './counterConfig';
-import { userConfig } from './userConfig';
-import { loginConfig } from './loginConfig';
-import { logoutConfig } from './logoutConfig';
-import { changePasswordConfig } from './changePasswordConfig';
-import { panelMenuConfig } from './panelMenuConfig';
-import { settingsConfig } from './settingsConfig';
-import { messagesConfig } from './messagesConfig';
-import { timetableConfig } from './timetableConfig';
-import { addUserConfig } from './addUserConfig';
-import { userListConfig } from './userListConfig';
-import { teachersListConfig } from './teachersListConfig';
-import { studentsListConfig } from './studentsListConfig';
-import { subjectConfig } from './subjectConfig';
+import { PageConfig } from './constants';
 
-export const configs = [
-  homeConfig,
-  counterConfig,
-  userConfig,
-  loginConfig,
-  logoutConfig,
-  changePasswordConfig,
-  panelMenuConfig,
-  settingsConfig,
-  messagesConfig,
-  timetableConfig,
-  addUserConfig,
-  userListConfig,
-  teachersListConfig,
-  studentsListConfig,
-  subjectConfig
-]
+const context = (require as any).context('./', true, /.*Config\.ts$/);
+
+export const configs: PageConfig[] = context.keys().flatMap((key: string) => {
+  const mod = context(key);
+  return Object.values(mod).filter(
+    (exportedItem) => typeof exportedItem === 'object'
+  );
+});

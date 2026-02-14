@@ -2,8 +2,8 @@ import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, NotificationState } from './constants';
 import { logoutSuccess } from '../auth/reducers';
 
-export const getNotificationRequest = createAction('notification/GetNotificationRequest');
-export const getNotificationFail = createAction<string>('notification/GetNotificationFail');
+export const getNotificationRequest = createAction('notification/getNotificationRequest');
+export const getNotificationFail = createAction<string>('notification/getNotificationFail');
 export const notificationStart = createAction('notification/notificationStart');
 export const notificationEnd = createAction('notification/notificationEnd');
 

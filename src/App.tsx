@@ -4,7 +4,6 @@ import { menuConfig } from "./PageConfigs/menuConfig";
 import { configs } from './PageConfigs/routesConfigs';
 import { useTransition, animated } from '@react-spring/web';
 import { AppContainer } from "./modules/Components/Containers/AppContainer/parts";
-import ExcludePaths from "./Pages/ExtrudePaths/ExtrudePaths";
 import Auth from "./Pages/Auth/Auth";
 
 const AppContent = () => {
@@ -21,9 +20,12 @@ const AppContent = () => {
 
   return (
     <AppContainer>
-      <ExcludePaths paths={menuConfig.extrudeUrl}         >
+      <Routes>
+        {menuConfig.extrudeUrl?.map((path) => (
+          <Route key={path} path={path} element={null} />
+        ))}
         <Route path={menuConfig.url} element={<menuConfig.Component />} />
-      </ExcludePaths>
+      </Routes>
       <Routes>
         <Route path={'/*'} element={<Auth />} />
       </Routes>

@@ -1,4 +1,4 @@
-import { createStore, compose, applyMiddleware, UnknownAction, Store, Middleware, Dispatch } from 'redux';
+import { UnknownAction, Middleware, Dispatch } from 'redux';
 import createSagaMiddleware, { Task } from 'redux-saga';
 import { ApplicationState, ConfigureStore } from "./constants";
 import { onError } from './helpers';
@@ -6,19 +6,22 @@ import reduxPromiseListener from './reduxPromiseListener';
 import { setAuthorizationProvider } from '~/src/api/api';
 import { createReduxHistoryContext } from "redux-first-history";
 import { History } from 'history';
+import { createStore, injectReducer } from './rootReducer';
+import { EnhancedStore } from '@reduxjs/toolkit';
 
 export interface Config {
-  store: Store<ApplicationState, UnknownAction, ApplicationState>;
+  store: EnhancedStore<ApplicationState>;
   rootSagaTask: Task<any>;
   reduxHistory: History & {
     listenObject: boolean;
   };
+
 }
 const configureStore: ConfigureStore = async (
   initialState,
   history,
-  rootReducerFactory,
   rootSaga,
+  reducerLeys,
 ): Promise<Config> => {
   const sagaMiddleware = createSagaMiddleware({ onError });
   const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
@@ -38,19 +41,13 @@ const configureStore: ConfigureStore = async (
     middlewares.unshift(reduxImmutable() as Middleware<any, any, Dispatch<UnknownAction>>);
   }
 
-  // If devTools is installed, connect to it
-  const windowIfDefined: Window | null = typeof window === 'undefined' ? null : window;
-  const composeEnhancers = (windowIfDefined?.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
-
-  const composedMiddlewares = composeEnhancers(
-    applyMiddleware(...middlewares, routerMiddleware),
-  );
-
-  const store: Store<ApplicationState, UnknownAction, ApplicationState> = createStore(
-    rootReducerFactory(routerReducer),
+  injectReducer('router', routerReducer);
+  const store: EnhancedStore<ApplicationState> = createStore(
+    () => [...middlewares, routerMiddleware],
     initialState,
-    composedMiddlewares,
+    reducerLeys,
   );
+
 
   if (!SERVER_BUILD) {
     setAuthorizationProvider(() => store.getState().auth.token)

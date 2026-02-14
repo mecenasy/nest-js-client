@@ -15,6 +15,7 @@ import { Subject } from '../subject/constants';
 import { GradesState } from '../grade/constants';
 import { gradeReducer } from '../grade/reducer';
 import { MenuItem } from '../panelMenu/constants';
+import { EnhancedStore } from '@reduxjs/toolkit';
 
 export interface ApplicationState {
   hydrate: boolean;
@@ -57,9 +58,9 @@ export interface ApplicationReducer extends Record<keyof ApplicationState, any> 
 export type ConfigureStore = (
   initialState: ApplicationState | undefined,
   history: History,
-  rootReducerFactory: (routerReducer: Reducer<RouterState>) => any,
   rootSaga: () => Iterator<any>,
+  reducerKeys?: Array<keyof ApplicationState>,
 ) => Promise<{
-  store: Store<ApplicationState, UnknownAction>,
+  store: EnhancedStore<ApplicationState>,
   rootSagaTask: Task;
 }>;
