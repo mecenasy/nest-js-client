@@ -18,19 +18,18 @@ export const ActionContext = createContext<Context | undefined>(undefined);
 
 export const ActionProvider = ({ actions, reducersKey, children }: ActionProviderProps) => {
   const setActions = useCallback((a: UnknownAction[], s: Array<keyof ApplicationState>) => {
-    if (actions) {
-      actions.push(...a);
-    }
-    if (reducersKey) {
-      reducersKey.push(...s);
-    }
-  }, [actions, reducersKey])
+    a.forEach((action) => {
+      if (actions.every(({ type }) => type !== action.type)) {
+        actions.push(action);
+      }
+    });
+  }, [actions])
 
   const setReducersKey = useCallback((keys: Array<keyof ApplicationState>) => {
     if (reducersKey) {
       reducersKey.push(...keys);
     }
-  }, [actions, reducersKey])
+  }, [reducersKey])
 
   return (
     <ActionContext.Provider value={{ setActions, setReducersKey }} >

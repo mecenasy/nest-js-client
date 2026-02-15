@@ -16,9 +16,11 @@ function* sendMessageWorker(action: ReturnType<typeof A.sendMessageRequest>) {
     try {
       yield call(sendMessage, action.payload);
       yield put(A.sendMessageSuccess());
+      yield call(action.payload.resolve)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.sendMessageFail(error.message));
+        yield call(action.payload.reject)
       }
     }
   }

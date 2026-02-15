@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import FormWrapperBase from '../../Components/FormWrapper/FormWrapper';
 
 export const Dropzone = styled.div`
    display: flex;
@@ -39,8 +38,3 @@ export const SubmitButton = styled.button`
       box-shadow: -1px -1px 4px 0px #6f8cab;
    }
 `;
-
-export const FromWrapper = styled(FormWrapperBase)`
-   margin: auto;
-`;
-

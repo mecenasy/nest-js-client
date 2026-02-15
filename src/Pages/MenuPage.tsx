@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Menu from "../modules/Menu/Menu";
 import ActionsWrapper from "./Actions/ActionsWrapper";
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
@@ -15,7 +15,7 @@ export const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('notification', notificationReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('MenuPage');
   }
   return ['menu', 'person', 'notification']
 };
@@ -38,4 +38,4 @@ const MenuPage = () => {
   )
 };
 
-export default MenuPage
+export default memo(MenuPage);

@@ -1,4 +1,5 @@
 import { RoleType } from '../person/constants';
+
 export interface User {
   name: string;
   userId: string;
@@ -11,11 +12,13 @@ export interface Auth {
   token: string;
   expireAt: string;
 }
+
 export interface LoginSuccess {
   user?: User;
   auth?: Auth;
   errorMessage?: Record<string, string>;
 }
+
 export interface RefreshTokenSuccess {
   auth: Auth;
 }

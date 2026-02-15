@@ -1,41 +1,46 @@
 
-import React, { FC, useContext, useRef, useState } from 'react';
-import { Field } from 'react-final-form';
+import React, { FC, useContext, useState } from 'react';
 import { Navigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import * as P from './parts';
 import { validateLoginForm } from './helpers';
-import InputFormWrapper from '../../Components/Input/Input';
 import { LoggedStatus, ChangePasswordData, ChangePasswordField } from '~/src/store/auth/constants';
-import { changePasswordRequest, changePasswordSuccess, changePasswordFail } from '~/src/store/auth/reducers';
+import { changePasswordRequest } from '~/src/store/auth/reducers';
 import { loggedInStatusSelector } from '~/src/store/auth/reducers';
-import FormWrapper from '../../Components/FormWrapper/FormWrapper';
 import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
 import { Button } from '../../Components/Buttons/Button';
 import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
+import FormAdapter from '../../Components/FormWrapper/FormAdapter';
+import { InputField } from '../../Components/Input/InputWithLabel';
+import { useDispatch } from 'react-redux';
 
 const ChangePassword: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
   const [isPasswordChanged, setChangedPassword] = useState(false);
-  const formRef = useRef<FormApi>(null);
   const serverContext = useContext(ServerStatusContext);
+  const dispatch = useDispatch();
 
-  const onSubmit = (action: any, { oldPassword, newPassword }: ChangePasswordData) => {
-    return changePasswordRequest({ newPassword, oldPassword });
+  const onSubmit = async ({ oldPassword, newPassword }: ChangePasswordData, form: FormApi<ChangePasswordData>) => {
+    try {
+      const error: any = await new Promise((resolve, reject) => {
+        dispatch(changePasswordRequest({ newPassword, oldPassword, resolve, reject }));
+      });
+
+      form.batch(() => {
+        form.change(ChangePasswordField.OldPassword, '');
+        form.change(ChangePasswordField.NewPassword, '');
+        form.change(ChangePasswordField.ConfirmPassword, '');
+      });
+      setChangedPassword(true);
+      return error?.errorMessage;
+
+    } catch (error: any) {
+      return error?.errorMessage;
+    };
   };
 
-  const getPayload = (action: any): Record<string, string> | undefined => {
-    setChangedPassword(true)
 
-    if (formRef.current) {
-      setTimeout(formRef.current.reset)
-    }
-
-    if (action.type === changePasswordSuccess.type) {
-      return action.errorMessage;
-    }
-  };
 
   if (isLoggedIn === LoggedStatus.LoggedOut || isPasswordChanged) {
     if (serverContext) {
@@ -58,42 +63,36 @@ const ChangePassword: FC = () => {
       <P.BoxWithShadow>
         <P.Title>Zmiana hasła</P.Title>
         <P.SubTitle>Aby zmienić hasło wpisz swoje stare hasło oraz nowe i potwierdź je.</P.SubTitle>
-
-        <FormWrapper<any, ChangePasswordData>
-          start={changePasswordRequest.type}
-          resolve={changePasswordSuccess.type}
-          reject={changePasswordFail.type}
-          setPayload={onSubmit}
-          getPayload={getPayload}
+        <FormAdapter<ChangePasswordData>
+          onSubmit={onSubmit}
           validate={validateLoginForm}
         >
           {({ form }) => {
-            formRef.current = form;
             return (
               <>
-                <Field
+                <InputField<ChangePasswordData>
+                  form={form}
                   name={ChangePasswordField.OldPassword}
-                  component={InputFormWrapper}
                   type={'password'}
                   placeholder={'Stare hasło'}
                 />
-                <Field
+                <InputField<ChangePasswordData>
+                  form={form}
                   name={ChangePasswordField.NewPassword}
-                  component={InputFormWrapper}
                   type={'password'}
                   placeholder={'Nowe hasło'}
                 />
-                <Field
+
+                <InputField<ChangePasswordData>
+                  form={form}
                   name={ChangePasswordField.ConfirmPassword}
-                  component={InputFormWrapper}
                   type={'password'}
                   placeholder={'Podwierdź hasło'}
                 />
-                <Button type={'submit'}>Zmień hasło</Button>
-              </>
+                <Button type={'submit'}>Zaloguj</Button>              </>
             )
           }}
-        </FormWrapper>
+        </FormAdapter>
       </P.BoxWithShadow>
     </P.Wrapper>
   );

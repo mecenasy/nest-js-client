@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { memo } from 'react';
 import ActionsWrapper from './Actions/ActionsWrapper';
 import Subject from '../modules/Pages/Subject/Subject';
 import { getUniversityRequest, universityReducer } from '../store/university/reducer';
@@ -16,7 +16,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('userList', userListReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('ChangePasswordPage');
   }
   return ['university', 'subject', 'userList',]
 };
@@ -29,7 +29,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isSer
 
 reducersInject(!SERVER_BUILD);
 
-const ChangePasswordPage: FC = () => {
+const ChangePasswordPage = () => {
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <Subject />
@@ -37,4 +37,4 @@ const ChangePasswordPage: FC = () => {
   );
 };
 
-export default ChangePasswordPage;
+export default memo(ChangePasswordPage);

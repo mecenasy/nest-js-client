@@ -3,7 +3,7 @@ import { Person, initialState, PersonFormData, PersonResponse } from "./constant
 import { logoutSuccess } from '../auth/reducers';
 
 export const getPersonRequest = createAction('person/getPersonRequest');
-export const addPersonRequest = createAction<PersonFormData>('person/addPersonRequest');
+export const addPersonRequest = createAction<PersonFormData & PromiseFParams>('person/addPersonRequest');
 export const getPersonFail = createAction<string>('person/getPersonFail');
 export const addPersonFail = createAction<string>('person/addPersonFail');
 

@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
-import { AddressField, PersonField } from '~/src/store/person/constants';
-import InputFormWrapper from '~/src/modules/Components/Input/Input';
-import { Field, useField } from 'react-final-form';
+import React from 'react';
+import { AddressField, PersonField, PersonFormData } from '~/src/store/person/constants';
+import { useField } from 'react-final-form-hooks';
 import StepButton from './StepButton';
 import * as P from '../parts';
+import { InputField } from '~/src/modules/Components/Input/InputWithLabel';
+import { FormApi } from 'final-form';
 
-const AddressFields: FC = () => {
-  const { input } = useField(PersonField.Step, { subscription: { value: true } });
+const AddressFields = ({ form }: { form: FormApi<PersonFormData> }) => {
+  const { input } = useField(PersonField.Step, form);
 
   if (input.value !== 3) {
     return null;
@@ -14,32 +15,32 @@ const AddressFields: FC = () => {
   return (
     <P.FieldWrapper>
       <P.Title>Adres zamieszkania</P.Title>
-      <Field
+      <InputField
         name={`${PersonField.Address}.${AddressField.Street}`}
-        component={InputFormWrapper}
+        form={form}
         placeholder={'Ulica'}
       />
-      <Field
+      <InputField
         name={`${PersonField.Address}.${AddressField.City}`}
-        component={InputFormWrapper}
+        form={form}
         placeholder={'Miasto'}
       />
-      <Field
+      <InputField
         name={`${PersonField.Address}.${AddressField.Country}`}
-        component={InputFormWrapper}
+        form={form}
         placeholder={'Kraj'}
       />
-      <Field
+      <InputField
         name={`${PersonField.Address}.${AddressField.Number}`}
-        component={InputFormWrapper}
+        form={form}
         placeholder={'Numer domu'}
       />
-      <Field
+      <InputField
         name={`${PersonField.Address}.${AddressField.ZipCode}`}
-        component={InputFormWrapper}
+        form={form}
         placeholder={'Kod pocztowy'}
       />
-      <StepButton />
+      <StepButton form={form} />
     </P.FieldWrapper>
   )
 };

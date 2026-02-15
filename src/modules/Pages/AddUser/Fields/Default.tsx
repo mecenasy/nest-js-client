@@ -1,16 +1,18 @@
-import React, { FC } from 'react';
-import InputFormWrapper from '~/src/modules/Components/Input/Input';
-import { PersonField } from '~/src/store/person/constants';
-import { Field, useField } from 'react-final-form';
+import React from 'react';
+import { PersonField, PersonFormData } from '~/src/store/person/constants';
+import { useField } from 'react-final-form-hooks';
 import * as P from '../parts';
 import { useSelector } from 'react-redux';
 import StepButton from './StepButton';
-import DropdownField from '~/src/modules/Components/Input/Dropdown';
 import { roleSelector } from '~/src/store/role/selectors';
+import { InputField } from '~/src/modules/Components/Input/InputWithLabel';
+import { FormApi } from 'final-form';
+import { SelectField } from '~/src/modules/Components/Input/Dropdown';
 
-const Default: FC = () => {
+
+const Default = ({ form }: { form: FormApi<PersonFormData> }) => {
   const roles = useSelector(roleSelector)
-  const { input } = useField(PersonField.Step, { subscription: { value: true } });
+  const { input } = useField(PersonField.Step, form);
 
   if (input.value !== 1) {
     return null;
@@ -18,44 +20,44 @@ const Default: FC = () => {
   return (
     <P.FieldWrapper>
       <P.Title>Podstawowe informacje</P.Title>
-      <Field
+      <InputField
+        form={form}
         name={PersonField.Name}
-        component={InputFormWrapper}
         placeholder={'Imię'}
       />
-      <Field
+      <InputField
+        form={form}
         name={PersonField.Surname}
-        component={InputFormWrapper}
         placeholder={'Nazwisko'}
       />
-      <Field
+      <InputField
+        form={form}
         name={PersonField.Email}
-        component={InputFormWrapper}
         placeholder={'Email'}
       />
-      <Field
+      <InputField
+        form={form}
         name={PersonField.Phone}
         type={'number'}
-        component={InputFormWrapper}
         placeholder={'Numer telefonu'}
       />
       <P.PhotoWrapper>
-        <Field
+        <P.Dropzone
+          form={form as any}
+          multiple={false}
           name={PersonField.Photo}
-          component={P.Dropzone}
           label={'Zdjęcie profilowe'}
-          type={'file'}
-          placeholder={'Zdjęcie (URL)'}
         />
-        <Field
-          instanceId={'sdfsfdsdf'}
+        <SelectField
+          form={form}
           name={PersonField.Role}
-          component={DropdownField}
           options={roles}
+          isMulti={false}
+          label='Rola'
           placeholder={'Rola'}
         />
       </P.PhotoWrapper>
-      <StepButton />
+      <StepButton form={form} />
     </P.FieldWrapper>
   )
 };

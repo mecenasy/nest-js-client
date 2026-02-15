@@ -13,6 +13,7 @@ const AddSubjects = ({ item, after }: AddSubjectsProps) => (
   <SubjectForm item={item} after={after}>
     {(props) => (
       <>
+
         <FieldsArray  {...props} />
         {!item && <Button
           type='button'

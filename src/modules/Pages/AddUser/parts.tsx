@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import DropzoneBase from '~/src/modules/Components/Input/Dropzone';
+import { DropzoneField } from '~/src/modules/Components/Input/Dropzone';
 
 export const ButtonWrapper = styled.div`
     display: flex;
@@ -28,7 +28,7 @@ export const PhotoWrapper = styled.div`
   align-items: center;
 `;
 
-export const Dropzone = styled(DropzoneBase)`
+export const Dropzone = styled(DropzoneField)`
   flex-direction: column;
 
   label {

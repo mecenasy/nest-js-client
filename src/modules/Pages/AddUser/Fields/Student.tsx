@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { Field, useField } from 'react-final-form';
-import { PersonField } from '~/src/store/person/constants';
+import React from 'react';
+import { useField } from 'react-final-form-hooks';
+import { PersonField, PersonFormData } from '~/src/store/person/constants';
 import StepButton from './StepButton';
 import * as P from '../parts';
 import {
@@ -12,15 +12,16 @@ import {
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
 import { Direction, Group, Specialty, Year } from '~/src/store/university/constants';
-import DropdownField from '~/src/modules/Components/Input/Dropdown';
+import { SelectField } from '~/src/modules/Components/Input/Dropdown';
+import { FormApi } from 'final-form';
 
 
-const StudentFields: FC = () => {
-  const { input } = useField(PersonField.Step, { subscription: { value: true } });
-  const { input: specialtyInput } = useField(PersonField.Specialty, { subscription: { value: true } });
-  const { input: directionInput } = useField(PersonField.Direction, { subscription: { value: true } });
-  const { input: yearInput } = useField(PersonField.Year, { subscription: { value: true } });
-  const { input: groupInput } = useField(PersonField.Group, { subscription: { value: true } });
+const StudentFields = ({ form }: { form: FormApi<PersonFormData> }) => {
+  const { input } = useField(PersonField.Step, form);
+  const { input: specialtyInput } = useField(PersonField.Specialty, form);
+  const { input: directionInput } = useField(PersonField.Direction, form);
+  const { input: yearInput } = useField(PersonField.Year, form);
+  const { input: groupInput } = useField(PersonField.Group, form);
 
   const direction = useSelector<ApplicationState, Direction[]>(
     (state => getDirectionSelector(state, specialtyInput.value)));
@@ -43,33 +44,39 @@ const StudentFields: FC = () => {
 
   return (
     <P.FieldWrapper>
-      <P.Title>Informacje studenckie</P.Title>
-      <Field
+      <SelectField
         name={PersonField.Direction}
-        component={DropdownField}
+        label={'Kierunek'}
+        form={form}
+        isMulti={false}
         options={getOption(direction)}
         placeholder={'Wydział'}
       />
-      <Field
+      <SelectField
         name={PersonField.Specialty}
-        component={DropdownField}
+        label={'Specjalność'}
+        form={form}
+        isMulti={false}
         options={getOption(specialty)}
         placeholder={'Specjalność'}
       />
-      <Field
+      <SelectField
         name={PersonField.Year}
-        component={DropdownField}
+        label={'Rok'}
+        form={form}
+        isMulti={false}
         placeholder={'Rok'}
         options={getOption(year)}
       />
-
-      <Field
+      <SelectField
         name={PersonField.Group}
-        component={DropdownField}
+        label={'Grupa'}
+        form={form}
+        isMulti={false}
         placeholder={'Grupa'}
         options={getOption(group)}
       />
-      <StepButton />
+      <StepButton form={form} />
     </P.FieldWrapper>
   )
 };

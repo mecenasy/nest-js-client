@@ -1,4 +1,4 @@
-import React, { FC, } from 'react';
+import React, { memo, } from 'react';
 import Counter from '../modules/Pages/Counter/Counter';
 import ActionsWrapper from './Actions/ActionsWrapper';
 import { counterReducer, incrementByCountRequest } from '../store/counter/reducers';
@@ -11,7 +11,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('counter', counterReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('CounterPage');
   }
   return ['counter']
 };
@@ -35,7 +35,7 @@ export const actionCreator: ActionCreatorFactory = (
 
 reducersInject(!SERVER_BUILD);
 
-const HomePage: FC = () => {
+const CounterPage = () => {
   ;
 
   return (
@@ -48,4 +48,4 @@ const HomePage: FC = () => {
   )
 };
 
-export default HomePage
+export default memo(CounterPage);

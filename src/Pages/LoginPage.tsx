@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { memo } from 'react';
 import ActionsWrapper from './Actions/ActionsWrapper';
 import Login from '../modules/Pages/Login/Login';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
@@ -14,7 +14,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('notification', notificationReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('LoginPage');
   }
   return ['menu', 'person', 'notification']
 };
@@ -23,7 +23,7 @@ const actionCreator: ActionCreatorFactory = () => []
 
 reducersInject(!SERVER_BUILD);
 
-const LoginPage: FC = () => {
+const LoginPage = () => {
   return (
     <ActionsWrapper
       reducersKey={reducersInject(SERVER_BUILD, true)}
@@ -34,4 +34,4 @@ const LoginPage: FC = () => {
   )
 };
 
-export default LoginPage;
+export default memo(LoginPage);

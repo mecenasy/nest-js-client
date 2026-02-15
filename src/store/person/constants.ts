@@ -1,3 +1,4 @@
+import { DroppedFile } from '~/src/modules/Components/Input/types';
 
 export enum RoleType {
   Student = 'student',
@@ -104,13 +105,13 @@ export interface PersonFormData {
   [PersonField.Surname]: string;
   [PersonField.Email]: string;
   [PersonField.Phone]: number;
-  [PersonField.Photo]?: File;
+  [PersonField.Photo]?: DroppedFile;
   [PersonField.Album]?: number;
   [PersonField.Direction]?: string;
   [PersonField.Specialty]?: string;
   [PersonField.Year]?: string;
   [PersonField.Group]?: string;
   [PersonField.Role]: string;
-  [PersonField.Step]: string;
+  [PersonField.Step]: number;
   [PersonField.Address]: AddressFormData;
 }

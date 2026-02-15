@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { memo } from "react";
 import Timetable from "../modules/Pages/Timetable/Timetable";
 import ActionsWrapper from "./Actions/ActionsWrapper";
 import { getCalendarRequest, getTimeTableRequest, timeTableReducer } from '../store/timeTable/reducer';
@@ -14,7 +14,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('timeTable', timeTableReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('TimetablePage');
   }
   return ['menu', 'person', 'notification']
 };
@@ -40,7 +40,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isSer
 
 reducersInject(!SERVER_BUILD);
 
-const TimetablePage: FC = () => {
+const TimetablePage = () => {
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <Timetable />
@@ -48,4 +48,4 @@ const TimetablePage: FC = () => {
   );
 };
 
-export default TimetablePage
+export default memo(TimetablePage);

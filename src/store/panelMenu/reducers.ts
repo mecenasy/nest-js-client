@@ -3,7 +3,7 @@ import { initialState, MenuItem, MenuItemData } from "./constants";
 import { logoutSuccess } from '../auth/reducers';
 
 export const getMenuItemsRequest = createAction('menu/getMenuItemsRequest');
-export const addMenuItemsRequest = createAction<MenuItemData>('menu/addMenuItemsRequest');
+export const addMenuItemsRequest = createAction<MenuItemData & PromiseFParams>('menu/addMenuItemsRequest');
 export const removeMenuItemsRequest = createAction<string>('menu/removeMenuItemsRequest');
 
 export const getMenuItemsFail = createAction<string>('menu/getMenuItemsFail');

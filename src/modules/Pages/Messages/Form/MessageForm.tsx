@@ -1,92 +1,88 @@
-import React, { FC, useEffect } from 'react';
-import { Field } from 'react-final-form';
-import { MessageData, MessageField, MessageFormData } from '~/src/store/messages/constants';
+import React, { useEffect } from 'react';
+import { MessageField, MessageFormData } from '~/src/store/messages/constants';
 import { sendMessageRequest } from '~/src/store/messages/reducer';
 import { validateMessageForm } from '../helpers';
-import InputWithLabel from '~/src/modules/Components/Input/InputWithLabel';
-import FormWrapper, { SetPayload } from '~/src/modules/Components/FormWrapper/FormWrapper';
+import { InputField } from '~/src/modules/Components/Input/InputWithLabel';
 import { Button } from '../../../Components/Buttons/Button';
-import * as P from '../parts';
 import { useDispatch } from 'react-redux';
 import { getSimpleUserListRequest } from '~/src/store/userList/reducer';
-import DropdownField from '~/src/modules/Components/Input/Dropdown';
+import { SelectField } from '~/src/modules/Components/Input/Dropdown';
 import { getSimpleUsersSelector } from '~/src/store/userList/reducer';
 import { useSelector } from 'react-redux';
 import { getOption } from './getOptions';
-import { UnknownAction } from 'redux';
+import { DropzoneField } from '~/src/modules/Components/Input/Dropzone';
+import FormAdapter from '~/src/modules/Components/FormWrapper/FormAdapter';
 
 interface MessageFormProps {
   messageId: string;
   onSuccess: () => void;
 }
 
-const MessageForm: FC<MessageFormProps> = ({ onSuccess, messageId }) => {
-  const setPayload: SetPayload<UnknownAction, MessageFormData> = (action, values) => {
-    return sendMessageRequest({ ...values, to: values.to.value });
-  };
-  const users = useSelector(getSimpleUsersSelector)
+const MessageForm = ({ onSuccess, messageId }: MessageFormProps) => {
   const dispatch = useDispatch();
+
+  const onsubmit = async (values: MessageFormData) => {
+    try {
+      await new Promise((resolve, reject) => {
+        dispatch(sendMessageRequest({ ...values, to: values.to.value, resolve, reject }));
+      });
+
+      onSuccess();
+    } catch {
+
+    }
+  };
+
+  const users = useSelector(getSimpleUsersSelector);
+
   useEffect(() => {
     dispatch(getSimpleUserListRequest());
   }, [messageId, dispatch]);
 
-  const getPayload = () => {
-    onSuccess();
-    return undefined
-  };
-
-  const initialValues: MessageData = {
+  const initialValues: Partial<MessageFormData> = {
     parent: messageId,
-    to: '',
-    title: '',
-    content: '',
   };
 
   return (
-    <FormWrapper<UnknownAction, MessageFormData>
-      start={"MessageActionType.SendMessageRequest"}
-      resolve={"MessageActionType.SendMessageSuccess"}
-      reject={"MessageActionType.SendMessageFail"}
-      setPayload={setPayload}
-      getPayload={getPayload}
+    <FormAdapter< MessageFormData>
+      onSubmit={onsubmit}
       validate={validateMessageForm}
       initialValues={initialValues}
     >
-      {() => (
+      {({ form }) => (
         <>
-          <Field
+          <SelectField
+            isMulti={false}
             name={MessageField.To}
-            component={DropdownField}
+            form={form}
             options={getOption(users)}
             label="Do:"
             placeholder="ID lub email odbiorcy"
           />
-          <Field
+          <InputField
             name={MessageField.Title}
-            component={InputWithLabel}
+            form={form}
             type="text"
             label="Tytuł:"
             placeholder="Tytuł wiadomości"
           />
-          <Field
+          <InputField
             name={MessageField.Content}
-            component={InputWithLabel}
+            form={form}
             type="textarea"
             label="Treść:"
             placeholder="Napisz swoją wiadomość..."
           />
-          <Field
+          <DropzoneField
             name={MessageField.Files}
-            component={P.Dropzone}
+            form={form}
             multiple
             label={'załączniki'}
-            type={'file'}
-            placeholder={'Zdjęcie (URL)'}
           />
           <Button type="submit">Wyślij</Button>
         </>
       )}
-    </FormWrapper>
+    </FormAdapter>
   );
 };
 

@@ -16,7 +16,7 @@ export const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('notification', notificationReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('LogoutPage');
   }
   return ['menu', 'person', 'notification']
 };

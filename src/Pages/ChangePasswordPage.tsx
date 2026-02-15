@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { memo } from 'react';
 import ActionsWrapper from './Actions/ActionsWrapper';
 import ChangePassword from '../modules/Pages/ChangePassword/ChangePassword';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
@@ -14,7 +14,7 @@ export const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('notification', notificationReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('ChangePasswordPage');
   }
   return ['menu', 'person', 'notification']
 };
@@ -23,7 +23,7 @@ export const actionCreator: ActionCreatorFactory = () => [];
 
 reducersInject(!SERVER_BUILD);
 
-const ChangePasswordPage: FC = () => {
+const ChangePasswordPage = () => {
   return (
     <ActionsWrapper
       reducersKey={reducersInject(SERVER_BUILD, true)}
@@ -34,4 +34,4 @@ const ChangePasswordPage: FC = () => {
   );
 };
 
-export default ChangePasswordPage;
+export default memo(ChangePasswordPage);

@@ -14,7 +14,7 @@ import { ModalRef } from '../../Components/Modal/Modal';
 const Messages = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const messages = useSelector((state: ApplicationState) => getMessagesList(state));
+  const messages = useSelector(getMessagesList);
   const modalRef = useRef<ModalRef>(null);
 
   useEffect(() => {
@@ -29,6 +29,7 @@ const Messages = () => {
   };
 
   const handleCloseModal = () => {
+    modalRef.current?.close();
     setTimeout(() => {
       navigate(`/messages`, { replace: true, })
     }, 200)

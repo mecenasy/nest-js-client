@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { memo, useLayoutEffect, useState } from "react";
 import AddUser from "../modules/Pages/AddUser/AddUser";
 import ActionsWrapper from "./Actions/ActionsWrapper";
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
@@ -14,7 +14,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('university', universityReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('AddUserPage');
   }
   return ['role', 'university']
 };
@@ -25,12 +25,13 @@ const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }) 
 ]);
 reducersInject(!SERVER_BUILD);
 
-const AddUserPage: FC = () => {
+const AddUserPage = () => {
+
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <AddUser />
     </ActionsWrapper>
   )
 };
-
-export default AddUserPage
+99
+export default memo(AddUserPage)

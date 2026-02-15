@@ -1,47 +1,43 @@
 
-import React, { FC, useContext, useRef } from 'react';
-import { Field } from 'react-final-form';
+import React, { FC, useContext } from 'react';
 import { Navigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import * as P from './parts';
 import { validateLoginForm } from './helpers';
-import InputFormWrapper from '../../Components/Input/Input';
 import { LoggedStatus, LoginData, LoginField } from '~/src/store/auth/constants';
-import { loginRequest, loginSuccess, loginFail } from '~/src/store/auth/reducers';
+import { loginRequest } from '~/src/store/auth/reducers';
 import { getIsDefaultPassword, loggedInStatusSelector } from '~/src/store/auth/reducers';
-import FormWrapper from '../../Components/FormWrapper/FormWrapper';
-import { AlertType } from '../../Components/Alert/types';
 import { Helmet } from 'react-helmet';
 import { FormApi } from 'final-form';
 import { Button } from '../../Components/Buttons/Button';
 import { ServerStatusContext } from '~/src/Providers/ServerProvider/ServerStatusProvider';
-import { UnknownAction } from 'redux';
+import FormAdapter from '../../Components/FormWrapper/FormAdapter';
+import { InputField } from '../../Components/Input/InputWithLabel';
+import { useDispatch } from 'react-redux';
 
 const Login: FC = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
   const isDefaultPassword = useSelector(getIsDefaultPassword);
-  const formRef = useRef<FormApi>(null);
   const serverContext = useContext(ServerStatusContext);
+  const dispatch = useDispatch();
 
-  const onSubmit = (action: any, { password, user }: LoginData) => {
-    return loginRequest({ user, password });
-  };
-
-  const getPayload = (action: any): Record<string, string> | undefined => {
-    if (formRef.current) {
-      formRef.current.batch(() => {
-        if (formRef.current) {
-
-          formRef.current.change('password', '');
-          formRef.current.change('user', '');
-        }
+  const onSubmit = async ({ password, user }: LoginData, form: FormApi<LoginData>) => {
+    try {
+      const error: any = await new Promise((resolve, reject) => {
+        dispatch(loginRequest({ user, password, resolve, reject }));
       });
-    }
 
-    if (action.type === loginSuccess.type) {
-      return action.errorMessage;
-    }
-  };
+      form.batch(() => {
+        form.change(LoginField.User, '');
+        form.change(LoginField.Password, '');
+      });
+
+      return error?.errorMessage;
+
+    } catch (error: any) {
+      return error?.errorMessage;
+    };
+  }
 
   if (isLoggedIn === LoggedStatus.LoggedIn) {
     const redirectPath = isDefaultPassword ? '/change_password' : '/';
@@ -63,45 +59,27 @@ const Login: FC = () => {
       <P.BoxWithShadow>
         <P.Title>Witaj w systemie uczelnianym</P.Title>
         <P.SubTitle>Aby wejść do systemu należy podać login i hasło</P.SubTitle>
-
-        <FormWrapper<UnknownAction, LoginData>
-          start={loginRequest.type}
-          resolve={loginSuccess.type}
-          reject={loginFail.type}
-          setPayload={onSubmit}
-          getPayload={getPayload}
+        <FormAdapter<LoginData>
+          onSubmit={onSubmit}
           validate={validateLoginForm}
         >
-          {({ form }) => {
-            formRef.current = form;
-            return (
-              <>
-                <Field name={LoginField.Error} >
-                  {({ meta }) => (
-                    <>
-                      {meta.submitError &&
-                        <P.Alert message={meta.submitError} type={AlertType.error} />
-                      }
-                    </>
-                  )}
-                </Field>
-                <Field
-                  name={LoginField.User}
-                  component={InputFormWrapper}
-                  type={'text'}
-                  placeholder={'Login'}
-                />
-                <Field
-                  name={LoginField.Password}
-                  component={InputFormWrapper}
-                  type={'password'}
-                  placeholder={'Hasło'}
-                />
-                <Button type={'submit'}>Zaloguj</Button>
-              </>
-            )
-          }}
-        </FormWrapper>
+          {({ form }) => (
+            <>
+              <InputField<LoginData>
+                form={form}
+                name={LoginField.User}
+                type={'text'}
+                placeholder={'Login'}
+              />
+              <InputField<LoginData>
+                form={form}
+                name={LoginField.Password}
+                type={'password'}
+                placeholder={'Hasło'}
+              />
+              <Button type={'submit'}>Zaloguj</Button>              </>
+          )}
+        </FormAdapter>
       </P.BoxWithShadow>
     </P.Wrapper>
   );

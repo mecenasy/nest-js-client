@@ -1,13 +1,10 @@
-import React, { FC, useCallback } from 'react';
+import React from 'react';
 import * as P from './parts';
-import { Field } from 'react-final-form';
-import createDecorator from 'final-form-calculate';
 import { MenuItemData, MenuItemField } from '~/src/store/panelMenu/constants';
-import FormWrapper, { SetPayload, GetPayload } from '../../Components/FormWrapper/FormWrapper';
-import InputWithLabel from '../../Components/Input/InputWithLabel';
-import Toggle from '../../Components/Input/Toggle';
-import Dropzone from '../../Components/Input/Dropzone';
-import DropdownField from '../../Components/Input/Dropdown';
+import { InputField } from '../../Components/Input/InputWithLabel';
+import { ToggleField } from '../../Components/Input/Toggle';
+import { DropzoneField } from '../../Components/Input/Dropzone';
+import { SelectField } from '../../Components/Input/Dropdown';
 import { getMenuItemById } from '~/src/store/panelMenu/selectors';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '~/src/store/configuration/constants';
@@ -15,13 +12,15 @@ import { MenuSide } from '~/src/store/menu/constants';
 import { addMenuItemsRequest } from '~/src/store/panelMenu/reducers';
 import { validateMenuItem } from './helpers';
 import { roleSelector } from '~/src/store/role/selectors';
+import FormAdapter from '../../Components/FormWrapper/FormAdapter';
+import { useDispatch } from 'react-redux';
 
 interface PanelMenuFormProps {
   initialId: string;
   onClose: () => void;
 }
 
-const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
+const PanelMenuForm = ({ initialId, onClose }: PanelMenuFormProps) => {
   const initialValues = useSelector<ApplicationState, MenuItemData | undefined>((state) => getMenuItemById(state, initialId))
   const defaultValues: MenuItemData = {
     name: '',
@@ -33,105 +32,98 @@ const PanelMenuForm: FC<PanelMenuFormProps> = ({ initialId, onClose }) => {
     link: '',
     role: [],
     image: undefined,
-  }
+  };
+  const dispatch = useDispatch();
   const roles = useSelector(roleSelector)
-  const setPayload: SetPayload<any, MenuItemData> = (action, value) => {
-    return addMenuItemsRequest(value)
-  }
-  const getPayload: GetPayload<any> = () => {
+  const onSubmit = async (value: MenuItemData) => {
+    await new Promise((resolve, reject) => {
+
+      dispatch(addMenuItemsRequest({
+        ...value,
+        [MenuItemField.Side]: value[MenuItemField.SideBoolean] ? MenuSide.Right : MenuSide.Left,
+        resolve,
+        reject
+      }))
+    });
+
     onClose();
-    return undefined
   }
 
-  const menuSideDecorator = useCallback(createDecorator({
-    field: MenuItemField.SideBoolean,
-    updates: {
-      [MenuItemField.Side]: (value: boolean,) => value ? MenuSide.Right : MenuSide.Left
-    },
-  }), []);
 
   return (
     <div>
-      <FormWrapper<any, MenuItemData>
-        start={"MenuItemActionType.SetMenuItemsRequest"}
-        resolve={"MenuItemActionType.SetMenuItemsSuccess"}
-        reject={"MenuItemActionType.SetMenuItemsFail"}
-        setPayload={setPayload}
-        getPayload={getPayload}
-
+      <FormAdapter<MenuItemData>
+        onSubmit={onSubmit}
         initialValues={initialValues || defaultValues}
-        decorators={[menuSideDecorator]}
         validate={validateMenuItem}
       >
-        {() => (
+        {({ form }) => (
           <>
-            <Field
+            <InputField
+              form={form}
               name={MenuItemField.Name}
-              component={InputWithLabel}
               type={'text'}
               placeholder={'Podaj nazwę'}
               label={'Nazwa menu'}
             />
-            <Field
+            <InputField
+              form={form}
               name={MenuItemField.ShortName}
-              component={InputWithLabel}
               type={'text'}
               placeholder={'Podaj krutką nazwę'}
               label={'Krutka nazwa menu'}
             />
             {/*docelowo ma się tworzyć automatycznie */}
-            <Field
+            <InputField
+              form={form}
               name={MenuItemField.Position}
-              component={InputWithLabel}
               type={'number'}
               placeholder={'Pozycja'}
               label={'Pozycja menu'}
             />
             <div>
-              <Field
+              <ToggleField
+                form={form}
                 name={MenuItemField.Hidden}
-                component={Toggle}
-                type="checkbox"
                 icons={false}
                 label={'Menu widoczne'}
                 leftText={'widoczne'}
                 rightText={'nie widoczne'}
               />
-              <Field
+              <ToggleField
+                form={form}
                 name={MenuItemField.SideBoolean}
-                component={Toggle}
-                type="checkbox"
                 icons={false}
                 label={'Strona menu'}
                 leftText={'lewa'}
                 rightText={'prawa'}
               />
             </div>
-            <Field
+            <InputField
+              form={form}
               name={MenuItemField.Link}
-              component={InputWithLabel}
               type={'text'}
               placeholder={'Podaj link do menu'}
               label={'Link do menu'}
             />
-            <Field
+            <SelectField
+              form={form}
               name={MenuItemField.Role}
-              component={DropdownField}
               placeholder={'wybież dla kogo dostępne jest menu'}
               label={'Przeznaczenie  menu'}
               options={roles}
               isMulti
             />
-            <Field
+            <DropzoneField
+              form={form}
               name={MenuItemField.Image}
-              component={Dropzone}
-              type={'file'}
+              multiple={false}
               label={'Ikona menu'}
             />
             <P.SubmitButton type={'submit'}>zapisz</P.SubmitButton>
           </>
         )}
-      </FormWrapper>
+      </FormAdapter>
     </div>
   )
 };

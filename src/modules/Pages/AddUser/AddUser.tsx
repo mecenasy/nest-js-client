@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import * as P from './parts';
 import PageWrapper from "../../Components/Containers/PageWrapper/PageWrapper";
@@ -6,19 +6,19 @@ import { useSelector } from "react-redux";
 import { loggedInStatusSelector } from "~/src/store/auth/reducers";
 import { LoggedStatus } from "~/src/store/auth/constants";
 import { PersonField, PersonFormData, RoleType } from "~/src/store/person/constants";
-import FormWrapper, { SetPayload } from "../../Components/FormWrapper/FormWrapper";
 import AddressFields from "./Fields/Address";
 import StudentFields from "./Fields/Student";
 import DefaultFields from "./Fields/Default";
 import { addPersonRequest } from "~/src/store/person/reducer";
 import { FormApi } from "final-form";
 import Box from '../../Components/Box/Box';
-import { UnknownAction } from 'redux';
+import FormAdapter from '../../Components/FormWrapper/FormAdapter';
+import { useDispatch } from 'react-redux';
 
-export const AddUser: FC = () => {
+export const AddUser = () => {
   const isLoggedIn = useSelector(loggedInStatusSelector);
-  const formRef: React.MutableRefObject<FormApi | null> = useRef<FormApi | null>(null);
-  const setPayload: SetPayload<UnknownAction, any> = (action, values) => {
+  const dispatch = useDispatch();
+  const onChange = async (values: any, form: FormApi<any>) => {
     delete values.step;
     const data: PersonFormData = {
       ...values,
@@ -30,7 +30,12 @@ export const AddUser: FC = () => {
       data.year = values.year.value;
       data.group = values.group.value;
     }
-    return addPersonRequest(data)
+
+    await new Promise((resolve, reject) => {
+      dispatch(addPersonRequest({ ...data, resolve, reject }));
+    })
+
+    setTimeout(form.reset)
   }
   return (
     <PageWrapper pickUp >
@@ -41,30 +46,18 @@ export const AddUser: FC = () => {
       {isLoggedIn === LoggedStatus.LoggedIn && (
         <P.Wrapper  >
           <h3>Dodaj nowego urzytkownika</h3>
-          <FormWrapper<any, any>
-            start={'PersonActionType.AddPersonRequest'}
-            resolve={'PersonActionType.AddPersonSucces'}
-            reject={'PersonActionType.AddPersonFail'}
-            setPayload={setPayload}
-            getPayload={() => {
-              formRef.current?.reset();
-              return undefined;
-            }}
+          <FormAdapter<PersonFormData>
+            onSubmit={onChange}
             initialValues={{ [PersonField.Step]: 1 }}
           >
-            {({ form }) => {
-              formRef.current = form;
-              return (
-                <>
-                  <Box>
-                    <DefaultFields />
-                    <StudentFields />
-                    <AddressFields />
-                  </Box>
-                </>
-              )
-            }}
-          </FormWrapper>
+            {({ form }) => (
+              <Box>
+                <DefaultFields form={form} />
+                <StudentFields form={form} />
+                <AddressFields form={form} />
+              </Box>
+            )}
+          </FormAdapter>
         </P.Wrapper>
       )}
     </PageWrapper >

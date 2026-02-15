@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, MessageList, Message, MessageData, File } from './constants';
 import { logoutSuccess } from '../auth/reducers';
 
-export const sendMessageRequest = createAction<MessageData>('message/sendMessageRequest');
+export const sendMessageRequest = createAction<MessageData & PromiseFParams>('message/sendMessageRequest');
 export const getMessageListRequest = createAction<string>('message/getMessageListRequest');
 export const getMessageRequest = createAction<string>('message/getMessageRequest');
 export const getFileRequest = createAction<File>('message/getFileRequest');

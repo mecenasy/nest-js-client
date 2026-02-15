@@ -41,9 +41,11 @@ export function* addPersonWorker(action: ReturnType<typeof A.addPersonRequest>) 
       const { data }: AxiosResponse<Person> = yield call(addPerson, personToAdd);
 
       yield put(A.addPersonSuccess(data));
+      yield call(action.payload.resolve, undefined);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.addPersonFail(error.message));
+        yield call(action.payload.reject);
       }
     }
   }

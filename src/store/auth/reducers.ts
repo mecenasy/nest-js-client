@@ -5,12 +5,14 @@ import {
   LoggedStatus,
   LoginSuccess,
   RefreshTokenSuccess,
+  LoginData,
+  ChangePasswordData,
 } from "./constants";
 
-export const loginRequest = createAction<{ user: string, password: string }>('auth/loginRequest');
+export const loginRequest = createAction<LoginData & PromiseFParams>('auth/loginRequest');
 export const logoutRequest = createAction('auth/logoutRequest');
 export const refreshTokenRequest = createAction('auth/refreshTokenRequest');
-export const changePasswordRequest = createAction<{ newPassword: string, oldPassword: string }>('auth/changePasswordRequest');
+export const changePasswordRequest = createAction<Omit<ChangePasswordData, 'confirmPassword'> & PromiseFParams>('auth/changePasswordRequest');
 
 export const authSlice = createSlice({
   name: 'auth',

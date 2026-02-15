@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, RoleType } from "./constants";
 import { logoutSuccess } from '../auth/reducers';
 import { Option } from "~/src/modules/Components/Input/types";
+import { ApplicationState } from '../configuration/constants';
 
 export const getRoleRequest = createAction('role/GET_ROLE_REQUEST');
 export const getRoleFail = createAction<string>('role/GET_ROLE_FAIL');
@@ -52,4 +53,4 @@ const roleSlice = createSlice({
 
 export const roleReducer = roleSlice.reducer;
 export const { getRoleSuccess } = roleSlice.actions;
-export const roleSelector = (state: any) => state.panelMenu.role.map(roleOption);
+export const { roleSelector } = roleSlice.selectors;

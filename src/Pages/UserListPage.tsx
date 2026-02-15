@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { memo } from "react";
 import ActionsWrapper from "./Actions/ActionsWrapper";
 import UserList from '../modules/Pages/UserList/UserList';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
@@ -13,7 +13,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('userList', userListReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('UserListPage');
   }
   return ['userList']
 };
@@ -27,7 +27,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isSer
 
 reducersInject(!SERVER_BUILD);
 
-const UserListPage: FC = () => {
+const UserListPage = () => {
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <UserList />
@@ -35,4 +35,4 @@ const UserListPage: FC = () => {
   );
 };
 
-export default UserListPage
+export default memo(UserListPage);

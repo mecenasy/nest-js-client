@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
+import React from 'react';
 import * as P from '../parts';
-import { useField } from 'react-final-form';
-import { PersonField, RoleType } from '~/src/store/person/constants';
+import { useField } from 'react-final-form-hooks';
+import { PersonField, PersonFormData, RoleType } from '~/src/store/person/constants';
 import { Button } from '~/src/modules/Components/Buttons/Button';
+import { FormApi } from 'final-form';
 
-const StepButton: FC = () => {
-  const { input: { value: { value } } } = useField(PersonField.Role, { subscription: { value: true } });
-  const { input } = useField(PersonField.Step, { type: 'number' });
+const StepButton = ({ form }: { form: FormApi<PersonFormData> }) => {
+  const { input: { value: { value } } } = useField(PersonField.Role, form);
+  const { input } = useField(PersonField.Step, form);
   if (input.value === 1) {
     return (
       <Button type={'button'} onClick={() => input.onChange(value === RoleType.Student ? 2 : 3)}>Dodaj</Button>

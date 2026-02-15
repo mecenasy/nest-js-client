@@ -11,11 +11,11 @@ export const Textarea = (props: InputProps<HTMLTextAreaElement>) => (
   <P.TextArea {...props} />
 );
 
-export const InputFormWrapper = <T extends string | number | boolean | null | undefined | object>({ input, meta, inputType = InputType.all, ...rest }: InputFormWrapperProps<T>) => (
+export const InputFormWrapper = <T extends string | number | boolean | null | undefined | object>({ input, meta, inputType = InputType.all, type = 'text', ...rest }: InputFormWrapperProps<T>) => (
   <>
     {inputType !== InputType.onlyError && (
       <>
-        {input.type === 'textarea'
+        {(input as any)?.type ?? type === 'textarea'
           ? <Textarea {...input} {...rest} />
           : <Input {...input} {...rest} />
         }
@@ -23,7 +23,7 @@ export const InputFormWrapper = <T extends string | number | boolean | null | un
     )}
     {inputType !== InputType.onlyInput && (
       <P.ValidationAlert>
-        {hasWrapperError<T>(meta) &&
+        {hasWrapperError(meta) &&
           <P.Error>{meta.error}</P.Error>
         }
       </P.ValidationAlert>

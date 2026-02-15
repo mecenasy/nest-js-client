@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { memo } from "react";
 import Settings from "../modules/Pages/Settings/Settings";
 import ActionsWrapper from "./Actions/ActionsWrapper";
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
@@ -10,7 +10,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('person', personReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('SettingsPage');
   }
   return ['menu', 'person', 'notification']
 };
@@ -19,7 +19,7 @@ const actionCreator: ActionCreatorFactory = () => []
 
 reducersInject(!SERVER_BUILD);
 
-const SettingsPage: FC = () => (
+const SettingsPage = () => (
   <ActionsWrapper
     reducersKey={reducersInject(SERVER_BUILD, true)}
     actionCreatorFactory={actionCreator}
@@ -28,4 +28,4 @@ const SettingsPage: FC = () => (
   </ActionsWrapper>
 );
 
-export default SettingsPage
+export default memo(SettingsPage);

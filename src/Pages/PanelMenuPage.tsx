@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { memo } from 'react';
 import ActionsWrapper from './Actions/ActionsWrapper';
 import PanelMenu from '../modules/Pages/PanelMenu/PanelMenu';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
@@ -13,7 +13,7 @@ export const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('panelMenu', panelMenuReducer);
   }
   if (force) {
-    registerReducer();
+    registerReducer('ChangePasswordPage');
   }
   return ['menu', 'person', 'notification']
 };
@@ -25,7 +25,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isServer, isHydra
 
 reducersInject(!SERVER_BUILD);
 
-const ChangePasswordPage: FC = () => {
+const ChangePasswordPage = () => {
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <PanelMenu />
@@ -33,4 +33,4 @@ const ChangePasswordPage: FC = () => {
   );
 };
 
-export default ChangePasswordPage;
+export default memo(ChangePasswordPage);

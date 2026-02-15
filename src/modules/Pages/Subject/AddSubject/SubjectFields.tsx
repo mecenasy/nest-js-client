@@ -48,6 +48,7 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
     to: { height: added ? "60px" : "520px" }
   });
 
+
   return (
     <P.Animated style={{ ...props, overflow: !visible || added ? 'hidden' : 'visible' }}>
       <div>
@@ -65,7 +66,6 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
           inputType={InputType.all}
           label={'Audytorium'}
           placeholder={'wpisz audytorium'}
-
         />
         <SelectField
           form={form}

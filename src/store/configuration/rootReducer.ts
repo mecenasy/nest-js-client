@@ -5,7 +5,7 @@ import { hydrateReducer } from '../hydrate/reducer';
 
 export const createLazyStore = () => {
   let store: EnhancedStore<ApplicationState>;
-
+  const registryPages = new Set<string>()
   const defaultKeys: Array<keyof ApplicationState> = ['hydrate', 'auth', 'user', 'router'];
   const asyncReducers: ReducersMapObject<ApplicationState> = {
     hydrate: hydrateReducer,
@@ -49,8 +49,11 @@ export const createLazyStore = () => {
       asyncReducers[key] = asyncReducer;
     }
   };
-  const registerReducer = () => {
-    store.replaceReducer(createReducer(asyncReducers));
+  const registerReducer = (key: string) => {
+    if (!registryPages.has(key)) {
+      registryPages.add(key)
+      store.replaceReducer(createReducer(asyncReducers));
+    }
     return asyncReducers;
   }
 

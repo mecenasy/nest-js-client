@@ -6,7 +6,7 @@ import { loginUser, logoutUser, refreshUserToken, changePasswordUser } from '../
 import * as A from './reducers';
 import { AuthState, LoggedStatus } from './constants';
 import { loggedInStatusSelector, tokenExpiredInSelector } from './reducers';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export function* authWatcher() {
   yield takeLatest(A.loginRequest.type, loginWorker);
@@ -35,7 +35,6 @@ export function* initialAuth() {
     }
   } catch {
     yield put(A.logoutSuccess());
-
   }
 }
 
@@ -54,16 +53,18 @@ export function* loginWorker(action: ReturnType<typeof A.loginRequest>) {
       yield put(A.loginSuccess({ user, auth }));
 
       refreshTask = yield fork(refreshTokenWorker);
-
-    } catch (error: unknown) {
+      yield call(action.payload.resolve, undefined);
+    } catch (error) {
       if (axios.isAxiosError(error)) {
-        const parsedError: AxiosError<any> = error;
 
-        if (parsedError.message.includes('401')) {
-          yield put(A.loginSuccess({ errorMessage: { error: 'Logowanie się nie powiopdło. Sprawdź czy masz poprawny login i hasło.' } }));
+        if (error.message.includes('401')) {
+          const errorMessage = { errorMessage: { error: 'Logowanie się nie powiopdło. Sprawdź czy masz poprawny login i hasło.' } }
+          yield put(A.loginSuccess(errorMessage));
+          yield call(action.payload.resolve, errorMessage);
           return;
         }
         yield put(A.loginFail());
+        yield call(action.payload.resolve, undefined);
       }
     }
   }
@@ -76,9 +77,11 @@ export function* changePasswordWorker(action: ReturnType<typeof A.changePassword
 
       yield put(A.changePasswordSuccess());
 
+      yield call(action.payload.resolve, undefined);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.changePasswordFail());
+        yield call(action.payload.reject);
       }
     }
   }

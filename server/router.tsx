@@ -22,18 +22,14 @@ import { setAuthorizationProvider } from '~/src/api/api';
 import { logoutSuccess, refreshTokenRequest } from '~/src/store/auth/reducers';
 import { ServerStatusContext, Status } from '~/src/Providers/ServerProvider/ServerStatusProvider';
 import { ApplicationState } from '~/src/store/configuration/constants';
-import { personReducer } from '~/src/store/person/reducer';
-import { counterReducer } from '~/src/store/counter/reducers';
-import { menuReducer } from '~/src/store/menu/reducers';
-import { notificationReducer } from '~/src/store/notification/reducer';
-import { injectReducer, registerReducer } from '~/src/store/configuration/rootReducer';
+import { registerReducer } from '~/src/store/configuration/rootReducer';
 
 const router = express.Router();
 const DEV = process.env.NODE_ENV !== 'production';
 const stats: LoadableManifest = getManifest();
 
 router.use(async (req: Request, res: Response, next: NextFunction) => {
-  if (req.originalUrl.startsWith('/build')) {
+  if (req.originalUrl.startsWith('/build') || req.originalUrl.startsWith('/.well-known/')) {
     next();
     return;
   }
@@ -50,12 +46,11 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
 
   const { store, rootSagaTask } = await configureStore(undefined, history, rootSaga);
 
-  registerReducer()
+  registerReducer('registry')
 
   const actions: UnknownAction[] = [];
   const sagas: any[] = [];
   const reducersKey: Array<keyof ApplicationState> = [];
-  console.log("🚀 ~ reducersKey:", reducersKey)
 
   ReactDomServer.renderToString(
     <ServerStatusContext.Provider value={context}>

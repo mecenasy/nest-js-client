@@ -1,7 +1,7 @@
-import { MessageData } from "~/src/store/messages/constants";
+import { MessageFormData } from "~/src/store/messages/constants";
 
-export const validateMessageForm = (values: MessageData) => {
-  const errors: Partial<MessageData> = {};
+export const validateMessageForm = (values: MessageFormData) => {
+  const errors: Partial<Record<keyof MessageFormData, string>> = {};
 
   if (!values.to) {
     errors.to = 'Odbiorca jest wymagany';

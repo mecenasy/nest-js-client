@@ -25,6 +25,10 @@ declare namespace NodeJS {
   }
 }
 
+declare interface PromiseFParams<T = any> {
+  resolve: (a?: T) => void,
+  reject: () => void
+}
 declare const VARIABLES: string;
 declare const SERVER_BUILD: boolean;
 declare const DEV: boolean;

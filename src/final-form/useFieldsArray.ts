@@ -4,7 +4,6 @@ import { FormApi } from 'final-form'
 import { FieldArrayRenderProps } from './types'
 import copyPropertyDescriptors from './copyPropertyDescriptors'
 
-
 const useFieldArray = <T>(
   name: string,
   form: FormApi<T>

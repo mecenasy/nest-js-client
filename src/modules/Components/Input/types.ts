@@ -1,6 +1,6 @@
 import { FormApi } from 'final-form';
 import { ChangeEvent } from 'react';
-import { FieldRenderProps as FieldRenderPropsDep } from 'react-final-form';
+import { FieldRenderProps as FieldRenderPropsDep } from 'react-final-form-hooks';
 import { FieldRenderProps } from 'react-final-form-hooks';
 export interface DroppedFile extends File {
   path: string;
@@ -8,6 +8,21 @@ export interface DroppedFile extends File {
   lastModifiedDate: Date;
   size: number;
   type: string;
+}
+
+export interface SubjectFieldsProps<T> {
+  disabled?: boolean,
+  name: string;
+  form: FormApi<T, Partial<T>>;
+  className?: string;
+  placeholder: string,
+  inputType?: InputType
+  label?: string;
+  type?: string;
+}
+
+export interface InputWithLabelProps<T> extends InputFormWrapperProps<T> {
+  label?: string;
 }
 
 export interface InputProps<T> {
@@ -25,8 +40,8 @@ export enum InputType {
 
 export type InputFormWrapperProps<T> = FieldRenderPropsDep<T> & {
   placeholder: string,
-  inputType: InputType
-  label: string;
+  inputType?: InputType
+  type?: string;
 };
 
 export interface Option<T> {
@@ -34,7 +49,15 @@ export interface Option<T> {
   label: string;
 }
 
-export type DropzoneProps = FieldRenderPropsDep<DroppedFile> & { label: string; multiple: boolean }
+export type DropzoneProps = FieldRenderPropsDep<DroppedFile> & { label: string; multiple: boolean, className?: string }
+
+export interface DropzoneFieldProps<T> {
+  name: string;
+  form: FormApi<T, Partial<T>>;
+  className?: string;
+  label: string;
+  multiple: boolean;
+}
 
 export type DropdownPropsDep<T> = FieldRenderPropsDep<Option<T>> & {
   options: Array<any>;
@@ -65,6 +88,16 @@ export type SelectProps<T> = {
 }
 
 export type ToggleProps = FieldRenderPropsDep<string> & {
+  icons: boolean;
+  label: string;
+  leftText?: string;
+  rightText?: string
+  className?: string;
+}
+
+export type ToggleFieldProps<T> = {
+  form: FormApi<T, Partial<T>>;
+  name: string;
   icons: boolean;
   label: string;
   leftText?: string;
