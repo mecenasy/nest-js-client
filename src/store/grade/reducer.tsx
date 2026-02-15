@@ -110,13 +110,13 @@ export const gradeReducer = combineReducers<GradesReducer>({
 });
 
 export const getTeacherGradesRequest = createAction('grade/getTeacherGradesRequest')
+export const getStudentsGradesRequest = createAction('grade/getStudentsGradesRequest')
 export const updateGradesRequest = createAction<CreateGrade[]>('grade/updateGradesRequest')
 export const removeGradeRequest = createAction<string>('grade/removeGradeRequest')
 export const addGradesRequest = createAction<CreateGrade[]>('grade/addGradesRequest')
-export const getStudentsGradesRequest = createAction('grade/getStudentsGradesRequest')
 
 export const getTeacherGradesFail = createAction<string>('grade/getTeacherGradesFail')
+export const getStudentsGradesFail = createAction<string>('grade/getStudentsGradesFail')
 export const updateGradesFail = createAction<string>('grade/updateGradesFail')
 export const removeGradeFail = createAction<string>('grade/removeGradeFail')
 export const addGradesFail = createAction<string>('grade/addGradesFail')
-export const getStudentsGradesFail = createAction<string>('grade/getStudentsGradesFail')

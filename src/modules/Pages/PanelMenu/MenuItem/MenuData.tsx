@@ -21,7 +21,7 @@ const MenuData: FC<MenuDataProps> = ({
   menuSide
 }) => (
 
-  <P.BoxColumn columnWidth={250} direction={'row'}>
+  <P.BoxColumn $columnWidth={250} $direction={'row'}>
     <P.BoxInnerColumn  >
       <div>nazwa : </div>
       <div>krutka nazwa :</div>

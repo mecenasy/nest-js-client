@@ -4,7 +4,7 @@ import ActionsWrapper from "./Actions/ActionsWrapper";
 import { getCalendarRequest, getTimeTableRequest, timeTableReducer } from '../store/timeTable/reducer';
 import { CalendarType } from '../store/timeTable/constants';
 import { getUniversityRequest } from '../store/university/reducer';
-import { getSubjectsRequest } from '../store/subject/reducer';
+import { getSubjectsRequest, subjectReducer } from '../store/subject/reducer';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
 import { filterAction } from '../PageConfigs/helpers/filterAction';
@@ -12,11 +12,12 @@ import { filterAction } from '../PageConfigs/helpers/filterAction';
 const reducersInject: ReducerFactory = (inject, force) => {
   if (inject) {
     injectReducer('timeTable', timeTableReducer);
+    injectReducer('subject', subjectReducer);
   }
   if (force) {
     registerReducer('TimetablePage');
   }
-  return ['menu', 'person', 'notification']
+  return ['timeTable', 'subject']
 };
 
 export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }, { search }) => {

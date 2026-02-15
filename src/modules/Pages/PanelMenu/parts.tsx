@@ -28,11 +28,11 @@ export const Box = styled(BoxBase)`
    align-items: start;
 `;
 
-export const BoxColumn = styled.div<{ columnWidth: number, direction?: 'row' | 'column' }>`
+export const BoxColumn = styled.div<{ $columnWidth: number, $direction?: 'row' | 'column' }>`
    margin-right: 16px;
    display: flex;
-   ${({ direction }) => direction && ` flex-direction: ${direction}`};
-   width: ${({ columnWidth }) => columnWidth}px;
+   ${({ $direction }) => $direction && ` flex-direction: ${$direction}`};
+   width: ${({ $columnWidth }) => $columnWidth}px;
    &:last-child {
       margin: 0;
    }

@@ -16,7 +16,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('userList', userListReducer);
   }
   if (force) {
-    registerReducer('ChangePasswordPage');
+    registerReducer('SubjectPage');
   }
   return ['university', 'subject', 'userList',]
 };
@@ -29,7 +29,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isSer
 
 reducersInject(!SERVER_BUILD);
 
-const ChangePasswordPage = () => {
+const SubjectPage = () => {
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <Subject />
@@ -37,4 +37,4 @@ const ChangePasswordPage = () => {
   );
 };
 
-export default memo(ChangePasswordPage);
+export default memo(SubjectPage);

@@ -17,7 +17,7 @@ export const InputFormWrapper = <T extends string | number | boolean | null | un
       <>
         {(input as any)?.type ?? type === 'textarea'
           ? <Textarea {...input} {...rest} />
-          : <Input {...input} {...rest} />
+          : <Input {...input} {...rest} type={(input as any)?.type ?? type} />
         }
       </>
     )}

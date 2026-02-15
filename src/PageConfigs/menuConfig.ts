@@ -9,6 +9,6 @@ const Menu = Loadable({
 
 export const menuConfig: PageConfig = {
   extrudeUrl: ['/login', '/logout', '/change_password'],
-  url: '/*',
+  url: '*',
   Component: Menu,
 }

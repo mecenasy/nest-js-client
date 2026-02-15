@@ -13,9 +13,9 @@ export const reducersInject: ReducerFactory = (inject, force) => {
     injectReducer('panelMenu', panelMenuReducer);
   }
   if (force) {
-    registerReducer('ChangePasswordPage');
+    registerReducer('PanelMenuPage');
   }
-  return ['menu', 'person', 'notification']
+  return ['role', 'panelMenu']
 };
 
 export const actionCreator: ActionCreatorFactory = ({ isMount, isServer, isHydrated }) => filterAction([
@@ -25,7 +25,7 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isServer, isHydra
 
 reducersInject(!SERVER_BUILD);
 
-const ChangePasswordPage = () => {
+const PanelMenuPage = () => {
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <PanelMenu />
@@ -33,4 +33,4 @@ const ChangePasswordPage = () => {
   );
 };
 
-export default memo(ChangePasswordPage);
+export default memo(PanelMenuPage);

@@ -1,8 +1,7 @@
-import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAction, createSelector } from '@reduxjs/toolkit';
 import { initialState, RoleType } from "./constants";
 import { logoutSuccess } from '../auth/reducers';
 import { Option } from "~/src/modules/Components/Input/types";
-import { ApplicationState } from '../configuration/constants';
 
 export const getRoleRequest = createAction('role/GET_ROLE_REQUEST');
 export const getRoleFail = createAction<string>('role/GET_ROLE_FAIL');
@@ -39,18 +38,21 @@ const roleSlice = createSlice({
   name: 'role',
   initialState,
   reducers: {
-    getRoleSuccess: (state, action: PayloadAction<string[]>) => {
+    getRoleSuccess: (_, action: PayloadAction<string[]>) => {
       return action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(logoutSuccess, () => initialState);
   },
-  selectors: {
-    roleSelector: (state) => state.map(roleOption),
-  }
 });
 
 export const roleReducer = roleSlice.reducer;
 export const { getRoleSuccess } = roleSlice.actions;
-export const { roleSelector } = roleSlice.selectors;
+
+const selectRoleState = (state: any) => state.panelMenu?.role || initialState;
+
+export const roleSelector = createSelector(
+  selectRoleState,
+  (roles) => roles.map(roleOption)
+);

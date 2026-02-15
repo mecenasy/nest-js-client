@@ -20,14 +20,14 @@ const AppContent = () => {
 
   return (
     <AppContainer>
-      <Routes>
+      <Routes >
         {menuConfig.extrudeUrl?.map((path) => (
           <Route key={path} path={path} element={null} />
         ))}
         <Route path={menuConfig.url} element={<menuConfig.Component />} />
       </Routes>
       <Routes>
-        <Route path={'/*'} element={<Auth />} />
+        <Route path={'*'} element={<Auth />} />
       </Routes>
 
       {transitions((style, item) => (
@@ -45,6 +45,6 @@ const AppContent = () => {
 
 export const App = () => (
   <Routes>
-    <Route path={'/*'} element={<AppContent />} />
+    <Route path={'*'} element={<AppContent />} />
   </Routes>
 )

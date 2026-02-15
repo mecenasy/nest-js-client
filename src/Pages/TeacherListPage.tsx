@@ -15,7 +15,7 @@ const reducersInject: ReducerFactory = (inject, force) => {
   if (force) {
     registerReducer('TeacherListPage');
   }
-  return ['userList']
+  return ['userList'];
 };
 
 const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isServer }, location) => filterAction([

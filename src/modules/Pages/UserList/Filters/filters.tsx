@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import * as P from './parts';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedFilters, getUserListFilters } from '~/src/store/userList/reducer';
@@ -7,9 +7,7 @@ import { Option } from '~/src/modules/Components/Input/types';
 import { Select } from '~/src/modules/Components/Input/Dropdown';
 import { getOption } from './getOptions';
 
-
-
-const Filters: FC = () => {
+const FiltersColumn = () => {
   const filters = useSelector(getUserListFilters);
   const selectedFilters = useSelector(getSelectedFilters);
   const dispatch = useDispatch();
@@ -51,4 +49,4 @@ const Filters: FC = () => {
   )
 };
 
-export default Filters;
+export default FiltersColumn;
