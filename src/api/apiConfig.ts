@@ -1,6 +1,7 @@
-const defaultProtocol = (typeof window !== 'undefined' && window.location && window.location.protocol)
-  ? window.location.protocol.replace(':', '')
-  : 'http';
+const defaultProtocol =
+  typeof window !== 'undefined' && window.location && window.location.protocol
+    ? window.location.protocol.replace(':', '')
+    : 'http';
 const protocol = API_HOST_PROTOCOL || defaultProtocol;
 const host = API_HOST_URL || 'localhost';
 const port = API_HOST_PORT ? +API_HOST_PORT : 4000;

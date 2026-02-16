@@ -2,7 +2,9 @@ import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { initialState, MessageList, Message, MessageData, File } from './constants';
 import { logoutSuccess } from '../auth/reducers';
 
-export const sendMessageRequest = createAction<MessageData & PromiseFParams>('message/sendMessageRequest');
+export const sendMessageRequest = createAction<MessageData & PromiseFParams>(
+  'message/sendMessageRequest',
+);
 export const getMessageListRequest = createAction<string>('message/getMessageListRequest');
 export const getMessageRequest = createAction<string>('message/getMessageRequest');
 export const getFileRequest = createAction<File>('message/getFileRequest');
@@ -45,19 +47,27 @@ const messageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(logoutSuccess, () => initialState)
-      .addCase(sendMessageRequest, (state) => { state.isFetching = true; })
-      .addCase(getMessageListRequest, (state) => { state.isFetching = true; })
-      .addCase(getMessageRequest, (state) => { state.isFetching = true; })
-      .addCase(sendMessageFail, (state) => { state.isFetching = true; })
-      .addCase(getMessageListFail, (state) => { state.isFetching = true; })
-      .addCase(getMessageFail, (state) => { state.isFetching = true; })
-  }
+      .addCase(sendMessageRequest, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(getMessageListRequest, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(getMessageRequest, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(sendMessageFail, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(getMessageListFail, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(getMessageFail, (state) => {
+        state.isFetching = true;
+      });
+  },
 });
 
 export const messageReducer = messageSlice.reducer;
-export const {
-  sendMessageSuccess,
-  getMessageListSuccess,
-  getMessageSuccess,
-  getFileSuccess,
-} = messageSlice.actions;
+export const { sendMessageSuccess, getMessageListSuccess, getMessageSuccess, getFileSuccess } =
+  messageSlice.actions;

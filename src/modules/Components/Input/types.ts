@@ -11,12 +11,12 @@ export interface DroppedFile extends File {
 }
 
 export interface SubjectFieldsProps<T> {
-  disabled?: boolean,
+  disabled?: boolean;
   name: string;
   form: FormApi<T, Partial<T>>;
   className?: string;
-  placeholder: string,
-  inputType?: InputType
+  placeholder: string;
+  inputType?: InputType;
   label?: string;
   type?: string;
 }
@@ -26,7 +26,7 @@ export interface InputWithLabelProps<T> extends InputFormWrapperProps<T> {
 }
 
 export interface InputProps<T> {
-  placeholder: string,
+  placeholder: string;
   onChange: (event: ChangeEvent<T>) => void;
   type?: string;
   [key: string]: any;
@@ -39,8 +39,8 @@ export enum InputType {
 }
 
 export type InputFormWrapperProps<T> = FieldRenderPropsDep<T> & {
-  placeholder: string,
-  inputType?: InputType
+  placeholder: string;
+  inputType?: InputType;
   type?: string;
 };
 
@@ -49,7 +49,11 @@ export interface Option<T> {
   label: string;
 }
 
-export type DropzoneProps = FieldRenderPropsDep<DroppedFile> & { label: string; multiple: boolean, className?: string }
+export type DropzoneProps = FieldRenderPropsDep<DroppedFile> & {
+  label: string;
+  multiple: boolean;
+  className?: string;
+};
 
 export interface DropzoneFieldProps<T> {
   name: string;
@@ -64,7 +68,7 @@ export type DropdownPropsDep<T> = FieldRenderPropsDep<Option<T>> & {
   isMulti: boolean;
   label: string;
   name?: string;
-}
+};
 
 export type DropdownProps<T> = FieldRenderProps<Option<T>> & {
   placeholder?: string;
@@ -74,7 +78,7 @@ export type DropdownProps<T> = FieldRenderProps<Option<T>> & {
   label: string;
   name?: string;
   [otherProp: string]: any;
-}
+};
 
 export type SelectProps<T> = {
   name: string;
@@ -85,15 +89,15 @@ export type SelectProps<T> = {
   isMulti: boolean;
   label: string;
   [key: string]: any;
-}
+};
 
 export type ToggleProps = FieldRenderPropsDep<string> & {
   icons: boolean;
   label: string;
   leftText?: string;
-  rightText?: string
+  rightText?: string;
   className?: string;
-}
+};
 
 export type ToggleFieldProps<T> = {
   form: FormApi<T, Partial<T>>;
@@ -101,9 +105,9 @@ export type ToggleFieldProps<T> = {
   icons: boolean;
   label: string;
   leftText?: string;
-  rightText?: string
+  rightText?: string;
   className?: string;
-}
+};
 
 export interface SelectFieldProps<T, R> {
   name: string;
@@ -114,4 +118,3 @@ export interface SelectFieldProps<T, R> {
   isMulti: boolean;
   label: string;
 }
-

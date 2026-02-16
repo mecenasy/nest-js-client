@@ -1,11 +1,14 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import axios, { AxiosResponse } from 'axios';
-import {
-  MessageList,
-  Message,
-} from './constants';
+import { MessageList, Message } from './constants';
 import * as A from './reducer';
-import { getFile, getMessage, getMessages, sendMessage, setReadMessage } from '~/src/api/messages/requests';
+import {
+  getFile,
+  getMessage,
+  getMessages,
+  sendMessage,
+  setReadMessage,
+} from '~/src/api/messages/requests';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 
@@ -16,11 +19,11 @@ function* sendMessageWorker(action: ReturnType<typeof A.sendMessageRequest>) {
     try {
       yield call(sendMessage, action.payload);
       yield put(A.sendMessageSuccess());
-      yield call(action.payload.resolve)
+      yield call(action.payload.resolve);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.sendMessageFail(error.message));
-        yield call(action.payload.reject)
+        yield call(action.payload.reject);
       }
     }
   }
@@ -61,7 +64,6 @@ function* getFileWorker(action: ReturnType<typeof A.getFileRequest>) {
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
-
       const fileName = action.payload.name;
       const response: AxiosResponse<Blob> = yield call(getFile, action.payload.path);
       const blob = new Blob([response.data]);

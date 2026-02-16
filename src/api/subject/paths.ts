@@ -1,1 +1,1 @@
-export const subjectPath = 'university/subject'
+export const subjectPath = 'university/subject';

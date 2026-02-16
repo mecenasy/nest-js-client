@@ -7,8 +7,8 @@ const hydrateSlice = createSlice({
     didHydrate: () => true,
   },
   selectors: {
-    didHydrateSelector: (state) => state
-  }
+    didHydrateSelector: (state) => state,
+  },
 });
 
 export const hydrateReducer = hydrateSlice.reducer;

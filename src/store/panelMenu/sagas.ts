@@ -20,7 +20,6 @@ export function* getMenuWorker() {
       const { data } = yield call(getMenu);
 
       yield put(A.getMenuItemsSuccess(data));
-
     } catch (error: any) {
       yield put(A.getMenuItemsFail(error));
     }
@@ -35,14 +34,12 @@ export function* setMenuWorker(action: ReturnType<typeof A.addMenuItemsRequest>)
       const { data }: { data: MenuItem } = yield call(addMenuItem, action.payload);
 
       yield put(A.addMenuItemsSuccess(data));
-
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.addMenuItemsFail(error.message));
       }
     }
   }
-
 }
 
 export function* removeMenuWorker(action: ReturnType<typeof A.removeMenuItemsRequest>) {
@@ -53,12 +50,10 @@ export function* removeMenuWorker(action: ReturnType<typeof A.removeMenuItemsReq
       yield call(removeMenuItem, action.payload);
 
       yield put(A.removeMenuItemsSuccess(action.payload));
-
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.removeMenuItemsFail(error.message));
       }
     }
   }
-
 }

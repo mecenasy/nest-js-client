@@ -6,7 +6,7 @@ export enum ListType {
   Teacher = 'teacher',
   Admin = 'admin',
   User = 'user',
-  OnlyTeacher = 'onlyTeacher'
+  OnlyTeacher = 'onlyTeacher',
 }
 export interface UserListState {
   simpleUsers?: SimplePerson[];
@@ -29,8 +29,8 @@ export interface Pagination {
   totalItems: number;
 }
 
-export type Filters = Record<string, string[]>
-export type SelectedFilters = Record<string, string | string[] | undefined>
+export type Filters = Record<string, string[]>;
+export type SelectedFilters = Record<string, string | string[] | undefined>;
 
 export const initialState: UserListState = {
   pagination: {
@@ -46,7 +46,7 @@ export const initialState: UserListState = {
     group: [],
     roles: [],
     specialties: [],
-    years: []
+    years: [],
   },
-  selectedFilters: {}
+  selectedFilters: {},
 };

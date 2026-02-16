@@ -29,14 +29,10 @@ const notificationSlice = createSlice({
   },
   selectors: {
     unReadSelector: (state: NotificationState) => state.unReadMessage,
-  }
+  },
 });
 
 export const notificationReducer = notificationSlice.reducer;
 export const { unReadSelector } = notificationSlice.selectors;
-export const {
-  getNotificationSuccess,
-  setUnReadMessage,
-  unReadUp,
-  unReadDown
-} = notificationSlice.actions;
+export const { getNotificationSuccess, setUnReadMessage, unReadUp, unReadDown } =
+  notificationSlice.actions;

@@ -6,8 +6,10 @@ export const getOption = (data: SimplePerson[] | undefined): Option<string>[] =>
     return [];
   }
 
-  return data?.length ? data.map((item: SimplePerson) => ({
-    label: item.fullName,
-    value: item.id,
-  })) : [];
+  return data?.length
+    ? data.map((item: SimplePerson) => ({
+        label: item.fullName,
+        value: item.id,
+      }))
+    : [];
 };

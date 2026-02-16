@@ -1,7 +1,7 @@
-import { DroppedFile, Option } from "~/src/modules/Components/Input/types"
-import { MenuSide, Menu } from "../menu/constants"
+import { DroppedFile, Option } from '~/src/modules/Components/Input/types';
+import { MenuSide, Menu } from '../menu/constants';
 
-export type MenuItem = Menu & { id: string, role: string[] };
+export type MenuItem = Menu & { id: string; role: string[] };
 
 export type MenuItemsState = MenuItem[];
 
@@ -23,7 +23,7 @@ export interface MenuItemData {
   [MenuItemField.Name]: string;
   [MenuItemField.ShortName]?: string;
   [MenuItemField.Position]: number;
-  [MenuItemField.Hidden]?: boolean
+  [MenuItemField.Hidden]?: boolean;
   [MenuItemField.Link]: string;
   [MenuItemField.Side]: MenuSide;
   [MenuItemField.SideBoolean]: boolean;
@@ -32,4 +32,3 @@ export interface MenuItemData {
 }
 
 export const initialState: MenuItem[] = [];
-

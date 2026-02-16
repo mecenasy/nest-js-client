@@ -5,6 +5,6 @@ export enum RoleType {
   User = 'user',
 }
 
-export type RoleState = string[]
+export type RoleState = string[];
 
 export const initialState: string[] = [];

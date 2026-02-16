@@ -7,14 +7,14 @@ export const getRole = async () => {
 };
 
 export const getStudentData = async () => {
-  return await api.get(universityMap)
+  return await api.get(universityMap);
 };
 export const getMenu = async () => {
-  return await api.get(allMenu)
+  return await api.get(allMenu);
 };
 
 export const removeMenuItem = async (id: string) => {
-  return await api.delete(`${menu}/${id}`)
+  return await api.delete(`${menu}/${id}`);
 };
 
 export const addMenuItem = (form: MenuItemData) => {

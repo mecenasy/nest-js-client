@@ -28,12 +28,12 @@ const subjectSlice = createSlice({
   selectors: {
     getSubjectSelector: (subjects, { search }: Param) => {
       if (search) {
-        return subjects?.
-          filter(({ name }) => name?.toLocaleLowerCase()
-            .includes(search.toLocaleLowerCase()))
+        return subjects?.filter(({ name }) =>
+          name?.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+        );
       }
-      return subjects
-    }
+      return subjects;
+    },
   },
 });
 

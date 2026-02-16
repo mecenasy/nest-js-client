@@ -5,13 +5,13 @@
 export default function copyPropertyDescriptors<T extends object>(
   source: object,
   target: T,
-  excludeKeys: string[] = []
+  excludeKeys: string[] = [],
 ): T {
-  const descriptors = Object.getOwnPropertyDescriptors(source)
+  const descriptors = Object.getOwnPropertyDescriptors(source);
   for (const key of Object.keys(descriptors)) {
     if (!excludeKeys.includes(key)) {
-      Object.defineProperty(target, key, descriptors[key])
+      Object.defineProperty(target, key, descriptors[key]);
     }
   }
-  return target
+  return target;
 }

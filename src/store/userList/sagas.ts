@@ -10,7 +10,7 @@ import {
   getSimpleUserListRequest,
   setFilter,
   setPage,
-  getSelectedFilters
+  getSelectedFilters,
 } from './reducer';
 import { getSimpleUsers, getUsers } from '~/src/api/userlist/requests';
 import { replace } from 'redux-first-history';
@@ -20,9 +20,9 @@ import axios from 'axios';
 
 export function* getUserListWatcher() {
   yield takeLatest(getUserListRequest.type, getUserListWorker);
-  yield fork(getUserListParamsWatcher)
+  yield fork(getUserListParamsWatcher);
   yield takeLatest(getSimpleUserListRequest.type, getSimpleUserListWorker);
-  yield fork(getUserListParamsWatcher)
+  yield fork(getUserListParamsWatcher);
 }
 
 export function* getUserListParamsWatcher() {
@@ -40,10 +40,10 @@ export function* getUserListParamsWorker() {
     } else if (params[key]) {
       convertedParams[key] = params[key] as string;
     }
-  })
+  });
 
   const searchParam = new URLSearchParams(convertedParams).toString();
-  yield put(replace({ search: searchParam }))
+  yield put(replace({ search: searchParam }));
 }
 
 export function* getUserListWorker(action: ReturnType<typeof getUserListRequest>) {
@@ -51,7 +51,6 @@ export function* getUserListWorker(action: ReturnType<typeof getUserListRequest>
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-
     try {
       const { data }: { data: UserListState } = yield call(getUsers, searchParam ?? '', listType);
 

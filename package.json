@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "npm run client && npm run server",
     "assets": "ts-node utils/assets",
+    "format": "prettier --write \"src/**/*.ts\"",
     "start:dev": "webpack serve --config webpack/webpack.dev.config.ts",
     "client": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack/webpack.prod.config.ts",
     "client:watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack/webpack.prod.config.ts --watch",
@@ -90,6 +91,7 @@
     "final-form": "^4.20.10",
     "history": "^5.3.0",
     "js-cookie": "^3.0.5",
+    "prettier": "^3.8.1",
     "react": "^19.0.0",
     "react-dnd": "^16.0.1",
     "react-dom": "^19.0.0",

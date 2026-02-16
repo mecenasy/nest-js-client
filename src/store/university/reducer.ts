@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAction, createSelector } from '@reduxjs/toolkit';
-import { initialState, UniversityState } from "./constants";
+import { initialState, UniversityState } from './constants';
 import { Option } from '~/src/modules/Components/Input/types';
 import { logoutSuccess } from '../auth/reducers';
 import { ApplicationState } from '../configuration/constants';
@@ -46,10 +46,12 @@ const universitySlice = createSlice({
     },
     getSpecialtiesSelector: ({ specialties }, directionId: string, yearId: string) => {
       if (!yearId && !directionId) {
-        return specialties
+        return specialties;
       }
       if (yearId && directionId) {
-        return specialties.filter((spec) => spec.direction.includes(yearId) && spec.direction === directionId);
+        return specialties.filter(
+          (spec) => spec.direction.includes(yearId) && spec.direction === directionId,
+        );
       }
       if (directionId) {
         return specialties.filter((spec) => spec.direction === directionId);
@@ -58,8 +60,9 @@ const universitySlice = createSlice({
     },
     getYearSelector: ({ years }, specialtyId: string, groupId: string) => {
       if (specialtyId && groupId) {
-        return years.filter((y) => y.specialties.includes(specialtyId)
-          && y.groups.includes(groupId));
+        return years.filter(
+          (y) => y.specialties.includes(specialtyId) && y.groups.includes(groupId),
+        );
       }
       if (specialtyId && !groupId) {
         return years.filter((y) => y.specialties.includes(specialtyId));
@@ -72,7 +75,7 @@ const universitySlice = createSlice({
     },
     getGroupSelector: ({ group }, specialtyId: string, yearId: string) => {
       if (!yearId && !specialtyId) {
-        return group
+        return group;
       }
       if (yearId && specialtyId) {
         return group.filter((gr) => gr.years.includes(yearId) && gr.specialty === specialtyId);
@@ -83,9 +86,9 @@ const universitySlice = createSlice({
       return group.filter((gr) => gr.years.includes(yearId));
     },
     getSpecialtySelector: ({ specialties }, groupId: string) => {
-      return specialties?.find(({ groups }) => groups.includes(groupId))?.name ?? ''
-    }
-  }
+      return specialties?.find(({ groups }) => groups.includes(groupId))?.name ?? '';
+    },
+  },
 });
 
 export const { getUniversitySuccess } = universitySlice.actions;
@@ -99,43 +102,43 @@ export const getYear = createSelector(selectUniversity, (state) => state.years);
 export const getGroup = createSelector(selectUniversity, (state) => state.group);
 
 export const getDirectionSelector = createSelector(
-  getDirection, (_state: ApplicationState, id: string) => id,
+  getDirection,
+  (_state: ApplicationState, id: string) => id,
   (directions, id) => {
     if (!id) {
       return directions;
     }
     return directions.filter(({ specialties }) => specialties.includes(id));
-  }
+  },
 );
 
 export const getSpecialtiesSelector = createSelector(
-
   getSpecialty,
   (_state: ApplicationState, { directionId }: SpecialtyIds) => directionId.value,
   (_state: ApplicationState, { yearId }: SpecialtyIds) => yearId.value,
   (specialties, directionId, yearId) => {
     if (!yearId && !directionId) {
-      return specialties
+      return specialties;
     }
     if (yearId && directionId) {
-      return specialties.filter((spec) => spec.direction.includes(yearId) && spec.direction === directionId);
+      return specialties.filter(
+        (spec) => spec.direction.includes(yearId) && spec.direction === directionId,
+      );
     }
     if (directionId) {
       return specialties.filter((spec) => spec.direction === directionId);
     }
     return specialties.filter((spec) => spec.years.includes(yearId));
-  }
+  },
 );
 
 export const getYearSelector = createSelector(
-
   getYear,
   (_state: ApplicationState, { specialtyId }: YearIds) => specialtyId.value,
   (_state: ApplicationState, { groupId }: YearIds) => groupId.value,
   (years, specialtyId, groupId) => {
     if (specialtyId && groupId) {
-      return years.filter((y) => y.specialties.includes(specialtyId)
-        && y.groups.includes(groupId));
+      return years.filter((y) => y.specialties.includes(specialtyId) && y.groups.includes(groupId));
     }
     if (specialtyId && !groupId) {
       return years.filter((y) => y.specialties.includes(specialtyId));
@@ -145,7 +148,7 @@ export const getYearSelector = createSelector(
     }
 
     return years;
-  }
+  },
 );
 
 export const getGroupSelector = createSelector(
@@ -154,7 +157,7 @@ export const getGroupSelector = createSelector(
   (_state: ApplicationState, { yearId }: GroupIds) => yearId.value,
   (group, specialtyId, yearId) => {
     if (!yearId && !specialtyId) {
-      return group
+      return group;
     }
     if (yearId && specialtyId) {
       return group.filter((gr) => gr.years.includes(yearId) && gr.specialty === specialtyId);
@@ -163,13 +166,13 @@ export const getGroupSelector = createSelector(
       return group.filter((gr) => gr.specialty === specialtyId);
     }
     return group.filter((gr) => gr.years.includes(yearId));
-  }
+  },
 );
 
 export const getSpecialtySelector = createSelector(
   getSpecialty,
   (_state: ApplicationState, groupId: string) => groupId,
   (specialties, groupId) => {
-    return specialties?.find(({ groups }) => groups.includes(groupId))?.name ?? ''
-  }
+    return specialties?.find(({ groups }) => groups.includes(groupId))?.name ?? '';
+  },
 );

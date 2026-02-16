@@ -7,12 +7,14 @@ import {
   RefreshTokenSuccess,
   LoginData,
   ChangePasswordData,
-} from "./constants";
+} from './constants';
 
 export const loginRequest = createAction<LoginData & PromiseFParams>('auth/loginRequest');
 export const logoutRequest = createAction('auth/logoutRequest');
 export const refreshTokenRequest = createAction('auth/refreshTokenRequest');
-export const changePasswordRequest = createAction<Omit<ChangePasswordData, 'confirmPassword'> & PromiseFParams>('auth/changePasswordRequest');
+export const changePasswordRequest = createAction<
+  Omit<ChangePasswordData, 'confirmPassword'> & PromiseFParams
+>('auth/changePasswordRequest');
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -68,8 +70,7 @@ export const authSlice = createSlice({
     userTokenSelector: (state) => state.token,
     loggedInStatusSelector: (state) => state.loggedIn,
     tokenExpiredInSelector: (state) => +state.expireAt,
-
-  }
+  },
 });
 
 export const {
@@ -80,9 +81,8 @@ export const {
   refreshTokenSuccess,
   refreshTokenFail,
   changePasswordSuccess,
-  changePasswordFail
+  changePasswordFail,
 } = authSlice.actions;
-
 
 export const userSlice = createSlice({
   name: 'user',
@@ -104,20 +104,13 @@ export const userSlice = createSlice({
     userIdSelector: (state) => state.userId,
     userSelector: (state) => state,
     userRoleSelector: (state) => state.role,
-  }
+  },
 });
 
 export const authReducer = authSlice.reducer;
 export const userReducer = userSlice.reducer;
 
-export const {
-  loggedInStatusSelector,
-  userTokenSelector,
-  tokenExpiredInSelector
-} = authSlice.selectors;
-export const {
-  getIsDefaultPassword,
-  userIdSelector,
-  userSelector,
-  userRoleSelector
-} = userSlice.selectors;
+export const { loggedInStatusSelector, userTokenSelector, tokenExpiredInSelector } =
+  authSlice.selectors;
+export const { getIsDefaultPassword, userIdSelector, userSelector, userRoleSelector } =
+  userSlice.selectors;

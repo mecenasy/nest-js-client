@@ -5,7 +5,7 @@ export interface Item {
 export interface Param {
   group?: string;
   year?: string;
-  search?: string
+  search?: string;
 }
 
 export interface Subject {
@@ -21,7 +21,7 @@ export interface Subject {
 export interface CreateSubject {
   name: string;
   auditorium: string;
-  teacher: string
+  teacher: string;
   groups: string[];
   years: string[];
   specialties: string[];

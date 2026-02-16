@@ -45,5 +45,5 @@ export const initialState: UniversityState = {
   specialties: [],
   years: [],
   group: [],
-  roles: []
-}
+  roles: [],
+};

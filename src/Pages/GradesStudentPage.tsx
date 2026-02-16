@@ -16,21 +16,18 @@ const reducersInject: ReducerFactory = (inject, force) => {
 };
 
 export const actionCreator: ActionCreatorFactory = (
-  { isHydrated, isMount, isServer, isUpdate },
+  { isHydrated, isMount, isServer },
 ) => {
 
 
   return filterAction([
     Boolean(isServer || (isMount && isHydrated)) && getTeacherGradesRequest(),
-    Boolean(isServer || (isMount && isHydrated)) && getStudentsGradesRequest(),
   ]);
 };
 
 reducersInject(!SERVER_BUILD);
 
 const GradesPage = () => {
-  ;
-
   return (
     <ActionsWrapper
       reducersKey={reducersInject(SERVER_BUILD, true)}

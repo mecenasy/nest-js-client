@@ -19,7 +19,6 @@ export function* getPersonWorker() {
     try {
       const personId: string = yield select(userIdSelector);
       if (personId) {
-
         const { data }: { data: Person } = yield call(getPersonByUserId);
 
         yield put(A.getPersonSuccess({ userId: personId, person: data }));
@@ -49,4 +48,4 @@ export function* addPersonWorker(action: ReturnType<typeof A.addPersonRequest>) 
       }
     }
   }
-} 
+}

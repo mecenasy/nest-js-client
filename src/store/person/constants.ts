@@ -18,7 +18,6 @@ export enum Specialty {
   None = '',
 }
 
-
 export type Person = {
   id: string;
   name: string;
@@ -28,7 +27,7 @@ export type Person = {
   photo?: string;
   address?: Address;
   student?: Student;
-}
+};
 
 export interface SimplePerson {
   id: string;
@@ -54,9 +53,9 @@ interface Student {
 }
 
 export interface PersonResponse {
-  userId: string; person: Person;
+  userId: string;
+  person: Person;
 }
-
 
 export const initialState: Person = {
   id: '',

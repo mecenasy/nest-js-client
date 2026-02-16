@@ -3,5 +3,5 @@ export interface CounterState {
 }
 
 export const initialState = {
-  value: 0
-}
+  value: 0,
+};

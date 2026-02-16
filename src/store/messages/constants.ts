@@ -17,7 +17,6 @@ export interface File {
   path: string;
 }
 
-
 export enum MessageField {
   Title = 'title',
   Content = 'content',
@@ -75,5 +74,5 @@ export const initialState: MessageState = {
   },
   messageDi: {},
   isFetching: false,
-  unRead: 0
+  unRead: 0,
 };

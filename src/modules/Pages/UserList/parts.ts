@@ -3,7 +3,6 @@ import { media } from '~/src/styles/media';
 import PersonBoxBase from '../Home/PersonBox';
 import { DataWrapper } from '../Home/parts';
 
-
 export const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -30,14 +29,14 @@ export const PersonBox = styled(PersonBoxBase)`
   height: 80px;
   width: unset;
   transition: all 0.5s ease-in-out;
-  
+
   ${DataWrapper} {
     transition: all 0.5s ease-in-out;
     opacity: 0;
     height: 0;
     overflow: hidden;
   }
-  
+
   &:hover {
     height: 120px;
 

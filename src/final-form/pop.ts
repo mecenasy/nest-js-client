@@ -1,18 +1,12 @@
 // Copy from MDN: https://github.com/final-form/final-form-arrays
 
-import { MutableState, Mutator, Tools } from 'final-form'
-import remove from './remove'
+import { MutableState, Mutator, Tools } from 'final-form';
+import remove from './remove';
 
-const pop: Mutator<any> = (
-  [name]: any[],
-  state: MutableState<any>,
-  tools: Tools<any>
-): any => {
+const pop: Mutator<any> = ([name]: any[], state: MutableState<any>, tools: Tools<any>): any => {
   const { getIn } = tools;
-  const array = getIn(state.formState.values, name)
-  return array && array.length > 0
-    ? remove([name, array.length - 1], state, tools)
-    : undefined
-}
+  const array = getIn(state.formState.values, name);
+  return array && array.length > 0 ? remove([name, array.length - 1], state, tools) : undefined;
+};
 
-export default pop 
+export default pop;

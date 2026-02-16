@@ -7,7 +7,5 @@ export const configs: PageConfig[] = context
   .filter((key: string) => key !== './menuConfig.ts')
   .flatMap((key: string) => {
     const mod = context(key);
-    return Object.values(mod).filter(
-      (exportedItem) => typeof exportedItem === 'object'
-    );
+    return Object.values(mod).filter((exportedItem) => typeof exportedItem === 'object');
   });

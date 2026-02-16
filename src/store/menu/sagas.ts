@@ -17,7 +17,6 @@ export function* getMenuWorker() {
     const personId: string = yield select(userIdSelector);
     try {
       if (personId) {
-
         const { data } = yield call(getMenu);
 
         yield put(getMenuSuccess(data));

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import WhiteButton from '../../../Components/Buttons/IconButton';
-import { animated } from '@react-spring/web'
+import { animated } from '@react-spring/web';
 import DropzoneBase from '../../../Components/Input/Dropzone';
 import * as P from '../../../Components/Input/parts';
 
@@ -15,7 +15,7 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const Wrapper = styled.div`
-position: relative;
+  position: relative;
   height: calc(100vh - 400px);
   min-height: 580px;
   overflow-y: scroll;
@@ -33,7 +33,7 @@ export const MessageHeader = styled.h3<{ $isRead: boolean }>`
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
-  font-weight: ${({ $isRead }) => $isRead ? 'normal' : 'bold'};
+  font-weight: ${({ $isRead }) => ($isRead ? 'normal' : 'bold')};
 `;
 
 export const Content = styled.div`
@@ -54,7 +54,7 @@ export const FooterWrapper = styled.div`
   justify-content: space-between;
   align-items: end;
   padding: 12px;
-`
+`;
 
 export const FileButtons = styled.div`
   display: flex;

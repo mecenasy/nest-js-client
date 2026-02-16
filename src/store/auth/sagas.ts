@@ -1,8 +1,24 @@
 import { Task } from '@redux-saga/types';
 import { LOCATION_CHANGE } from 'redux-first-history';
-import { call, cancel, delay, fork, put, race, select, take, takeLatest, apply } from 'redux-saga/effects';
+import {
+  call,
+  cancel,
+  delay,
+  fork,
+  put,
+  race,
+  select,
+  take,
+  takeLatest,
+  apply,
+} from 'redux-saga/effects';
 import cookie from 'js-cookie';
-import { loginUser, logoutUser, refreshUserToken, changePasswordUser } from '../../api/auth/requests';
+import {
+  loginUser,
+  logoutUser,
+  refreshUserToken,
+  changePasswordUser,
+} from '../../api/auth/requests';
 import * as A from './reducers';
 import { AuthState, LoggedStatus } from './constants';
 import { loggedInStatusSelector, tokenExpiredInSelector } from './reducers';
@@ -25,7 +41,7 @@ let refreshTask: Task;
 export function* initialAuth() {
   try {
     const { data }: { data: AuthState } = yield call(refreshUserToken);
-    const { auth, user } = data
+    const { auth, user } = data;
 
     if (user) {
       yield apply(cookie, 'set', ['jwt', auth.token, { expires: +auth.expireAt }]);
@@ -47,7 +63,9 @@ function* cancelRefreshWorker() {
 export function* loginWorker(action: ReturnType<typeof A.loginRequest>) {
   if (action.type === A.loginRequest.type) {
     try {
-      const { data: { auth, user } }: { data: AuthState } = yield call(loginUser, action.payload.user, action.payload.password);
+      const {
+        data: { auth, user },
+      }: { data: AuthState } = yield call(loginUser, action.payload.user, action.payload.password);
 
       yield apply(cookie, 'set', ['jwt', auth.token, { expires: +auth.expireAt }]);
       yield put(A.loginSuccess({ user, auth }));
@@ -56,9 +74,12 @@ export function* loginWorker(action: ReturnType<typeof A.loginRequest>) {
       yield call(action.payload.resolve, undefined);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-
         if (error.message.includes('401')) {
-          const errorMessage = { errorMessage: { error: 'Logowanie się nie powiopdło. Sprawdź czy masz poprawny login i hasło.' } }
+          const errorMessage = {
+            errorMessage: {
+              error: 'Logowanie się nie powiopdło. Sprawdź czy masz poprawny login i hasło.',
+            },
+          };
           yield put(A.loginSuccess(errorMessage));
           yield call(action.payload.resolve, errorMessage);
           return;
@@ -92,7 +113,7 @@ export function* refreshTokenWorker() {
     try {
       const initialTime = +new Date();
       const expiresIn: number = yield select(tokenExpiredInSelector);
-      const expiresTime = +expiresIn - 5000
+      const expiresTime = +expiresIn - 5000;
 
       const { winner } = yield race({
         winner: take(LOCATION_CHANGE),
@@ -125,7 +146,7 @@ export function* logoutWorker() {
     yield call(logoutUser);
     yield apply(cookie, 'remove', ['jwt']);
 
-    yield put(A.logoutSuccess())
+    yield put(A.logoutSuccess());
   } catch (error) {
     if (axios.isAxiosError(error)) {
       yield put(A.logoutFail());
@@ -141,18 +162,14 @@ export function* waitForAuthStatus(): any {
       let retry = 10;
 
       while (retry) {
-        yield (delay(200));
+        yield delay(200);
         authStatus = yield select(loggedInStatusSelector);
         if (authStatus !== LoggedStatus.Unknown) {
           retry--;
         }
       }
     } else {
-      yield take([
-        A.loginSuccess.type,
-        A.logoutSuccess.type,
-        A.loginFail.type,
-      ]);
+      yield take([A.loginSuccess.type, A.logoutSuccess.type, A.loginFail.type]);
     }
   }
 

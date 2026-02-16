@@ -1,12 +1,12 @@
-import { Task } from "@redux-saga/types";
-import { RouterState } from "redux-first-history";
-import { History } from "history";
-import { UnknownAction, Reducer, Store } from "redux";
-import { Auth, User } from "../auth/constants";
-import { CounterState } from "../counter/constants";
-import { MenuState } from "../menu/constants";
-import { Person } from "../person/constants";
-import { UniversityState } from "../university/constants";
+import { Task } from '@redux-saga/types';
+import { RouterState } from 'redux-first-history';
+import { History } from 'history';
+import { UnknownAction, Reducer, Store } from 'redux';
+import { Auth, User } from '../auth/constants';
+import { CounterState } from '../counter/constants';
+import { MenuState } from '../menu/constants';
+import { Person } from '../person/constants';
+import { UniversityState } from '../university/constants';
 import { UserListState } from '../userList/constants';
 import { MessageState } from '../messages/constants';
 import { NotificationState } from '../notification/constants';
@@ -39,7 +39,7 @@ export interface ApplicationState {
 export interface ApplicationReducer extends Record<keyof ApplicationState, any> {
   hydrate: Reducer<boolean>;
   auth: Reducer<Auth>;
-  user: Reducer<User>
+  user: Reducer<User>;
   counter: Reducer<CounterState>;
   person: Reducer<Person>;
   router: Reducer<RouterState>;
@@ -61,6 +61,6 @@ export type ConfigureStore = (
   rootSaga: () => Iterator<any>,
   reducerKeys?: Array<keyof ApplicationState>,
 ) => Promise<{
-  store: EnhancedStore<ApplicationState>,
+  store: EnhancedStore<ApplicationState>;
   rootSagaTask: Task;
 }>;

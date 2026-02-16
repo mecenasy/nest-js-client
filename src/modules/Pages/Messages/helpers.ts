@@ -1,4 +1,4 @@
-import { MessageFormData } from "~/src/store/messages/constants";
+import { MessageFormData } from '~/src/store/messages/constants';
 
 export const validateMessageForm = (values: MessageFormData) => {
   const errors: Partial<Record<keyof MessageFormData, string>> = {};

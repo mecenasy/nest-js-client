@@ -1,9 +1,16 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import * as A from './reducer';
-import { addGrades, getStudentGrades, getTeacherGrades, removeGrade, updateGrades } from '~/src/api/grade/requests';
+import {
+  addGrades,
+  getStudentGrades,
+  getTeacherGrades,
+  removeGrade,
+  updateGrades,
+} from '~/src/api/grade/requests';
 import axios from 'axios';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
+import { userIdSelector } from '../auth/reducers';
 
 function* addGradesWorker({ payload }: ReturnType<typeof A.addGradesRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
@@ -54,8 +61,10 @@ function* getTeacherGradesWorker() {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
+    const userId: string = yield select(userIdSelector);
+
     try {
-      const { data } = yield call(getTeacherGrades);
+      const { data } = yield call(getTeacherGrades, userId);
       yield put(A.getTeacherGrades(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -69,8 +78,9 @@ function* getStudentGradesWorker() {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
+    const userId: string = yield select(userIdSelector);
     try {
-      const { data } = yield call(getStudentGrades);
+      const { data } = yield call(getStudentGrades, userId);
       yield put(A.getStudentsGrades(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {

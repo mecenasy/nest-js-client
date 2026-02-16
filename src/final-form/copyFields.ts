@@ -1,12 +1,12 @@
 // Copy from MDN: https://github.com/final-form/final-form-arrays
 
-import { InternalFieldState } from 'final-form'
+import { InternalFieldState } from 'final-form';
 
 function copyField(
   oldFields: { [key: string]: InternalFieldState<any> },
   oldKey: string,
   newFields: { [key: string]: Partial<InternalFieldState<any>> },
-  newKey: string
+  newKey: string,
 ): void {
   newFields[newKey] = {
     ...oldFields[oldKey],
@@ -17,20 +17,20 @@ function copyField(
     change: oldFields[newKey] && oldFields[newKey].change,
     blur: oldFields[newKey] && oldFields[newKey].blur,
     focus: oldFields[newKey] && oldFields[newKey].focus,
-    lastFieldState: undefined // clearing lastFieldState forces renotification
-  }
+    lastFieldState: undefined, // clearing lastFieldState forces renotification
+  };
 
   if (!newFields[newKey].change) {
-    delete newFields[newKey].change
+    delete newFields[newKey].change;
   }
 
   if (!newFields[newKey].blur) {
-    delete newFields[newKey].blur
+    delete newFields[newKey].blur;
   }
 
   if (!newFields[newKey].focus) {
-    delete newFields[newKey].focus
+    delete newFields[newKey].focus;
   }
 }
 
-export default copyField 
+export default copyField;

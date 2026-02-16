@@ -2,12 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import * as A from './reducer';
-import {
-  addSubject,
-  deleteSubject,
-  getSubjects,
-  updateSubject,
-} from '~/src/api/subject/requests';
+import { addSubject, deleteSubject, getSubjects, updateSubject } from '~/src/api/subject/requests';
 import axios from 'axios';
 
 export function* subjectWatcher() {
@@ -76,4 +71,3 @@ export function* updateSubjectWorker(action: ReturnType<typeof A.updateSubjectRe
     }
   }
 }
-

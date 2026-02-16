@@ -1,6 +1,6 @@
 import Loadable from '@react-loadable/revised';
-import { PageConfig } from "./constants";
-import Loader from "../modules/Loader/Loader";
+import { PageConfig } from './constants';
+import Loader from '../modules/Loader/Loader';
 
 const TimetablePage = Loadable({
   loader: async () => import('../Pages/TimetablePage'),
@@ -11,4 +11,4 @@ export const timetableConfig: PageConfig = {
   url: '/time-table',
   Component: TimetablePage,
   exact: true,
-}
+};

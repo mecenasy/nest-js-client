@@ -1,6 +1,6 @@
 import Loadable from '@react-loadable/revised';
-import { PageConfig } from "./constants";
-import Loader from "../modules/Loader/Loader";
+import { PageConfig } from './constants';
+import Loader from '../modules/Loader/Loader';
 
 const Grades = Loadable({
   loader: async () => import('../Pages/GradesTeacherPage'),
@@ -8,6 +8,6 @@ const Grades = Loadable({
 });
 
 export const gradesStudentConfig: PageConfig = {
-  url: '/grade/teacher',
+  url: '/grade-teacher',
   Component: Grades,
-}
+};

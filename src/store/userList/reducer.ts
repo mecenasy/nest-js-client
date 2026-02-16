@@ -1,12 +1,18 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { convertFieldsToArray } from '~/src/PageConfigs/helpers/concert-fields-to-array';
-import { UserListState, initialState, ListType } from "./constants";
+import { UserListState, initialState, ListType } from './constants';
 import { SimplePerson } from '../person/constants';
 import { logoutSuccess } from '../auth/reducers';
 
-export const getUserListRequest = createAction<{ searchParam: string, listType: ListType }>('userList/getUserListRequest');
-export const getSimpleUserListRequest = createAction<ListType | undefined>('userList/getSimpleUserListRequest');
-export const getSimpleUserListFail = createAction<ListType | undefined>('userList/getSimpleUserListFail');
+export const getUserListRequest = createAction<{ searchParam: string; listType: ListType }>(
+  'userList/getUserListRequest',
+);
+export const getSimpleUserListRequest = createAction<ListType | undefined>(
+  'userList/getSimpleUserListRequest',
+);
+export const getSimpleUserListFail = createAction<ListType | undefined>(
+  'userList/getSimpleUserListFail',
+);
 
 const userListSlice = createSlice({
   name: 'userList',
@@ -22,17 +28,20 @@ const userListSlice = createSlice({
     getSimpleUserListSuccess: (state, action: PayloadAction<SimplePerson[]>) => {
       state.simpleUsers = action.payload;
     },
-    setFilter: (state, action: PayloadAction<{ name: string, value: string | string[] | undefined }>) => {
+    setFilter: (
+      state,
+      action: PayloadAction<{ name: string; value: string | string[] | undefined }>,
+    ) => {
       const { name, value } = action.payload;
       state.isFetching = true;
       state.selectedFilters[name] = value;
     },
-    setPage: (state, action: PayloadAction<{ page?: number, pageSize?: number }>) => {
+    setPage: (state, action: PayloadAction<{ page?: number; pageSize?: number }>) => {
       const { page, pageSize } = action.payload;
       state.isFetching = true;
       if (page) state.selectedFilters.page = page;
       if (pageSize) state.selectedFilters.pageSize = pageSize;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,7 +50,7 @@ const userListSlice = createSlice({
         const { searchParam } = action.payload;
         state.selectedFilters = convertFieldsToArray(
           Object.fromEntries(new URLSearchParams(searchParam ?? '')),
-          ['page', 'pageSize', 'orderBy', 'orderType']
+          ['page', 'pageSize', 'orderBy', 'orderType'],
         );
         state.isFetching = true;
       });
@@ -54,17 +63,12 @@ const userListSlice = createSlice({
     getUserListPagination: (state) => state.pagination,
     getFiltersMapSelector: (state) => state.filtersMap,
     getSimpleUsersSelector: (state) => state.simpleUsers,
-  }
+  },
 });
 
 export const userListReducer = userListSlice.reducer;
-export const {
-  getUserListSuccess,
-  getUserListFail,
-  getSimpleUserListSuccess,
-  setFilter,
-  setPage
-} = userListSlice.actions;
+export const { getUserListSuccess, getUserListFail, getSimpleUserListSuccess, setFilter, setPage } =
+  userListSlice.actions;
 export const {
   getUserList,
   getUserListFilters,
@@ -72,5 +76,5 @@ export const {
   getFiltersMap,
   getUserListPagination,
   getFiltersMapSelector,
-  getSimpleUsersSelector
+  getSimpleUsersSelector,
 } = userListSlice.selectors;

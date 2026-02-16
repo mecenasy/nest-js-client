@@ -48,26 +48,30 @@ export function* getTimeTableByGroupWorker(action: ReturnType<typeof getTimeTabl
         let receivedData: GroupTimeTable[] = [];
         switch (action.payload.type) {
           case CalendarType.Group: {
-            const { data } = yield call(getTimeTableByGroup, action.payload.group, action.payload.year);
-            receivedData = data
+            const { data } = yield call(
+              getTimeTableByGroup,
+              action.payload.group,
+              action.payload.year,
+            );
+            receivedData = data;
             break;
           }
           case CalendarType.Specialty: {
             const { data } = yield call(getTimeTableBySpecialty, action.payload.specialty);
-            receivedData = data
+            receivedData = data;
             break;
           }
           case CalendarType.Year: {
             const { data } = yield call(getTimeTableByYear, action.payload.year);
-            receivedData = data
-            break;
-          } default: {
-            const teacherId: string = yield select(userIdSelector);
-            const { data } = yield call(getTimeTableByTeacher, teacherId);
-            receivedData = data
+            receivedData = data;
             break;
           }
-
+          default: {
+            const teacherId: string = yield select(userIdSelector);
+            const { data } = yield call(getTimeTableByTeacher, teacherId);
+            receivedData = data;
+            break;
+          }
         }
         yield put(getTimeTableSuccess(receivedData));
       } catch (error) {
@@ -93,7 +97,9 @@ export function* getCalendarWorker() {
   }
 }
 
-export function* addSubjectToTimeTableWorker(action: ReturnType<typeof addSubjectToTimeTableRequest>) {
+export function* addSubjectToTimeTableWorker(
+  action: ReturnType<typeof addSubjectToTimeTableRequest>,
+) {
   if (action.type === addSubjectToTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
@@ -109,7 +115,9 @@ export function* addSubjectToTimeTableWorker(action: ReturnType<typeof addSubjec
   }
 }
 
-export function* deleteSubjectFromTimeTableWorker(action: ReturnType<typeof deleteSubjectFromTimeTableRequest>) {
+export function* deleteSubjectFromTimeTableWorker(
+  action: ReturnType<typeof deleteSubjectFromTimeTableRequest>,
+) {
   if (action.type === deleteSubjectFromTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
@@ -125,7 +133,9 @@ export function* deleteSubjectFromTimeTableWorker(action: ReturnType<typeof dele
   }
 }
 
-export function* moveSubjectInTimeTableWorker(action: ReturnType<typeof moveSubjectInTimeTableRequest>) {
+export function* moveSubjectInTimeTableWorker(
+  action: ReturnType<typeof moveSubjectInTimeTableRequest>,
+) {
   if (action.type === moveSubjectInTimeTableRequest.type) {
     const authStatus: LoggedStatus = yield call(waitForAuthStatus);
     if (authStatus === LoggedStatus.LoggedIn) {
@@ -137,7 +147,7 @@ export function* moveSubjectInTimeTableWorker(action: ReturnType<typeof moveSubj
           oldCalendarPlace: action.payload.data,
           year: action.payload.year,
           group: action.payload.group,
-        }
+        };
 
         yield put(moveSubjectInTimeTableSuccess(successPayload));
       } catch (error) {

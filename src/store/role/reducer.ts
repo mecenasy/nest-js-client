@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAction, createSelector } from '@reduxjs/toolkit';
-import { initialState, RoleType } from "./constants";
+import { initialState, RoleType } from './constants';
 import { logoutSuccess } from '../auth/reducers';
-import { Option } from "~/src/modules/Components/Input/types";
+import { Option } from '~/src/modules/Components/Input/types';
 
 export const getRoleRequest = createAction('role/GET_ROLE_REQUEST');
 export const getRoleFail = createAction<string>('role/GET_ROLE_FAIL');
@@ -9,30 +9,30 @@ export const getRoleFail = createAction<string>('role/GET_ROLE_FAIL');
 export const roleOption = (role: string): Option<string> => {
   switch (role) {
     case RoleType.Admin: {
-      return ({
+      return {
         value: role,
-        label: 'Administrator'
-      });
+        label: 'Administrator',
+      };
     }
     case RoleType.Student: {
-      return ({
+      return {
         value: role,
-        label: 'Student'
-      });
+        label: 'Student',
+      };
     }
     case RoleType.User: {
-      return ({
+      return {
         value: role,
-        label: 'Użytkownik'
-      });
+        label: 'Użytkownik',
+      };
     }
     default:
-      return ({
+      return {
         value: role,
-        label: 'Wykładowca'
-      });
+        label: 'Wykładowca',
+      };
   }
-}
+};
 
 const roleSlice = createSlice({
   name: 'role',
@@ -52,7 +52,4 @@ export const { getRoleSuccess } = roleSlice.actions;
 
 const selectRoleState = (state: any) => state.panelMenu?.role || initialState;
 
-export const roleSelector = createSelector(
-  selectRoleState,
-  (roles) => roles.map(roleOption)
-);
+export const roleSelector = createSelector(selectRoleState, (roles) => roles.map(roleOption));

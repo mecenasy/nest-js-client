@@ -1,4 +1,3 @@
-
 export interface Calendar {
   days: string[];
   hours: string[];
@@ -38,8 +37,8 @@ export interface TimeTableState extends Calendar {
 export const initialState: TimeTableState = {
   days: [],
   hours: [],
-  groupsTable: []
-}
+  groupsTable: [],
+};
 
 export interface TimeTableData {
   hours: string;
@@ -59,23 +58,27 @@ export enum CalendarType {
   Specialty = 'specialty',
 }
 
-export type CalendarParams = {
-  type: CalendarType.Group;
-  group: string;
-  year: string;
-} | {
-  type: CalendarType.Teacher;
-} | {
-  type: CalendarType.Specialty;
-  specialty: string;
-} | {
-  type: CalendarType.Year;
-  year: string;
-}
+export type CalendarParams =
+  | {
+      type: CalendarType.Group;
+      group: string;
+      year: string;
+    }
+  | {
+      type: CalendarType.Teacher;
+    }
+  | {
+      type: CalendarType.Specialty;
+      specialty: string;
+    }
+  | {
+      type: CalendarType.Year;
+      year: string;
+    };
 export interface MoveTimeTableData extends TimeTableData {
   newHours: string;
   newDays: string;
-  newAuditorium: string
+  newAuditorium: string;
 }
 
 export interface MoveSuccessPayload {

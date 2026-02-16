@@ -1,11 +1,11 @@
-import { takeLatest, call, put, select, take, cancelled, race, } from 'redux-saga/effects';
+import { takeLatest, call, put, select, take, cancelled, race } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
   unReadUp,
   notificationStart,
   getNotificationFail,
   getNotificationSuccess,
-  getNotificationRequest
+  getNotificationRequest,
 } from './reducer';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { userIdSelector, userTokenSelector } from '../auth/reducers';
@@ -20,8 +20,8 @@ export function notificationChannel(id: string, token: string) {
   return eventChannel((emit) => {
     const eventSource = new EventSourcePolyfill(`${basePath}/notification/stream/${id}`, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     eventSource.onmessage = ({ data }) => {
@@ -30,13 +30,13 @@ export function notificationChannel(id: string, token: string) {
     };
 
     eventSource.onerror = (error) => {
-      console.error("SSE Error:", error);
+      console.error('SSE Error:', error);
     };
 
     return () => {
       eventSource.close();
     };
-  })
+  });
 }
 
 export function* notificationWatcher() {
@@ -71,7 +71,7 @@ export function* notificationChannelWorker() {
       while (true) {
         const { winner } = yield race({
           winner: take(channel),
-          cancel: take(logoutSuccess.type)
+          cancel: take(logoutSuccess.type),
         });
         if (winner) {
           yield put(unReadUp());

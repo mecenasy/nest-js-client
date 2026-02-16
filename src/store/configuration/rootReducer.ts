@@ -1,11 +1,17 @@
-import { ApplicationReducer, ApplicationState } from "./constants";
+import { ApplicationReducer, ApplicationState } from './constants';
 import { authReducer, userReducer } from '../auth/reducers';
-import { configureStore, combineReducers, Reducer, EnhancedStore, ReducersMapObject, } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  combineReducers,
+  Reducer,
+  EnhancedStore,
+  ReducersMapObject,
+} from '@reduxjs/toolkit';
 import { hydrateReducer } from '../hydrate/reducer';
 
 export const createLazyStore = () => {
   let store: EnhancedStore<ApplicationState>;
-  const registryPages = new Set<string>()
+  const registryPages = new Set<string>();
   const defaultKeys: Array<keyof ApplicationState> = ['hydrate', 'auth', 'user', 'router'];
   const asyncReducers: ReducersMapObject<ApplicationState> = {
     hydrate: hydrateReducer,
@@ -13,13 +19,19 @@ export const createLazyStore = () => {
     user: userReducer,
   } as ReducersMapObject<ApplicationState>;
 
-  const createReducer = (asyncReducers: ReducersMapObject<ApplicationState>): Reducer<ApplicationState> => {
+  const createReducer = (
+    asyncReducers: ReducersMapObject<ApplicationState>,
+  ): Reducer<ApplicationState> => {
     return combineReducers({
       ...asyncReducers,
     });
-  }
+  };
 
-  const createStore = (middleware: any, preloadedState?: ApplicationState, reducersKeys?: Array<keyof ApplicationState>) => {
+  const createStore = (
+    middleware: any,
+    preloadedState?: ApplicationState,
+    reducersKeys?: Array<keyof ApplicationState>,
+  ) => {
     const reducer: any = {};
     const state: any = {};
 
@@ -33,7 +45,6 @@ export const createLazyStore = () => {
     }
     const keys = Object.keys(preloadedState ?? {}) as unknown as Array<keyof ApplicationReducer>;
 
-
     store = configureStore<ApplicationState>({
       reducer: createReducer(reducersKeys ? reducer : asyncReducers),
       preloadedState: reducersKeys ? state : preloadedState,
@@ -41,24 +52,22 @@ export const createLazyStore = () => {
     });
 
     return store;
-  }
+  };
 
   const injectReducer = (key: keyof ApplicationReducer, asyncReducer: Reducer<any>) => {
-
     if (!asyncReducers[key]) {
       asyncReducers[key] = asyncReducer;
     }
   };
   const registerReducer = (key: string) => {
     if (!registryPages.has(key)) {
-      registryPages.add(key)
+      registryPages.add(key);
       store.replaceReducer(createReducer(asyncReducers));
     }
     return asyncReducers;
-  }
+  };
 
   return { createStore, injectReducer, registerReducer };
-}
-
+};
 
 export const { createStore, injectReducer, registerReducer } = createLazyStore();

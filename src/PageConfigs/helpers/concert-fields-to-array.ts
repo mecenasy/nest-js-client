@@ -11,4 +11,4 @@ export const convertFieldsToArray = (object: Record<string, any>, ignoreFields: 
     }
   });
   return object;
-}
+};

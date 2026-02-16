@@ -1,60 +1,62 @@
 import { useMemo } from 'react';
-import { useField } from 'react-final-form-hooks'
-import { FormApi } from 'final-form'
-import { FieldArrayRenderProps } from './types'
-import copyPropertyDescriptors from './copyPropertyDescriptors'
+import { useField } from 'react-final-form-hooks';
+import { FormApi } from 'final-form';
+import { FieldArrayRenderProps } from './types';
+import copyPropertyDescriptors from './copyPropertyDescriptors';
 
-const useFieldArray = <T>(
-  name: string,
-  form: FormApi<T>
-): FieldArrayRenderProps => {
-  const formMutators = form.mutators
-  const hasMutators = !!(formMutators && (formMutators as any).push && (formMutators as any).pop)
+const useFieldArray = <T>(name: string, form: FormApi<T>): FieldArrayRenderProps => {
+  const formMutators = form.mutators;
+  const hasMutators = !!(formMutators && (formMutators as any).push && (formMutators as any).pop);
   if (!hasMutators) {
     throw new Error(
-      'Array mutators not found. You need to provide the mutators from final-form-arrays to your form'
-    )
+      'Array mutators not found. You need to provide the mutators from final-form-arrays to your form',
+    );
   }
-  const mutators = useMemo<Record<string, Function>>(() =>
-    // curry the field name onto all mutator calls
-    Object.keys(formMutators).reduce((result, key) => {
-      result[key] = (...args: any[]) => (formMutators as any)[key](name, ...args)
-      return result
-    }, {} as Record<string, Function>
-    ), [name, formMutators])
+  const mutators = useMemo<Record<string, Function>>(
+    () =>
+      // curry the field name onto all mutator calls
+      Object.keys(formMutators).reduce(
+        (result, key) => {
+          result[key] = (...args: any[]) => (formMutators as any)[key](name, ...args);
+          return result;
+        },
+        {} as Record<string, Function>,
+      ),
+    [name, formMutators],
+  );
 
-  const fieldState = useField(name, form)
+  const fieldState = useField(name, form);
 
   // FIX #167: Don't destructure/spread meta object because it has lazy getters
   // Extract length directly from meta when needed
-  const { meta, input } = fieldState
-  const length = meta.length
+  const { meta, input } = fieldState;
+  const length = meta.length;
 
   // Create a new meta object that excludes length, preserving lazy getters
-  const metaWithoutLength = copyPropertyDescriptors(meta, {} as any, ['length'])
+  const metaWithoutLength = copyPropertyDescriptors(meta, {} as any, ['length']);
 
   const forEach = (iterator: (name: string, index: number) => void): void => {
     // required || for Flow, but results in uncovered line in Jest/Istanbul
     // istanbul ignore next
-    const len = length || 0
+    const len = length || 0;
     for (let i = 0; i < len; i++) {
-      iterator(`${name}[${i}]`, i)
+      iterator(`${name}[${i}]`, i);
     }
-  }
+  };
 
-  const map = <T,>(iterator: (name: string, index: number) => T): T[] => {
+  const map = <T>(iterator: (name: string, index: number) => T): T[] => {
     // required || for Flow, but results in uncovered line in Jest/Istanbul
     // istanbul ignore next
-    const len = length || 0
-    const results: T[] = []
+    const len = length || 0;
+    const results: T[] = [];
     for (let i = 0; i < len; i++) {
-      results.push(iterator(`${name}[${i}]`, i))
+      results.push(iterator(`${name}[${i}]`, i));
     }
-    return results
-  }
+    return results;
+  };
 
   // Don't spread fieldState, extract only what we need
-  const { meta: _meta, input: _input, ...restFieldState } = fieldState
+  const { meta: _meta, input: _input, ...restFieldState } = fieldState;
 
   return {
     fields: {
@@ -64,10 +66,10 @@ const useFieldArray = <T>(
       map,
       ...(mutators as any),
       ...restFieldState,
-      value: input.value
+      value: input.value,
     } as any,
-    meta: metaWithoutLength
-  }
-}
+    meta: metaWithoutLength,
+  };
+};
 
-export default useFieldArray 
+export default useFieldArray;

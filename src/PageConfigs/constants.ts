@@ -1,6 +1,6 @@
-import { ComponentType } from "react";
+import { ComponentType } from 'react';
 import { PathMatch } from 'react-router';
-import { Action } from "redux";
+import { Action } from 'redux';
 import { ApplicationState } from '../store/configuration/constants';
 
 export interface ActionCreationConditions {
@@ -24,10 +24,7 @@ export type ActionCreatorFactory = (
   match: PathMatch<string> | null,
 ) => Array<Action>;
 
-export type ReducerFactory = (
-  inject: boolean,
-  force?: boolean,
-) => Array<keyof ApplicationState>;
+export type ReducerFactory = (inject: boolean, force?: boolean) => Array<keyof ApplicationState>;
 
 export interface PageConfig {
   extrudeUrl?: string[];

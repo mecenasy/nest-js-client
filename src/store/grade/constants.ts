@@ -15,7 +15,7 @@ export interface Grade {
   grade: string;
   time: Date;
   subject?: Subject;
-  student?: Student
+  student?: Student;
 }
 
 export interface SubjectGrades {
@@ -37,7 +37,7 @@ export interface TeacherGrades {
 
 export interface GradesState {
   teachers: TeacherGrades[];
-  student: SubjectGrades[]
+  student: SubjectGrades[];
 }
 
 export interface CreateGrade {
@@ -49,7 +49,7 @@ export interface CreateGrade {
 
 export interface GradesReducer {
   teachers: Reducer<TeacherGrades[], UnknownAction>;
-  student: Reducer<SubjectGrades[], UnknownAction>
+  student: Reducer<SubjectGrades[], UnknownAction>;
 }
 
 export const initialState: GradesState = {

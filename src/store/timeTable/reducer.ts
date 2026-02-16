@@ -7,21 +7,33 @@ import {
   TimeTableData,
   CalendarPlace,
   CalendarParams,
-  MoveRequestPayload
+  MoveRequestPayload,
 } from './constants';
 import { logoutSuccess } from '../auth/reducers';
 
 export const getTimeTableRequest = createAction<CalendarParams>('timeTable/getTimeTableRequest');
 export const getCalendarRequest = createAction('timeTable/getCalendarRequest');
-export const addSubjectToTimeTableRequest = createAction<TimeTableData>('timeTable/addSubjectToTimeTableRequest');
-export const deleteSubjectFromTimeTableRequest = createAction<TimeTableData>('timeTable/deleteSubjectFromTimeTableRequest');
-export const moveSubjectInTimeTableRequest = createAction<MoveRequestPayload>('timeTable/moveSubjectInTimeTableRequest');
+export const addSubjectToTimeTableRequest = createAction<TimeTableData>(
+  'timeTable/addSubjectToTimeTableRequest',
+);
+export const deleteSubjectFromTimeTableRequest = createAction<TimeTableData>(
+  'timeTable/deleteSubjectFromTimeTableRequest',
+);
+export const moveSubjectInTimeTableRequest = createAction<MoveRequestPayload>(
+  'timeTable/moveSubjectInTimeTableRequest',
+);
 
 export const getTimeTableFail = createAction<string>('timeTable/getTimeTableFail');
 export const getCalendarFail = createAction<string>('timeTable/getCalendarFail');
-export const moveSubjectInTimeTableFail = createAction<string>('timeTable/moveSubjectInTimeTableFail');
-export const deleteSubjectFromTimeTableFail = createAction<string>('timeTable/deleteSubjectFromTimeTableFail');
-export const addSubjectToTimeTableFail = createAction<string>('timeTable/addSubjectToTimeTableFail');
+export const moveSubjectInTimeTableFail = createAction<string>(
+  'timeTable/moveSubjectInTimeTableFail',
+);
+export const deleteSubjectFromTimeTableFail = createAction<string>(
+  'timeTable/deleteSubjectFromTimeTableFail',
+);
+export const addSubjectToTimeTableFail = createAction<string>(
+  'timeTable/addSubjectToTimeTableFail',
+);
 
 const timeTableSlice = createSlice({
   name: 'timeTable',
@@ -40,7 +52,9 @@ const timeTableSlice = createSlice({
 
       if (groupIndex !== -1) {
         const groupTable = state.groupsTable[groupIndex];
-        groupTable.timeTable = groupTable.timeTable.filter(({ days, hours }) => days !== oldCalendarPlace.days || hours !== oldCalendarPlace.hours);
+        groupTable.timeTable = groupTable.timeTable.filter(
+          ({ days, hours }) => days !== oldCalendarPlace.days || hours !== oldCalendarPlace.hours,
+        );
         groupTable.timeTable.push(newCalendarPlace);
       }
     },
@@ -48,7 +62,9 @@ const timeTableSlice = createSlice({
       const { year, group, days, hours } = action.payload;
       const groupIndex = state.groupsTable.findIndex((g) => g.name === group && g.year === year);
       if (groupIndex !== -1) {
-        state.groupsTable[groupIndex].timeTable = state.groupsTable[groupIndex].timeTable.filter((e) => days !== e.days || hours !== e.hours);
+        state.groupsTable[groupIndex].timeTable = state.groupsTable[groupIndex].timeTable.filter(
+          (e) => days !== e.days || hours !== e.hours,
+        );
       }
     },
     addSubjectToTimeTableSuccess: (state, action: PayloadAction<CalendarPlace>) => {
@@ -73,7 +89,7 @@ const timeTableSlice = createSlice({
     getCalendarDays: (state) => state.days,
     getCalendarHours: (state) => state.hours,
     getTimeTable: (state) => state.groupsTable,
-  }
+  },
 });
 
 export const timeTableReducer = timeTableSlice.reducer;
@@ -85,8 +101,4 @@ export const {
   addSubjectToTimeTableSuccess,
 } = timeTableSlice.actions;
 
-export const {
-  getCalendarDays,
-  getCalendarHours,
-  getTimeTable
-} = timeTableSlice.selectors;
+export const { getCalendarDays, getCalendarHours, getTimeTable } = timeTableSlice.selectors;

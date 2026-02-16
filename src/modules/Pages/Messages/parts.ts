@@ -4,7 +4,6 @@ import WhiteButton from '../../Components/Buttons/IconButton';
 import DropzoneBase from '../../Components/Input/Dropzone';
 import * as P from '../../Components/Input/parts';
 
-
 export const AddButton = styled(WhiteButton)`
   grid-area: add;
   margin-top: 12px;
@@ -13,9 +12,9 @@ export const AddButton = styled(WhiteButton)`
 export const PageWrapper = styled.div`
   display: grid;
   grid-template-columns: 200px auto;
-  grid-template-areas: 
-  'empty header'
-  'add content';
+  grid-template-areas:
+    'empty header'
+    'add content';
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
@@ -38,9 +37,13 @@ export const MessageList = styled(Box)`
   gap: 4px 10px;
 `;
 
-export const MessageRow = styled(WhiteButton) <{ $isRead: boolean }>`
+export const MessageRow = styled(WhiteButton)<{ $isRead: boolean }>`
   font-size: 14px;
-  ${({ $isRead }) => !$isRead && css`font-weight: bold;`}
+  ${({ $isRead }) =>
+    !$isRead &&
+    css`
+      font-weight: bold;
+    `}
 `;
 
 export const Dropzone = styled(DropzoneBase)`

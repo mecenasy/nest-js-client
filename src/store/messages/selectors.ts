@@ -6,7 +6,7 @@ const messageStateSelector = (state: ApplicationState): MessageState => state.me
 
 export const getMessagesList = createSelector(
   [messageStateSelector],
-  (state: MessageState): SimpleMessage[] => state.messages
+  (state: MessageState): SimpleMessage[] => state.messages,
 );
 
 export const getMessageById = createSelector(
@@ -16,10 +16,10 @@ export const getMessageById = createSelector(
       return undefined;
     }
     return state.messageDi[id];
-  }
+  },
 );
 
 export const isFetchingMessages = createSelector(
   [messageStateSelector],
-  (state: MessageState): boolean => state.isFetching
+  (state: MessageState): boolean => state.isFetching,
 );
