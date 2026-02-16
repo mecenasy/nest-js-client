@@ -55,7 +55,7 @@ const Messages = () => {
             <P.MessageRow
               key={message.id}
               title={message.title}
-              $isReaded={message.isReaded}
+              $isRead={message.isRead}
               onClick={() => handleClick(message.id)}
             />
           ))}

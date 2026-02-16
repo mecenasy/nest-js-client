@@ -14,29 +14,29 @@ const notificationSlice = createSlice({
     getNotificationSuccess: (state, action: PayloadAction<NotificationState>) => {
       return { ...state, ...action.payload };
     },
-    setUnReadedMessage: (state, action: PayloadAction<number>) => {
-      state.unReadedMessage = action.payload;
+    setUnReadMessage: (state, action: PayloadAction<number>) => {
+      state.unReadMessage = action.payload;
     },
-    unReadedUp: (state) => {
-      state.unReadedMessage += 1;
+    unReadUp: (state) => {
+      state.unReadMessage += 1;
     },
-    unReadedDown: (state) => {
-      state.unReadedMessage -= 1;
+    unReadDown: (state) => {
+      state.unReadMessage -= 1;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(logoutSuccess, () => initialState);
   },
   selectors: {
-    unReadedSelector: (state: NotificationState) => state.unReadedMessage,
+    unReadSelector: (state: NotificationState) => state.unReadMessage,
   }
 });
 
 export const notificationReducer = notificationSlice.reducer;
-export const { unReadedSelector } = notificationSlice.selectors;
+export const { unReadSelector } = notificationSlice.selectors;
 export const {
   getNotificationSuccess,
-  setUnReadedMessage,
-  unReadedUp,
-  unReadedDown
+  setUnReadMessage,
+  unReadUp,
+  unReadDown
 } = notificationSlice.actions;

@@ -1,8 +1,8 @@
 
 export interface NotificationState {
-  unReadedMessage: number;
+  unReadMessage: number;
 }
 
 export const initialState: NotificationState = {
-  unReadedMessage: 0,
+  unReadMessage: 0,
 };

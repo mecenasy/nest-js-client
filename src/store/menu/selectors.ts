@@ -1,12 +1,12 @@
 import { createSelector } from "reselect";
 import { ApplicationState } from "../configuration/constants";
 import { Menu, MenuSide } from "./constants";
-import { unReadedSelector } from '../notification/reducer';
+import { unReadSelector } from '../notification/reducer';
 
 export const menuSelector = ({ menu }: ApplicationState) => menu;
 
 export const getMenuSelector = createSelector(
-  menuSelector, unReadedSelector,
+  menuSelector, unReadSelector,
   (menu, unReded) => {
     const leftSide: Menu[] = [];
     const rightSide: Menu[] = [];

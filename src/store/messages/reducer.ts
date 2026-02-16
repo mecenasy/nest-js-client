@@ -6,13 +6,13 @@ export const sendMessageRequest = createAction<MessageData & PromiseFParams>('me
 export const getMessageListRequest = createAction<string>('message/getMessageListRequest');
 export const getMessageRequest = createAction<string>('message/getMessageRequest');
 export const getFileRequest = createAction<File>('message/getFileRequest');
-export const readedMessageRequest = createAction<string>('message/readedMessageRequest');
+export const readMessageRequest = createAction<string>('message/readMessageRequest');
 
 export const sendMessageFail = createAction<string>('message/sendMessageFail');
 export const getMessageListFail = createAction<string>('message/getMessageListFail');
 export const getMessageFail = createAction<string>('message/getMessageFail');
 export const getFileFail = createAction<string>('message/getFileFail');
-export const readedMessageFail = createAction<string>('message/readedMessageFail');
+export const readMessageFail = createAction<string>('message/readMessageFail');
 
 const messageSlice = createSlice({
   name: 'message',

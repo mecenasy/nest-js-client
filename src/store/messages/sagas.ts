@@ -5,7 +5,7 @@ import {
   Message,
 } from './constants';
 import * as A from './reducer';
-import { getFile, getMessage, getMessages, sendMessage, setReadedMessage } from '~/src/api/messages/requests';
+import { getFile, getMessage, getMessages, sendMessage, setReadMessage } from '~/src/api/messages/requests';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 
@@ -84,17 +84,17 @@ function* getFileWorker(action: ReturnType<typeof A.getFileRequest>) {
   }
 }
 
-function* readedMessageWorker(action: ReturnType<typeof A.readedMessageRequest>) {
+function* readMessageWorker(action: ReturnType<typeof A.readMessageRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-    yield call(setReadedMessage, action.payload);
+    yield call(setReadMessage, action.payload);
   }
 }
 
 export function* messageWatcher() {
   yield all([
-    takeLatest(A.readedMessageRequest.type, readedMessageWorker),
+    takeLatest(A.readMessageRequest.type, readMessageWorker),
     takeLatest(A.sendMessageRequest.type, sendMessageWorker),
     takeLatest(A.getMessageListRequest.type, getMessageListWorker),
     takeLatest(A.getMessageRequest.type, getMessageWorker),

@@ -9,7 +9,7 @@ export interface Message {
   replies?: Message[];
   to: string;
   files?: File[];
-  isReaded: boolean;
+  isRead: boolean;
 }
 
 export interface File {
@@ -56,13 +56,13 @@ export interface MessageList {
 export interface SimpleMessage {
   id: string;
   title: string;
-  isReaded: boolean;
+  isRead: boolean;
 }
 
 export interface MessageState extends MessageList {
   messageDi: Record<string, Message>;
   isFetching: boolean;
-  unReaded: number;
+  unRead: number;
 }
 
 export const initialState: MessageState = {
@@ -75,5 +75,5 @@ export const initialState: MessageState = {
   },
   messageDi: {},
   isFetching: false,
-  unReaded: 0
+  unRead: 0
 };

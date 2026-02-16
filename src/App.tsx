@@ -24,7 +24,7 @@ const AppContent = () => {
         {menuConfig.extrudeUrl?.map((path) => (
           <Route key={path} path={path} element={null} />
         ))}
-        <Route path={menuConfig.url} element={<menuConfig.Component />} />
+        <Route path={'*'} element={<menuConfig.Component />} />
       </Routes>
       <Routes>
         <Route path={'*'} element={<Auth />} />

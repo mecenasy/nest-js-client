@@ -5,8 +5,9 @@ import { File, Message } from '~/src/store/messages/constants';
 import fileIcon from '~/assets/document.svg';
 import replay from '~/assets/reply-all.svg';
 import { useDispatch } from 'react-redux';
-import { getFileRequest, readedMessageRequest } from '~/src/store/messages/reducer';
-import { unReadedDown } from '~/src/store/notification/reducer';
+import { getFileRequest, readMessageRequest } from '~/src/store/messages/reducer';
+import { unReadDown } from '~/src/store/notification/reducer';
+import useMeasure from 'react-use-measure';
 
 export interface MessageProps {
   message?: Message;
@@ -16,10 +17,13 @@ export interface MessageProps {
 
 const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   const [isOpen, setOpen] = useState(false);
-  const [isReaded, setReaded] = useState(message?.isReaded ?? false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [isRead, setRead] = useState(message?.isRead ?? false);
+
   const refAnimated = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const dispatch = useDispatch();
+  const [ref, bounds] = useMeasure()
 
   const onDownload = (file: File) => (evt: MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation();
@@ -32,48 +36,52 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   }, [message?.id, setId]);
 
   const onToggle = useCallback(() => {
-    if (!isReaded) {
-      setReaded(true);
-      dispatch(unReadedDown());
-      dispatch(readedMessageRequest(message?.id ?? ''));
+    if (!isRead) {
+      setRead(true);
+      dispatch(unReadDown());
+      dispatch(readMessageRequest(message?.id ?? ''));
     }
     setOpen((prev) => !prev);
-  }, [isReaded, message?.id, dispatch]);
+  }, [isRead, message?.id, dispatch]);
 
   const style = useSpring({
     config: { duration: 200 },
     from: { height: "0px" },
-    to: { height: isOpen ? `${ref.current?.clientHeight}px` : "0px" }
+    to: { height: isOpen ? `${bounds?.height}px` : "0px" }
   });
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (!refAnimated.current?.nextSibling && refAnimated.current) {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         if (refAnimated.current) {
           onScroll?.(0, refAnimated.current.scrollHeight)
         }
       }, 300)
       setOpen(true)
     }
+
+    return () => {
+      clearTimeout(timer)
+    }
   }, [onScroll]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
+
     let observer: IntersectionObserver;
     if (isOpen) {
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-          } else {
-            if (refAnimated.current && isOpen) {
-              setTimeout(() => {
-                if (refAnimated.current) {
-                  onScroll?.(0, refAnimated.current.scrollHeight)
-                }
-              }, 300)
-              observer.unobserve(refAnimated.current);
-            }
+          if (!entry.isIntersecting && refAnimated.current && isOpen) {
+            timer = setTimeout(() => {
+              if (refAnimated.current) {
+                onScroll?.(0, refAnimated.current.scrollHeight)
+              }
+            }, 300)
+            observer.unobserve(refAnimated.current);
           }
-        }, { threshold: 1, rootMargin: '0px' });
+        }, { threshold: 0.0, rootMargin: '0px' });
       });
       if (refAnimated.current) {
         observer.observe(refAnimated.current);
@@ -81,6 +89,7 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
     }
     return () => {
       observer?.disconnect();
+      clearTimeout(timer);
     };
   }, [isOpen, onScroll])
 
@@ -92,10 +101,12 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
   return (
     <>
       <P.HeaderWrapper onClick={onToggle}>
-        <P.MessageHeader $isReaded={isReaded} >{title}</P.MessageHeader>
+        <P.MessageHeader $isRead={isRead} >{title}</P.MessageHeader>
         {isOpen && <P.Button onClick={onReply} icon={replay} />}
       </P.HeaderWrapper>
       <animated.div ref={refAnimated} style={{ ...style, overflow: "hidden", margin: "0 -20px" }} >
+        <div ref={contentRef}>
+        </div>
         <P.ContentWrapper ref={ref}>
           <P.Content>Od: {from}</P.Content>
           <P.Content> Do: {to}</P.Content>
@@ -109,6 +120,7 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
             <P.Time>Wysłano: {new Date(createdAt).toLocaleDateString()}</P.Time>
           </P.FooterWrapper>
         </P.ContentWrapper>
+
       </animated.div>
       {replies?.map((message) => (
         <MessageItem key={message.id} onScroll={onScroll} setId={setId} message={message} />

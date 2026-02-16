@@ -20,6 +20,7 @@ const config = {
     filename: 'chunk-[chunkhash:7].js',
     chunkFilename: 'chunk-[chunkhash:7].js',
     publicPath: 'build/',
+    clean: true,
   },
   plugins: [
     new CopyPlugin({

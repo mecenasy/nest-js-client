@@ -27,10 +27,10 @@ const PersonBox: FC<PersonBoxProps> = ({ person, className }) => {
           )}
           {person.address && (
             <P.DataColumn>
-              <PersonDataRow title={'Adress'} data='' />
+              <PersonDataRow title={'Adres'} data='' />
               <PersonDataRow title={'Ulica :'} data={`${person.address.street} ${person.address.number}`} />
-              <PersonDataRow title={'Niasto :'} data={person.address.city || ''} />
-              <PersonDataRow title={'Państworstwo: '} data={person.address.country || ''} />
+              <PersonDataRow title={'Miasto :'} data={person.address.city || ''} />
+              <PersonDataRow title={'Państwo: '} data={person.address.country || ''} />
               <PersonDataRow title={'Kod pocztowy :'} data={person.address.zipCode || ''} />
             </P.DataColumn>
           )}

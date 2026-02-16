@@ -1,7 +1,7 @@
 import { takeLatest, call, put, select, take, cancelled, race, } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
-  unReadedUp,
+  unReadUp,
   notificationStart,
   getNotificationFail,
   getNotificationSuccess,
@@ -74,7 +74,7 @@ export function* notificationChannelWorker() {
           cancel: take(logoutSuccess.type)
         });
         if (winner) {
-          yield put(unReadedUp());
+          yield put(unReadUp());
         } else {
           channel.close();
         }
