@@ -4,6 +4,8 @@ import { injectReducer, registerReducer } from '../store/configuration/rootReduc
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
 import { filterAction } from '../PageConfigs/helpers/filterAction';
 import { getStudentsGradesRequest, getTeacherGradesRequest, gradeReducer } from '../store/grade/reducer';
+import Grades from '../modules/Pages/Grades/Grades';
+import { RoleType } from '../store/role/constants';
 
 const reducersInject: ReducerFactory = (inject, force) => {
   if (inject) {
@@ -33,7 +35,7 @@ const GradesPage = () => {
       reducersKey={reducersInject(SERVER_BUILD, true)}
       actionCreatorFactory={actionCreator}
     >
-      sdfsfdsfdsfsdfsfdsfsfdsfddsfdsf
+      <Grades type={RoleType.Teacher} />
     </ActionsWrapper>
   )
 };

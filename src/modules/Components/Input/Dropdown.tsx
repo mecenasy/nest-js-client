@@ -1,6 +1,6 @@
 import React from 'react';
 import * as P from './parts';
-import { DropdownProps, SelectFieldProps, SelectProps } from './types';
+import { SelectFieldProps, SelectProps } from './types';
 import SelectBase from 'react-select';
 import { useField } from 'react-final-form-hooks';
 
@@ -15,6 +15,7 @@ export const Select = <T extends string | number | boolean | null | undefined | 
   <P.DropdownWrapper className={className}>
     <P.Label>{label}</P.Label>
     <SelectBase
+      instanceId={'select'}
       onChange={onChange}
       value={value}
       options={options}
@@ -25,40 +26,18 @@ export const Select = <T extends string | number | boolean | null | undefined | 
   </P.DropdownWrapper>
 );
 
-const DropdownField = <T extends string | number | boolean | null | undefined | object>({
-  input: { onChange, value },
-  options,
-  className,
-  name,
-  ...rest
-}: DropdownProps<T>) => {
-
-  return (
-    <Select
-      onChange={onChange}
-      value={value}
-      options={options}
-      className={className}
-      defaultValue={value}
-
-      name={name ?? ''}
-      {...rest}
-    />
-  )
-};
-
 export const SelectField = <T extends string | number | boolean | null | undefined | object, R>({
   name, form, ...rest
 }: SelectFieldProps<T, R>) => {
   const field = useField(name, form);
 
   return (
-    <DropdownField
-      instanceId={'select'}
-
-      {...field}
+    <Select
+      onChange={field.input.onChange}
+      value={field.input.value}
+      defaultValue={field.input.value}
+      name={name ?? ''}
       {...rest}
     />
   )
 }
-export default DropdownField;

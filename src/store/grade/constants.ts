@@ -13,7 +13,7 @@ export interface Student {
 export interface Grade {
   id: string;
   grade: string;
-  time: Date;
+  date: Date;
   subject?: Subject;
   student?: Student;
 }
@@ -29,10 +29,15 @@ export interface StudentGrades {
   grades: Grade[];
 }
 
+export interface TeacherSubjectGrades {
+  id: string;
+  name: string;
+  students: StudentGrades[];
+}
 export interface TeacherGrades {
   group: string;
   year: string;
-  students: StudentGrades[];
+  subjects: TeacherSubjectGrades[];
 }
 
 export interface GradesState {
@@ -40,11 +45,22 @@ export interface GradesState {
   student: SubjectGrades[];
 }
 
-export interface CreateGrade {
-  grade: string;
-  subjectId: string;
-  teacherId: string;
+export interface GradeField {
   studentId: string;
+  subjectId: string;
+  grade: string;
+}
+
+export interface CreateGrade extends GradeField {
+  teacherId: string;
+}
+
+export interface UpdateGradeActionPayload {
+  toUpdate: GradeField[];
+}
+
+export interface AddGradeActionPayload {
+  toAdd: GradeField[];
 }
 
 export interface GradesReducer {

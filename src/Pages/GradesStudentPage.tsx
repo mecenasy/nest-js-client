@@ -3,7 +3,9 @@ import ActionsWrapper from './Actions/ActionsWrapper';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
 import { filterAction } from '../PageConfigs/helpers/filterAction';
-import { getStudentsGradesRequest, getTeacherGradesRequest, gradeReducer } from '../store/grade/reducer';
+import { getStudentsGradesRequest, gradeReducer } from '../store/grade/reducer';
+import Grades from '../modules/Pages/Grades/Grades';
+import { RoleType } from '../store/role/constants';
 
 const reducersInject: ReducerFactory = (inject, force) => {
   if (inject) {
@@ -21,7 +23,7 @@ export const actionCreator: ActionCreatorFactory = (
 
 
   return filterAction([
-    Boolean(isServer || (isMount && isHydrated)) && getTeacherGradesRequest(),
+    Boolean(isServer || (isMount && isHydrated)) && getStudentsGradesRequest(),
   ]);
 };
 
@@ -33,7 +35,7 @@ const GradesPage = () => {
       reducersKey={reducersInject(SERVER_BUILD, true)}
       actionCreatorFactory={actionCreator}
     >
-      sdfsfdsfdsfsdfsfdsfsfdsfddsfdsf
+      <Grades type={RoleType.Student} />
     </ActionsWrapper>
   )
 };

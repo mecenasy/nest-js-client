@@ -11,17 +11,26 @@ import axios from 'axios';
 import { LoggedStatus } from '../auth/constants';
 import { waitForAuthStatus } from '../auth/sagas';
 import { userIdSelector } from '../auth/reducers';
+import { CreateGrade } from './constants';
 
 function* addGradesWorker({ payload }: ReturnType<typeof A.addGradesRequest>) {
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
     try {
-      const { data } = yield call(addGrades, payload);
+
+      const userId: string = yield select(userIdSelector);
+
+      const { data } = yield call(
+        addGrades,
+        payload.toAdd.map<CreateGrade>(grade => ({ ...grade, teacherId: userId }))
+      );
       yield put(A.addGrades(data));
+      yield call(payload.resolve);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         yield put(A.addGradesFail(error.message));
+        yield call(payload.reject);
       }
     }
   }
@@ -31,8 +40,13 @@ function* updateGradesWorker({ payload }: ReturnType<typeof A.updateGradesReques
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
+    const userId: string = yield select(userIdSelector);
+
     try {
-      const { data } = yield call(updateGrades, payload);
+      const { data } = yield call(
+        updateGrades,
+        payload.toUpdate.map<CreateGrade>(grade => ({ ...grade, teacherId: userId }))
+      );
       yield put(A.updateGrades(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -84,7 +98,7 @@ function* getStudentGradesWorker() {
       yield put(A.getStudentsGrades(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        yield put(A.getTeacherGradesFail(error.message));
+        yield put(A.getStudentsGradesFail(error.message));
       }
     }
   }

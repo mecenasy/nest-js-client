@@ -1,4 +1,4 @@
-import { createAction, createSlice, PayloadAction, combineReducers } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction, combineReducers, createSelector } from '@reduxjs/toolkit';
 import {
   GradesReducer,
   Grade,
@@ -6,8 +6,11 @@ import {
   TeacherGrades,
   CreateGrade,
   initialState,
+  AddGradeActionPayload,
+  UpdateGradeActionPayload,
 } from './constants';
 import { logoutSuccess } from '../auth/reducers';
+import { ApplicationState } from '../configuration/constants';
 
 const teacherSlice = createSlice({
   name: 'teachers',
@@ -28,11 +31,13 @@ const teacherSlice = createSlice({
       }, {});
 
       state.forEach((teacherGrade) => {
-        teacherGrade.students.forEach((student) => {
-          student.grades.forEach((grade, index) => {
-            if (updatedGradesMap[grade.id]) {
-              student.grades[index] = updatedGradesMap[grade.id];
-            }
+        teacherGrade.subjects.forEach((subject) => {
+          subject.students.forEach((student) => {
+            student.grades.forEach((grade, index) => {
+              if (updatedGradesMap[grade.id]) {
+                student.grades[index] = updatedGradesMap[grade.id];
+              }
+            });
           });
         });
       });
@@ -42,8 +47,11 @@ const teacherSlice = createSlice({
       if (!gradeIdToRemove) return;
 
       state.forEach((teacherGrade) => {
-        teacherGrade.students.forEach((student) => {
-          student.grades = student.grades.filter((grade) => grade.id !== gradeIdToRemove);
+        teacherGrade.subjects.forEach((subject) => {
+          subject.students.forEach((student) => {
+            student.grades = student.grades
+              .filter((grade) => grade.id !== gradeIdToRemove);
+          });
         });
       });
     },
@@ -63,10 +71,12 @@ const teacherSlice = createSlice({
       });
 
       state.forEach((teacherGrade) => {
-        teacherGrade.students.forEach((student) => {
-          if (gradesByStudent[student.id]) {
-            student.grades.push(...gradesByStudent[student.id]);
-          }
+        teacherGrade.subjects.forEach((subject) => {
+          subject.students.forEach((student) => {
+            if (gradesByStudent[student.id]) {
+              student.grades.push(...gradesByStudent[student.id]);
+            }
+          });
         });
       });
     },
@@ -74,9 +84,6 @@ const teacherSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(logoutSuccess, () => initialState.teachers);
   },
-  selectors: {
-    getTeacherGradesSelector: (state) => state,
-  }
 });
 
 const studentsSlice = createSlice({
@@ -90,9 +97,6 @@ const studentsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(logoutSuccess, () => initialState.student);
   },
-  selectors: {
-    getStudentsGradesSelector: (state) => state,
-  }
 });
 
 const teacherReducer = teacherSlice.reducer;
@@ -101,19 +105,58 @@ const studentReducer = studentsSlice.reducer;
 export const { getTeacherGrades, updateGrades, removeGrade, addGrades } = teacherSlice.actions;
 export const { getStudentsGrades } = studentsSlice.actions;
 
-export const { getTeacherGradesSelector } = teacherSlice.selectors;
-export const { getStudentsGradesSelector } = studentsSlice.selectors;
 
 export const gradeReducer = combineReducers<GradesReducer>({
   teachers: teacherReducer,
   student: studentReducer,
 });
 
+export const getStudentsGradesSelector = (state: ApplicationState) => state.grades.student;
+export const getTeacherGradesSelector = createSelector(
+  (state: ApplicationState) => state.grades.teachers,
+  (grades) => {
+
+    if (!grades) {
+      return [];
+    }
+
+    return [...grades].sort((a, b) => {
+      const yearCompare = a.year.localeCompare(b.year);
+
+      if (yearCompare !== 0) {
+        return yearCompare;
+      }
+      return a.group.localeCompare(b.group);
+    });
+  });
+
+export const getFilterOptionsSelector = createSelector(
+  (state: ApplicationState) => state.grades.teachers,
+  (grades) => {
+    if (!grades) {
+      return {
+        yearOptions: [],
+        groupOptions: [],
+      }
+    }
+
+    const years = Array.from(new Set(grades.map((g) => g.year))).sort();
+    const yearOptions = years.map((y) => ({ label: y, value: y }));
+
+    const groups = Array.from(new Set(grades.map((g) => g.group))).sort();
+    const groupOptions = groups.map((g) => ({ label: g, value: g }));
+
+    return {
+      yearOptions,
+      groupOptions,
+    };
+  });
+
 export const getTeacherGradesRequest = createAction('grade/getTeacherGradesRequest')
 export const getStudentsGradesRequest = createAction('grade/getStudentsGradesRequest')
-export const updateGradesRequest = createAction<CreateGrade[]>('grade/updateGradesRequest')
+export const updateGradesRequest = createAction<UpdateGradeActionPayload & PromiseFParams>('grade/updateGradesRequest')
 export const removeGradeRequest = createAction<string>('grade/removeGradeRequest')
-export const addGradesRequest = createAction<CreateGrade[]>('grade/addGradesRequest')
+export const addGradesRequest = createAction<AddGradeActionPayload & PromiseFParams>('grade/addGradesRequest')
 
 export const getTeacherGradesFail = createAction<string>('grade/getTeacherGradesFail')
 export const getStudentsGradesFail = createAction<string>('grade/getStudentsGradesFail')

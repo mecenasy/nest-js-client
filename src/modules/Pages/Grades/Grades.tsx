@@ -1,27 +1,38 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import * as P from './parts';
 import PageWrapper from '../../Components/Containers/PageWrapper/PageWrapper';
+import { RoleType } from '~/src/store/role/constants';
+import { getTeacherGradesSelector } from '~/src/store/grade/reducer';
+import SubjectGradesList from './Grade/SubjectGradesList';
+import TeacherGradesList from './TeacherGradesList';
 
-const Counter = () => {
+const Grades = ({ type }: { type: RoleType }) => {
   const dispatch = useDispatch();
-
+  const grades = useSelector(getTeacherGradesSelector);
   return (
-    <PageWrapper>
+    <PageWrapper >
       <Helmet>
-        <title>Counter</title>
-        <meta name="description" content={'to jest przykładowy counter prezentujący możiwości aplikacji'} />
+        <title>Oceny</title>
+        <meta name="description" content={'oceny studenta prezentujący możiwości aplikacji'} />
       </Helmet>
-      <P.CounterWrapper>
-        <P.CounterInnerWrapper>
-          <Link to={'/'}>Home</Link>
-        </P.CounterInnerWrapper>
+      <P.Wrapper>
+        <P.Header>Oceny</P.Header>
+        {type === RoleType.Student && (
+          <P.ListWrapper>
+            <SubjectGradesList />
+          </P.ListWrapper>
+        )}
+        {type === RoleType.Teacher && (
+          <P.ListWrapper>
+            <TeacherGradesList />
+          </P.ListWrapper>
+        )}
 
-      </P.CounterWrapper>
+      </P.Wrapper>
     </PageWrapper>
   )
 };
 
-export default Counter;
+export default Grades;
