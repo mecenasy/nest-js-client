@@ -1,14 +1,32 @@
-import { fork, all } from '@redux-saga/core/effects';
-
-const context = (require as any).context('../', true, /sagas\.ts$/);
-
-const allSagas = context.keys().flatMap((key: string) => {
-  const mod = context(key);
-  return Object.values(mod).filter(
-    (exportedItem) => typeof exportedItem === 'function' && exportedItem.name.endsWith('Watcher'),
-  );
-});
+import { fork, all } from "@redux-saga/core/effects";
+import { authWatcher } from "../auth/sagas";
+import { counterWatcher } from "../counter/sagas";
+import { getMenuWatcher } from "../menu/sagas";
+import { personWatcher } from "../person/sagas";
+import { getRoleWatcher } from "../role/sagas";
+import { menuItemsWatcher } from "../panelMenu/sagas";
+import { getUniversityWatcher } from "../university/sagas";
+import { getUserListWatcher } from '../userList/sagas';
+import { notificationWatcher } from '../notification/sagas';
+import { timeTableWatcher } from '../timeTable/sagas';
+import { subjectWatcher } from '../subject/sagas';
+import { messageWatcher } from '../messages/sagas';
+import { gradeSagaWatcher } from '../grade/sagas';
 
 export function* rootSaga() {
-  yield all(allSagas.map((saga: any) => fork(saga)));
+  yield all([
+    fork(authWatcher),
+    fork(counterWatcher),
+    fork(getMenuWatcher),
+    fork(personWatcher),
+    fork(getRoleWatcher),
+    fork(menuItemsWatcher),
+    fork(getUniversityWatcher),
+    fork(getUserListWatcher),
+    fork(messageWatcher),
+    fork(notificationWatcher),
+    fork(timeTableWatcher),
+    fork(subjectWatcher),
+    fork(gradeSagaWatcher)
+  ]);
 }

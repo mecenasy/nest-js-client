@@ -30,7 +30,6 @@ export const actionCreator: ActionCreatorFactory = ({ isMount, isHydrated, isSer
 reducersInject(!SERVER_BUILD);
 
 const SubjectPage = () => {
-  console.log('wdwkjhdkjhdkjsadh')
   return (
     <ActionsWrapper reducersKey={reducersInject(SERVER_BUILD, true)} actionCreatorFactory={actionCreator}   >
       <Subject />

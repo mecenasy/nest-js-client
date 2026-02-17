@@ -7,7 +7,7 @@ const Grades = Loadable({
   loading: Loader,
 });
 
-export const gradesStudentConfig: PageConfig = {
+export const gradesTeacherConfig: PageConfig = {
   url: '/grade-teacher',
   Component: Grades,
 };
