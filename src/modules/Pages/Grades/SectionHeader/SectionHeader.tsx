@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import * as P from './parts';
 import Header from './Header';
 

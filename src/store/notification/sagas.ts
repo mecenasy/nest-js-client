@@ -31,6 +31,7 @@ export function notificationChannel(id: string, token: string) {
 
     eventSource.onerror = (error) => {
       console.error('SSE Error:', error);
+      eventSource.close();
     };
 
     return () => {

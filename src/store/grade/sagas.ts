@@ -40,7 +40,6 @@ function* updateGradesWorker({ payload }: ReturnType<typeof A.updateGradesReques
   const authStatus: LoggedStatus = yield call(waitForAuthStatus);
 
   if (authStatus === LoggedStatus.LoggedIn) {
-    const userId: string = yield select(userIdSelector);
 
     try {
       const { data } = yield call(updateGrades, payload.toUpdate);

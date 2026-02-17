@@ -22,7 +22,7 @@ const userListSlice = createSlice({
       const { selectedFilters } = state;
       return { ...action.payload, selectedFilters };
     },
-    getUserListFail: (state, _: PayloadAction<string>) => {
+    getUserListFail: (state) => {
       state.isFetching = false;
     },
     getSimpleUserListSuccess: (state, action: PayloadAction<SimplePerson[]>) => {

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import * as P from './parts';
 import { Grade } from '~/src/store/grade/constants';
 import GradeItem from './Grade';

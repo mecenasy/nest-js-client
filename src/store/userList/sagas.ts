@@ -57,7 +57,7 @@ export function* getUserListWorker(action: ReturnType<typeof getUserListRequest>
       yield put(getUserListSuccess(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        yield put(getUserListFail(error.message));
+        yield put(getUserListFail());
       }
     }
   }
@@ -73,7 +73,7 @@ export function* getSimpleUserListWorker(action: ReturnType<typeof getSimpleUser
       yield put(getSimpleUserListSuccess(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        yield put(getUserListFail(error.message));
+        yield put(getUserListFail());
       }
     }
   }

@@ -3,7 +3,7 @@ import ActionsWrapper from './Actions/ActionsWrapper';
 import { injectReducer, registerReducer } from '../store/configuration/rootReducer';
 import { ActionCreatorFactory, ReducerFactory } from '../PageConfigs/constants';
 import { filterAction } from '../PageConfigs/helpers/filterAction';
-import { getStudentsGradesRequest, getTeacherGradesRequest, gradeReducer } from '../store/grade/reducer';
+import { getTeacherGradesRequest, gradeReducer } from '../store/grade/reducer';
 import Grades from '../modules/Pages/Grades/Grades';
 import { RoleType } from '../store/role/constants';
 

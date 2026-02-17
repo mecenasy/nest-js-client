@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessageListRequest } from '~/src/store/messages/reducer';
 import { getMessagesList } from '~/src/store/messages/selectors';
-import { ApplicationState } from '~/src/store/configuration/constants';
 import * as P from './parts';
 import PageWrapper from '../../Components/Containers/PageWrapper/PageWrapper';
 import { Helmet } from 'react-helmet';

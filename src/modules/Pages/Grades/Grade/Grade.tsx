@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useContext, useState } from 'react';
+import React, { ChangeEvent, useCallback, useContext } from 'react';
 import * as P from './parts';
 import WhiteButton from '~/src/modules/Components/Buttons/IconButton';
 import edit from '~/assets/pencil.svg';
@@ -17,7 +17,7 @@ const GradeItem = ({ id, date, grade }: GradeProps) => {
   const { form, setEdit, isEditing } = useContext(GradesContext);
   const onclick = useCallback(() => {
     setEdit(id)
-  }, []);
+  }, [id, setEdit]);
 
   const onCustomChange = useCallback((e: ChangeEvent<HTMLInputElement>): UpdatedGradeField => {
     return {

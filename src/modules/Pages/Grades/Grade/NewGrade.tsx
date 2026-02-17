@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useContext, useState } from 'react';
+import React, { ChangeEvent, useCallback, useContext } from 'react';
 import * as P from './parts';
 import { GradesContext, GradesField } from '../GradesContext';
 import { InputField } from '~/src/modules/Components/Input/InputWithLabel';
@@ -16,7 +16,7 @@ const NewGrade = ({ studentId }: NewGradeProps) => {
 
   const onClick = useCallback(() => {
     setEdit(studentId)
-  }, []);
+  }, [studentId, setEdit]);
 
   const onCustomChange = useCallback((e: ChangeEvent<HTMLInputElement>): GradeField => {
     return {
@@ -24,7 +24,7 @@ const NewGrade = ({ studentId }: NewGradeProps) => {
       subjectId,
       grade: e.target.value,
     }
-  }, [subjectId, subjectId]);
+  }, [subjectId, studentId]);
 
   const parseValue = useCallback((props: GradeField) => {
     return props.grade ?? '';

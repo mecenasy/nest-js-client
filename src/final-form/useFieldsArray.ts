@@ -12,7 +12,7 @@ const useFieldArray = <T>(name: string, form: FormApi<T>): FieldArrayRenderProps
       'Array mutators not found. You need to provide the mutators from final-form-arrays to your form',
     );
   }
-  const mutators = useMemo<Record<string, Function>>(
+  const mutators = useMemo<Record<string, any>>(
     () =>
       // curry the field name onto all mutator calls
       Object.keys(formMutators).reduce(
@@ -20,7 +20,7 @@ const useFieldArray = <T>(name: string, form: FormApi<T>): FieldArrayRenderProps
           result[key] = (...args: any[]) => (formMutators as any)[key](name, ...args);
           return result;
         },
-        {} as Record<string, Function>,
+        {} as Record<string, any>,
       ),
     [name, formMutators],
   );
@@ -56,7 +56,12 @@ const useFieldArray = <T>(name: string, form: FormApi<T>): FieldArrayRenderProps
   };
 
   // Don't spread fieldState, extract only what we need
-  const { meta: _meta, input: _input, ...restFieldState } = fieldState;
+  if ((fieldState as any).meta) {
+    delete (fieldState as any).meta;
+  }
+  if ((fieldState as any).input) {
+    delete (fieldState as any).input;
+  }
 
   return {
     fields: {
@@ -65,7 +70,7 @@ const useFieldArray = <T>(name: string, form: FormApi<T>): FieldArrayRenderProps
       length: length || 0,
       map,
       ...(mutators as any),
-      ...restFieldState,
+      ...fieldState,
       value: input.value,
     } as any,
     meta: metaWithoutLength,

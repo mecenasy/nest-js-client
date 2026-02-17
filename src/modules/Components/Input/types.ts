@@ -1,7 +1,6 @@
 import { FormApi } from 'final-form';
 import { ChangeEvent } from 'react';
 import { FieldRenderProps as FieldRenderPropsDep } from 'react-final-form-hooks';
-import { FieldRenderProps } from 'react-final-form-hooks';
 export interface DroppedFile extends File {
   path: string;
   preview: string;

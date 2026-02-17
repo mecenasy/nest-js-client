@@ -27,12 +27,12 @@ export const InputFormWrapper = <T extends string | number | boolean | null | un
     } else {
       input.onChange(evt);
     }
-  }, [input?.onChange, onCustomChange])
+  }, [input, onCustomChange])
 
 
   const getValue = useCallback((value: T) => {
     return parseValue ? parseValue(value) : value;
-  }, []);
+  }, [parseValue]);
 
   return (
     <>

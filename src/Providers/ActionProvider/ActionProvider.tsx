@@ -17,7 +17,7 @@ interface Context {
 export const ActionContext = createContext<Context | undefined>(undefined);
 
 export const ActionProvider = ({ actions, reducersKey, children }: ActionProviderProps) => {
-  const setActions = useCallback((a: UnknownAction[], s: Array<keyof ApplicationState>) => {
+  const setActions = useCallback((a: UnknownAction[]) => {
     a.forEach((action) => {
       if (actions.every(({ type }) => type !== action.type)) {
         actions.push(action);

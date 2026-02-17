@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-import * as P from './parts';
+import React from 'react';
 import SubjectGradesItem from './SubjectGrades';
 import { SubjectGrades } from '~/src/store/grade/constants';
 import { useSelector } from 'react-redux';

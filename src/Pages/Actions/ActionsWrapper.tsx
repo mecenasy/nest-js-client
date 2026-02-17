@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorFactory } from '../../PageConfigs/constants';
 import { ActionContext } from '../../Providers/ActionProvider/ActionProvider';
@@ -20,7 +20,7 @@ const ActionsWrapper: React.FC<Props> = ({ actionCreatorFactory, reducersKey = [
   const isHydrated = useContext(HydrateContext);
   const actionContext = useContext(ActionContext);
 
-  const dispatchAction = (condition: 'mount' | 'server' | 'update', isMount?: boolean, isUpdate?: boolean) => {
+  const dispatchAction = useCallback((condition: 'mount' | 'server' | 'update', isMount?: boolean, isUpdate?: boolean) => {
     const actions = actionCreatorFactory?.(
       { isServer: SERVER_BUILD, isMount, isHydrated, isUpdate },
       location,
@@ -37,7 +37,7 @@ const ActionsWrapper: React.FC<Props> = ({ actionCreatorFactory, reducersKey = [
         }
       });
     }
-  };
+  }, [dispatch, actionCreatorFactory, isHydrated, location, match]);
 
   if (SERVER_BUILD) {
     const actions = actionCreatorFactory?.(
@@ -54,20 +54,22 @@ const ActionsWrapper: React.FC<Props> = ({ actionCreatorFactory, reducersKey = [
       actionContext.setReducersKey(reducersKey);
     }
   }
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    dispatchAction('mount', true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (isFirstRender.current) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      dispatchAction('mount', true);
+    }
+  }, [dispatchAction]);
 
-  const isFirstRender = useRef(true);
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
     dispatchAction('update', true, true);
-  }, [location.search, params, match?.pathname]);
+  }, [location.search, params, match?.pathname, dispatchAction]);
 
   if (actionContext) {
     return null

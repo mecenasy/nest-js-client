@@ -43,7 +43,6 @@ export const createLazyStore = () => {
         }
       });
     }
-    const keys = Object.keys(preloadedState ?? {}) as unknown as Array<keyof ApplicationReducer>;
 
     store = configureStore<ApplicationState>({
       reducer: createReducer(reducersKeys ? reducer : asyncReducers),
