@@ -5,13 +5,12 @@ import GradeItem from './Grade';
 
 interface GradesRowProps {
   grades: Grade[];
-  studentId: string;
 }
 
-const GradesRow = ({ grades, studentId }: GradesRowProps) => (
+const GradesRow = ({ grades }: GradesRowProps) => (
   <P.GradesRow>
     {grades.map((grade: Grade) => (
-      <GradeItem key={grade.id} studentId={studentId} {...grade} />
+      <GradeItem key={grade.id} {...grade} />
     ))}
   </P.GradesRow>
 );

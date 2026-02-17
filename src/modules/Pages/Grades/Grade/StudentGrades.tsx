@@ -12,9 +12,7 @@ const StudentGradesItem = ({ student }: StudentGradesProps) => (
   <P.StudentContainer key={student.id}>
     <P.StudentName>{student.name}</P.StudentName>
     <P.GradesFlexRow>
-      <GradesRow
-        studentId={student.id}
-        grades={student.grades} />
+      <GradesRow grades={student.grades} />
       <NewGrade studentId={student.id}
       />
     </P.GradesFlexRow>

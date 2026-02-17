@@ -22,16 +22,19 @@ const Default = ({ form }: { form: FormApi<PersonFormData> }) => {
       <P.Title>Podstawowe informacje</P.Title>
       <InputField
         form={form}
+        type={'text'}
         name={PersonField.Name}
         placeholder={'Imię'}
       />
       <InputField
         form={form}
+        type={'text'}
         name={PersonField.Surname}
         placeholder={'Nazwisko'}
       />
       <InputField
         form={form}
+        type={'text'}
         name={PersonField.Email}
         placeholder={'Email'}
       />

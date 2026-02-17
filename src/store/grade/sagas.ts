@@ -43,10 +43,7 @@ function* updateGradesWorker({ payload }: ReturnType<typeof A.updateGradesReques
     const userId: string = yield select(userIdSelector);
 
     try {
-      const { data } = yield call(
-        updateGrades,
-        payload.toUpdate.map<CreateGrade>(grade => ({ ...grade, teacherId: userId }))
-      );
+      const { data } = yield call(updateGrades, payload.toUpdate);
       yield put(A.updateGrades(data));
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -18,26 +18,31 @@ const AddressFields = ({ form }: { form: FormApi<PersonFormData> }) => {
       <InputField
         name={`${PersonField.Address}.${AddressField.Street}`}
         form={form}
+        type={'text'}
         placeholder={'Ulica'}
       />
       <InputField
         name={`${PersonField.Address}.${AddressField.City}`}
         form={form}
+        type={'text'}
         placeholder={'Miasto'}
       />
       <InputField
         name={`${PersonField.Address}.${AddressField.Country}`}
         form={form}
+        type={'text'}
         placeholder={'Kraj'}
       />
       <InputField
         name={`${PersonField.Address}.${AddressField.Number}`}
         form={form}
+        type={'text'}
         placeholder={'Numer domu'}
       />
       <InputField
         name={`${PersonField.Address}.${AddressField.ZipCode}`}
         form={form}
+        type={'text'}
         placeholder={'Kod pocztowy'}
       />
       <StepButton form={form} />

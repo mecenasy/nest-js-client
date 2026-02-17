@@ -6,8 +6,6 @@
   "scripts": {
     "postinstall": "npm run client && npm run server",
     "assets": "ts-node utils/assets",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "start:dev": "webpack serve --config webpack/webpack.dev.config.ts",
     "client": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack/webpack.prod.config.ts",
     "client:watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack/webpack.prod.config.ts --watch",
     "server": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack/webpack.server.config.ts",

@@ -10,7 +10,29 @@ export interface DroppedFile extends File {
   type: string;
 }
 
-export type InputFieldsProps<T, R> = {
+type CustomChange<R> = ({
+  type: 'password' | 'number';
+  onCustomChange?: undefined;
+  parseValue?: undefined;
+} | {
+  type: 'text';
+  onCustomChange: (event: ChangeEvent<HTMLInputElement>) => R;
+  parseValue: (value: any) => string;
+} | {
+  type: 'text';
+  onCustomChange?: (event: ChangeEvent<HTMLInputElement>) => R;
+  parseValue?: (value: any) => string;
+} | {
+  type: 'textarea';
+  onCustomChange: (event: ChangeEvent<HTMLAreaElement>) => R;
+  parseValue: (value: any) => string;
+} | {
+  type: 'textarea';
+  onCustomChange?: (event: ChangeEvent<HTMLAreaElement>) => R;
+  parseValue?: (value: any) => string;
+})
+
+export type InputFieldsProps<T, R> = CustomChange<R> & {
   disabled?: boolean;
   name: string;
   form: FormApi<T, Partial<T>>;
@@ -18,26 +40,8 @@ export type InputFieldsProps<T, R> = {
   placeholder?: string;
   inputType?: InputType;
   label?: string;
-  type?: string;
   autoFocus?: boolean;
-} & ({
-  type: 'text';
-  onCustomChange: (event: ChangeEvent<HTMLInputElement>) => R;
-  parseValue: (value: any) => string
-} | {
-  type: 'text';
-  onCustomChange?: (event: ChangeEvent<HTMLInputElement>) => R;
-  parseValue?: (value: any) => string
-} | {
-  type: 'textarea';
-  onCustomChange: (event: ChangeEvent<HTMLAreaElement>) => R;
-  parseValue: (value: any) => string
-} | {
-  type: 'textarea';
-  onCustomChange?: (event: ChangeEvent<HTMLAreaElement>) => R;
-  parseValue?: (value: any) => string
-});
-
+};
 
 export type InputProps<T> = {
   placeholder?: string;
@@ -53,29 +57,12 @@ export enum InputType {
   onlyInput = 'input',
 }
 
-export type InputFormWrapperProps<T, R> = FieldRenderPropsDep<T> & {
+export type InputFormWrapperProps<T, R> = FieldRenderPropsDep<T> & CustomChange<R> & {
   autoFocus?: boolean;
   placeholder?: string;
   inputType?: InputType;
   type?: string;
-} & ({
-  type: 'text';
-  onCustomChange: (event: ChangeEvent<HTMLInputElement>) => R;
-  parseValue: (value: any) => string
-} | {
-  type: 'text';
-  onCustomChange?: (event: ChangeEvent<HTMLInputElement>) => R;
-  parseValue?: (value: T) => string
-} | {
-  type: 'textarea';
-  onCustomChange: (event: ChangeEvent<HTMLAreaElement>) => R;
-  parseValue: (value: any) => string
-} | {
-  type: 'textarea';
-  onCustomChange?: (event: ChangeEvent<HTMLAreaElement>) => R;
-  parseValue?: (value: T) => string
-});
-
+};
 
 export interface Option<T> {
   value: T;

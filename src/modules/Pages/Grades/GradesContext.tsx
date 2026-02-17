@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 import { FormRenderProps, useForm } from 'react-final-form-hooks';
 import { useDispatch } from 'react-redux';
-import { GradeField } from '~/src/store/grade/constants';
+import { GradeField, UpdatedGradeField } from '~/src/store/grade/constants';
 import { addGradesRequest, updateGradesRequest } from '~/src/store/grade/reducer';
 
 interface GradesProviderProps {
@@ -9,7 +9,7 @@ interface GradesProviderProps {
 }
 export interface GradesField {
   newGrades: Record<string, GradeField>;
-  editGrades: Record<string, GradeField>;
+  editGrades: Record<string, UpdatedGradeField>;
 }
 
 interface GradesContext {
@@ -36,16 +36,20 @@ const GradesProvider = ({ children }: GradesProviderProps) => {
 
   const form = useForm<GradesField>({
     onSubmit: async ({ editGrades, newGrades }, form) => {
-      const toAdd: GradeField[] = Object.values(newGrades);
-      const toUpdate: GradeField[] = Object.values(editGrades);
-      await Promise.all([
-        new Promise((resolve, reject) => {
+      const toAdd: GradeField[] = Object.values(newGrades ?? {});
+      const toUpdate: UpdatedGradeField[] = Object.values(editGrades ?? {});
+
+      if (toAdd.length) {
+        await new Promise((resolve, reject) => {
           dispatch(addGradesRequest({ toAdd, resolve, reject }));
-        }),
-        new Promise((resolve, reject) => {
+        });
+      }
+
+      if (toUpdate.length) {
+        await new Promise((resolve, reject) => {
           dispatch(updateGradesRequest({ toUpdate, resolve, reject }));
-        }),
-      ]);
+        });
+      }
 
       form.reset();
       setEditState({});

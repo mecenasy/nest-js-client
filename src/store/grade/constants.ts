@@ -55,8 +55,13 @@ export interface CreateGrade extends GradeField {
   teacherId: string;
 }
 
+export interface UpdatedGradeField {
+  id: string;
+  grade: string;
+}
+
 export interface UpdateGradeActionPayload {
-  toUpdate: GradeField[];
+  toUpdate: UpdatedGradeField[];
 }
 
 export interface AddGradeActionPayload {

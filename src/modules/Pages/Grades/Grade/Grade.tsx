@@ -5,32 +5,28 @@ import edit from '~/assets/pencil.svg';
 import { InputField } from '~/src/modules/Components/Input/InputWithLabel';
 import { GradesContext, GradesField } from '../GradesContext';
 import { InputType } from '~/src/modules/Components/Input/types';
-import { SubjectContext } from '../SubjectContext';
-import { GradeField } from '~/src/store/grade/constants';
+import { UpdatedGradeField } from '~/src/store/grade/constants';
 
 interface GradeProps {
   id: string;
-  studentId: string;
   grade: string;
   date: Date;
 }
 
-const GradeItem = ({ id, date, grade, studentId }: GradeProps) => {
+const GradeItem = ({ id, date, grade }: GradeProps) => {
   const { form, setEdit, isEditing } = useContext(GradesContext);
-  const subjectId = useContext(SubjectContext);
   const onclick = useCallback(() => {
     setEdit(id)
   }, []);
 
-  const onCustomChange = useCallback((e: ChangeEvent<HTMLInputElement>): GradeField => {
+  const onCustomChange = useCallback((e: ChangeEvent<HTMLInputElement>): UpdatedGradeField => {
     return {
-      studentId,
-      subjectId,
+      id,
       grade: e.target.value,
     }
-  }, [subjectId, subjectId]);
+  }, [id]);
 
-  const parseValue = useCallback((props: GradeField) => {
+  const parseValue = useCallback((props: UpdatedGradeField) => {
 
     return props.grade ?? '';
   }, []);
@@ -38,7 +34,7 @@ const GradeItem = ({ id, date, grade, studentId }: GradeProps) => {
   return (
     <P.GradeItemWrapper>
       {isEditing[id] && form ? (
-        <InputField<GradesField, GradeField>
+        <InputField<GradesField, UpdatedGradeField>
           name={`editGrades.${id}`}
           autoFocus
           form={form.form}

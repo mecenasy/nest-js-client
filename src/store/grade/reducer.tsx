@@ -120,7 +120,7 @@ export const getTeacherGradesSelector = createSelector(
       return [];
     }
 
-    return [...grades].sort((a, b) => {
+    const sortedByYearAndGroup = [...grades].sort((a, b) => {
       const yearCompare = a.year.localeCompare(b.year);
 
       if (yearCompare !== 0) {
@@ -128,7 +128,16 @@ export const getTeacherGradesSelector = createSelector(
       }
       return a.group.localeCompare(b.group);
     });
-  });
+
+    return sortedByYearAndGroup.map(teacherGrade => ({
+      ...teacherGrade,
+      subjects: teacherGrade.subjects.map(subject => ({
+        ...subject,
+        students: [...subject.students].sort((a, b) => a.name.localeCompare(b.name))
+      }))
+    }));
+  }
+);
 
 export const getFilterOptionsSelector = createSelector(
   (state: ApplicationState) => state.grades.teachers,

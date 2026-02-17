@@ -65,13 +65,13 @@ const Login: FC = () => {
         >
           {({ form }) => (
             <>
-              <InputField<LoginData>
+              <InputField<LoginData, any>
                 form={form}
                 name={LoginField.User}
                 type={'text'}
                 placeholder={'Login'}
               />
-              <InputField<LoginData>
+              <InputField<LoginData, any>
                 form={form}
                 name={LoginField.Password}
                 type={'password'}

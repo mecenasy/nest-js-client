@@ -70,20 +70,20 @@ const ChangePassword: FC = () => {
           {({ form }) => {
             return (
               <>
-                <InputField<ChangePasswordData>
+                <InputField<ChangePasswordData, any>
                   form={form}
                   name={ChangePasswordField.OldPassword}
                   type={'password'}
                   placeholder={'Stare hasło'}
                 />
-                <InputField<ChangePasswordData>
+                <InputField<ChangePasswordData, any>
                   form={form}
                   name={ChangePasswordField.NewPassword}
                   type={'password'}
                   placeholder={'Nowe hasło'}
                 />
 
-                <InputField<ChangePasswordData>
+                <InputField<ChangePasswordData, any>
                   form={form}
                   name={ChangePasswordField.ConfirmPassword}
                   type={'password'}

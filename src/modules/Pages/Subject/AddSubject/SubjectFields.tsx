@@ -54,6 +54,7 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
       <div>
         <InputField
           form={form}
+          type={'text'}
           name={`subjects.[${index}]${Fields.Name}`}
           inputType={InputType.all}
           label={'Nazwa Przedmiotu'}
@@ -62,6 +63,7 @@ const SubjectFields = ({ form, index = 0, added = false }: SubjectFieldsProps) =
         />
         <InputField
           form={form}
+          type={'text'}
           name={`subjects.[${index}]${Fields.Auditorium}`}
           inputType={InputType.all}
           label={'Audytorium'}
