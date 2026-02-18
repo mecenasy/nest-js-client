@@ -1,16 +1,21 @@
 import { DroppedFile, Option } from '~/src/modules/Components/Input/types';
 
+export interface MessageUser {
+  id: string;
+  name: string;
+}
 export interface Message {
   id: string;
   createdAt: Date;
   title: string;
   content: string;
-  from: string;
+  from: MessageUser;
+  to: MessageUser;
   replies?: Message[];
-  to: string;
   files?: File[];
   isRead: boolean;
 }
+
 
 export interface File {
   name: string;

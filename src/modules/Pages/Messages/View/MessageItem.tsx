@@ -108,8 +108,8 @@ const MessageItem: FC<MessageProps> = ({ onScroll, setId, message }) => {
         <div ref={contentRef}>
         </div>
         <P.ContentWrapper ref={ref}>
-          <P.Content>Od: {from}</P.Content>
-          <P.Content> Do: {to}</P.Content>
+          <P.Content>Od: {from.name}</P.Content>
+          <P.Content> Do: {to.name}</P.Content>
           <P.Content>Treść: {content}</P.Content>
           <P.FooterWrapper>
             <P.FileButtons>
